@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CustomerRepository {
 
@@ -42,5 +43,9 @@ public class CustomerRepository {
         return ResponseEntity.ok().build();
     }
 
-
+    public void deleteBykNr(Integer kNr) {
+        this.customers = customers.stream()
+                .filter(p -> !p.getkNr().equals(kNr))
+                .collect(Collectors.toList());
+    }
 }
