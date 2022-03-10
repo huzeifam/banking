@@ -40,4 +40,11 @@ public class CustomerController {
                 request
         );
     }
+    @DeleteMapping("/customers/{kNr}")
+    public ResponseEntity deleteCustomer(
+            @PathVariable Integer kNr
+    ){
+        customerRepository.deleteBykNr(kNr);
+        return ResponseEntity.noContent().build();
+    }
 }
