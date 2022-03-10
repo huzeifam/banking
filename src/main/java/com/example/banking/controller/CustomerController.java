@@ -5,13 +5,11 @@ import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import com.example.banking.repository.CustomerRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CustomerController {
@@ -23,7 +21,16 @@ public class CustomerController {
         return customerRepository.findAll();
     }
 
-    /*@GetMapping("/customers/{kNr}")*/
+    @GetMapping("/customers/{kNr}")
+    public ResponseEntity<Object> getCustomerByKNr(
+            @PathVariable Integer kNr
+    ){
+        Optional<CustomerResponse> customer = customerRepository.findByKNr(kNr);
+        if (customer.isPresent())
+            return ResponseEntity.ok(customer.get());
+        else
+            return ResponseEntity.notFound().build();
+    }
 
     @PostMapping("/customers")
     public ResponseEntity<Object> createCustomer(

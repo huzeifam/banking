@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class CustomerRepository {
@@ -15,6 +16,13 @@ public class CustomerRepository {
 
     public List<CustomerResponse> findAll() {
         return customers;
+    }
+
+    public Optional<CustomerResponse> findByKNr(Integer kNr) {
+        Optional<CustomerResponse> customer = customers.stream()
+                .filter(c -> c.getkNr().equals(kNr))
+                .findFirst();
+        return customer;
     }
 
     public ResponseEntity<Object> save(CustomerCreateRequest request) {
@@ -33,4 +41,6 @@ public class CustomerRepository {
                 );
         return ResponseEntity.ok().build();
     }
+
+
 }
