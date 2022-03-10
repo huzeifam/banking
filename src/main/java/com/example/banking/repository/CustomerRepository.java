@@ -1,5 +1,6 @@
 package com.example.banking.repository;
 
+import com.example.banking.model.CustomerAccountResponse;
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,13 @@ public class CustomerRepository {
         return customer;
     }
 
+//    public Optional<CustomerAccountResponse> findAccountByKNr(Integer kNr) {
+//        Optional<CustomerAccountResponse> customerAccount = customers.stream()
+//                .filter(c -> c.getkNr().equals(kNr))
+//                .findFirst();
+//        return customerAccount;
+//
+//    }
     public ResponseEntity<Object> save(CustomerCreateRequest request) {
 
         customers.add(
@@ -49,4 +57,6 @@ public class CustomerRepository {
                 .collect(Collectors.toList());
 
     }
+
+    
 }
