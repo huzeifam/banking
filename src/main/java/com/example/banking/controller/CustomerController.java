@@ -23,6 +23,8 @@ public class CustomerController {
         return customerRepository.findAll();
     }
 
+    /*@GetMapping("/customers/{kNr}")*/
+
     @PostMapping("/customers")
     public ResponseEntity<Object> createCustomer(
             @RequestBody CustomerCreateRequest request
