@@ -1,0 +1,36 @@
+package com.example.banking.repository;
+
+import com.example.banking.model.CustomerCreateRequest;
+import com.example.banking.model.CustomerResponse;
+import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+public class CustomerRepository {
+
+    List<CustomerResponse> customers = new ArrayList<>();
+
+
+    public List<CustomerResponse> findAll() {
+        return customers;
+    }
+
+    public ResponseEntity<Object> save(CustomerCreateRequest request) {
+
+        customers.add(
+                new CustomerResponse(
+                UUID.randomUUID().toString(),
+                request.getPassNr(),
+                request.getGbDate(),
+                request.getvName(),
+                request.getnName(),
+                request.getStraße(),
+                request.gethNr(),
+                request.getOrt()
+                )
+                );
+        return ResponseEntity.ok().build();
+    }
+}
