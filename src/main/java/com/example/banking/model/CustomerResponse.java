@@ -2,7 +2,7 @@ package com.example.banking.model;
 
 public class CustomerResponse {
 
-    private String kNr;
+    private int kNr;
     private String passNr;
     private String gbDate;
     private String vName;
