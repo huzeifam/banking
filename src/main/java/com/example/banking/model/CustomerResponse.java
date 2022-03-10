@@ -11,7 +11,10 @@ public class CustomerResponse {
     private String hNr;
     private String ort;
 
-    public CustomerResponse(Integer kNr, String passNr, String gbDate, String vName, String nName, String straße, String hNr, String ort) {
+    public CustomerResponse(Integer kNr, String passNr,
+                            String gbDate, String vName,
+                            String nName, String straße,
+                            String hNr, String ort) {
         this.kNr = kNr;
         this.passNr = passNr;
         this.gbDate = gbDate;
