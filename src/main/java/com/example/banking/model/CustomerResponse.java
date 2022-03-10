@@ -2,7 +2,7 @@ package com.example.banking.model;
 
 public class CustomerResponse {
 
-    private String kNr;
+    private Integer kNr;
     private String passNr;
     private String gbDate;
     private String vName;
@@ -11,7 +11,7 @@ public class CustomerResponse {
     private String hNr;
     private String ort;
 
-    public CustomerResponse(String kNr, String passNr, String gbDate, String vName, String nName, String straße, String hNr, String ort) {
+    public CustomerResponse(Integer kNr, String passNr, String gbDate, String vName, String nName, String straße, String hNr, String ort) {
         this.kNr = kNr;
         this.passNr = passNr;
         this.gbDate = gbDate;
@@ -22,7 +22,7 @@ public class CustomerResponse {
         this.ort = ort;
     }
 
-    public String getkNr() {
+    public Integer getkNr() {
         return kNr;
     }
 

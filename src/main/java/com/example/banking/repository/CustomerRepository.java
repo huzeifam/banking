@@ -21,7 +21,7 @@ public class CustomerRepository {
 
         customers.add(
                 new CustomerResponse(
-                UUID.randomUUID().toString(),
+                UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
                 request.getPassNr(),
                 request.getGbDate(),
                 request.getvName(),
