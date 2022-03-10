@@ -47,5 +47,6 @@ public class CustomerRepository {
         this.customers = customers.stream()
                 .filter(p -> !p.getkNr().equals(kNr))
                 .collect(Collectors.toList());
+
     }
 }

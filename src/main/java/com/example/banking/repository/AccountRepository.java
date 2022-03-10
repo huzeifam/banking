@@ -2,13 +2,10 @@ package com.example.banking.repository;
 
 import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.AccountResponse;
-import com.example.banking.model.CustomerResponse;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AccountRepository {
@@ -25,10 +22,16 @@ public class AccountRepository {
                new AccountResponse(
                        UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
                        arequest.getIban(),
-                       arequest.getBalanceInEuro(),
+                       roundAndFormat(arequest.getBalanceInEuro(), 2, Locale.GERMAN),
                        arequest.getStartDate())
                 );
             return ResponseEntity.ok().build();
+    }
+
+    private String roundAndFormat(Double balanceInEuro, int i, Locale german) {
+        java.text.NumberFormat nf = java.text.NumberFormat.getInstance(german);
+        nf.setMaximumFractionDigits(2);
+        return nf.format(new BigDecimal(balanceInEuro));
     }
 
     public void deleteByaNr(Integer aNr) {
