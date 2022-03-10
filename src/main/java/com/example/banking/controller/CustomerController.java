@@ -5,10 +5,7 @@ import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import com.example.banking.repository.CustomerRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,5 +29,12 @@ public class CustomerController {
         return customerRepository.save(
                 request
         );
+    }
+    @DeleteMapping("/customers/{kNr}")
+    public ResponseEntity deleteCustomer(
+            @PathVariable Integer kNr
+    ){
+        customerRepository.deleteBykNr(kNr);
+        return ResponseEntity.noContent().build();
     }
 }
