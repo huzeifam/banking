@@ -5,6 +5,7 @@ import com.example.banking.model.AccountResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,10 +21,11 @@ public class AccountRepository {
 
        accounts.add(
                new AccountResponse(
+                       arequest.getkNr(),
                        UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
                        arequest.getIban(),
                        roundAndFormat(arequest.getBalanceInEuro(), 2, Locale.GERMAN),
-                       arequest.getStartDate())
+                       LocalDate.now())
                 );
             return ResponseEntity.ok().build();
     }
@@ -47,4 +49,6 @@ public class AccountRepository {
                 .findFirst();
         return account;
     }
+
+
 }

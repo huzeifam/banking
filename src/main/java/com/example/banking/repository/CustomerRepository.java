@@ -1,15 +1,12 @@
 package com.example.banking.repository;
 
-import com.example.banking.model.CustomerAccountResponse;
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class CustomerRepository {
 
@@ -45,8 +42,8 @@ public class CustomerRepository {
                 request.getnName(),
                 request.getStraße(),
                 request.gethNr(),
-                request.getOrt()
-                )
+                request.getOrt(),
+                Collections.emptyList())
                 );
         return ResponseEntity.ok().build();
     }
@@ -58,5 +55,6 @@ public class CustomerRepository {
 
     }
 
-    
+
+
 }

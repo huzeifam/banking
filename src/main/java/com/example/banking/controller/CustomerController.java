@@ -1,11 +1,9 @@
 package com.example.banking.controller;
 
 
-import com.example.banking.model.CustomerAccountResponse;
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import com.example.banking.repository.CustomerRepository;
-import com.example.banking.service.CustomerAccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +14,7 @@ import java.util.Optional;
 public class CustomerController {
 
     CustomerRepository customerRepository = new CustomerRepository();
-    CustomerAccountService customerAccountService = new CustomerAccountService();
+
 
     @GetMapping("/customers")
     public List<CustomerResponse> getAllCustomers(){
@@ -34,16 +32,16 @@ public class CustomerController {
             return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/customers/kNr/customerAcc")
-    public ResponseEntity<Object> getAccountByKNr(
-            @PathVariable Integer kNr
-    ){return customerAccountService.getAccountsForCustomer(kNr);
-        /*Optional<CustomerAccountResponse> customerAccount = customerRepository.findAccountByKNr(kNr);
-        if (customerAccount.isPresent())
-            return ResponseEntity.ok(customerAccount.get());
-        else
-            return ResponseEntity.notFound().build();*/
-    }
+//    @GetMapping("/customers/kNr/customerAcc")
+//    public ResponseEntity<Object> getAccountByKNr(
+//            @PathVariable Integer kNr
+//    ){return customerAccountService.getAccountsForCustomer(kNr);
+//        /*Optional<CustomerAccountResponse> customerAccount = customerRepository.findAccountByKNr(kNr);
+//        if (customerAccount.isPresent())
+//            return ResponseEntity.ok(customerAccount.get());
+//        else
+//            return ResponseEntity.notFound().build();*/
+//    }
 
 
     @PostMapping("/customers")
