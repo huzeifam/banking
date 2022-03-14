@@ -9,20 +9,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AccountService {
-    CustomerRepository customerRepository =  CustomerRepository.getCustomerRepository();
-    AccountRepository accountRepository = new AccountRepository();
+
+    private final CustomerRepository customerRepository;
+    private final AccountRepository accountRepository;
+
+    public AccountService(CustomerRepository customerRepository, AccountRepository accountRepository) {
+        this.customerRepository = customerRepository;
+        this.accountRepository = accountRepository;
+    }
+
+
 
     public List<AccountResponse> findAll() {
         return accountRepository.findAll();
     }
 
     public Optional<AccountResponse> findByANr(Integer aNr) {
+
         return accountRepository.findByANr(aNr);
     }
     public ResponseEntity<Object> createAccount(AccountCreateRequest arequest) {
@@ -42,6 +50,7 @@ public class AccountService {
 
 
     public void deleteByaNr(Integer aNr) {
+
         accountRepository.deleteByaNr(aNr);
     }
 }
