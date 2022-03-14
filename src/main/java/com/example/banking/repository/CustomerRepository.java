@@ -10,6 +10,13 @@ import java.util.stream.Collectors;
 
 public class CustomerRepository {
 
+    private static CustomerRepository theRepository;
+    public static CustomerRepository getCustomerRepository(){
+        if (theRepository == null){
+            theRepository = new CustomerRepository();
+        }
+        return theRepository;
+    }
     List<CustomerResponse> customers = new ArrayList<>();
 
 

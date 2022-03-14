@@ -13,7 +13,7 @@ import java.util.Optional;
 @RestController
 public class CustomerController {
 
-    CustomerRepository customerRepository = new CustomerRepository();
+    CustomerRepository customerRepository = CustomerRepository.getCustomerRepository();
 
 
     @GetMapping("/customers")
