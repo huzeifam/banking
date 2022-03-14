@@ -12,7 +12,11 @@ import java.util.Optional;
 @RestController
 public class AccountController {
 
-    AccountService accountService = new AccountService();
+    private final AccountService accountService;
+
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @GetMapping("/accounts")
     public List<AccountResponse> getAllAccounts(){

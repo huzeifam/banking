@@ -3,12 +3,14 @@ package com.example.banking.repository;
 import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.AccountResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class AccountRepository {
 
     List<AccountResponse> accounts = new ArrayList<>();
