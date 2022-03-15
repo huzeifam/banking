@@ -44,6 +44,12 @@ public class AccountRepository {
                 .collect(Collectors.toList());
     }
 
+    public void deleteAccountByKNr(Integer kNr){
+        this.accounts =accounts.stream()
+                .filter(a -> !a.getkNr().equals(kNr))
+                .collect(Collectors.toList());
+    }
+
 
     public Optional<AccountResponse> findByANr(Integer aNr) {
         Optional<AccountResponse> account = accounts.stream()
@@ -51,6 +57,11 @@ public class AccountRepository {
                 .findFirst();
         return account;
     }
+//    public Optional<AccountResponse> findAccountByKNr(Integer kNr) {
+//        Optional<AccountResponse> account = accounts.stream()
+//                .filter(a -> a.getkNr().equals(kNr)).findAny();
+//        return account;
+//    }
 
 
 }

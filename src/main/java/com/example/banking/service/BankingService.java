@@ -2,6 +2,7 @@ package com.example.banking.service;
 
 import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.AccountResponse;
+import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import com.example.banking.repository.AccountRepository;
 import com.example.banking.repository.CustomerRepository;
@@ -13,19 +14,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountService {
+public class BankingService {
 
     private final CustomerRepository customerRepository;
     private final AccountRepository accountRepository;
 
-    public AccountService(CustomerRepository customerRepository, AccountRepository accountRepository) {
+    public BankingService(CustomerRepository customerRepository, AccountRepository accountRepository) {
         this.customerRepository = customerRepository;
         this.accountRepository = accountRepository;
     }
 
 
 
-    public List<AccountResponse> findAll() {
+    public List<AccountResponse> findAllAccounts() {
         return accountRepository.findAll();
     }
 
@@ -41,16 +42,39 @@ public class AccountService {
             return ResponseEntity.ok().build();
         }
         else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not create account. Customer does not exist.");
         }
 
     }
 
 
+    public void deleteAccountByKNr(Integer kNr){
 
+        accountRepository.deleteAccountByKNr(kNr);
+    }
 
     public void deleteByaNr(Integer aNr) {
 
         accountRepository.deleteByaNr(aNr);
+    }
+
+    // customer
+
+    public List<CustomerResponse> findAll() {
+
+        return customerRepository.findAll();
+
+    }
+
+    public Optional<CustomerResponse> findByKNr(Integer kNr) {
+        return customerRepository.findByKNr(kNr);
+    }
+
+    public ResponseEntity<Object> save(CustomerCreateRequest request) {
+        return customerRepository.save(request);
+    }
+
+    public void deleteBykNr(Integer kNr) {
+        customerRepository.deleteBykNr(kNr);
     }
 }
