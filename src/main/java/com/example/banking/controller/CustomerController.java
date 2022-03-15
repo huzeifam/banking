@@ -1,9 +1,12 @@
 package com.example.banking.controller;
 
 
+import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import com.example.banking.repository.CustomerRepository;
+import com.example.banking.service.BankingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,25 +17,29 @@ import java.util.Optional;
 public class CustomerController {
 
     private final CustomerRepository customerRepository;
+    private final BankingService bankingService;
 
-    public CustomerController(CustomerRepository customerRepository) {
+
+
+    public CustomerController(CustomerRepository customerRepository, BankingService bankingService) {
         this.customerRepository = customerRepository;
+        this.bankingService = bankingService;
     }
 
     @GetMapping("/customers")
     public List<CustomerResponse> getAllCustomers(){
-        return customerRepository.findAll();
+        return bankingService.findAll();
     }
 
     @GetMapping("/customers/{kNr}")
     public ResponseEntity<Object> getCustomerByKNr(
             @PathVariable Integer kNr
     ){
-        Optional<CustomerResponse> customer = customerRepository.findByKNr(kNr);
+        Optional<CustomerResponse> customer = bankingService.findByKNr(kNr);
         if (customer.isPresent())
             return ResponseEntity.ok(customer.get());
         else
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
     }
 
 //    @GetMapping("/customers/kNr/customerAcc")
@@ -53,16 +60,23 @@ public class CustomerController {
 
     ){
 
-        return customerRepository.save(
+        return bankingService.save(
                 request
         );
     }
     @DeleteMapping("/customers/{kNr}")
     public ResponseEntity deleteCustomer(
-            @PathVariable Integer kNr
-    ){
-        customerRepository.deleteBykNr(kNr);
+            @PathVariable Integer kNr,
+            AccountCreateRequest arequest
+    ){Optional<CustomerResponse> customer = bankingService.findByKNr(kNr);
+        {Optional<CustomerResponse> account = bankingService.findByKNr(arequest.getkNr());
+        if (customer.isPresent()) {
+            bankingService.deleteBykNr(kNr);
+           bankingService.deleteAccountByKNr(arequest.getkNr());
 
-        return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer and related accounts deleted");
+        }
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer does not exist.");
     }
-}
+}}

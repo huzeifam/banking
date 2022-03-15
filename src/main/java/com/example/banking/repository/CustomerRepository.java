@@ -1,6 +1,7 @@
 package com.example.banking.repository;
 
 import com.example.banking.model.AccountCreateRequest;
+import com.example.banking.model.AccountResponse;
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import org.springframework.http.ResponseEntity;
