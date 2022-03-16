@@ -34,6 +34,13 @@ public class BankingService {
 
         return accountRepository.findByANr(aNr);
     }
+
+    public List<AccountResponse> findAccountByKNr(Integer kNr) {
+
+        return accountRepository.FindAccountByKNr(kNr);
+    }
+
+
     public ResponseEntity<Object> createAccount(AccountCreateRequest arequest) {
         Optional<CustomerResponse> customer = customerRepository.findByKNr(arequest.getkNr());
 
@@ -77,4 +84,6 @@ public class BankingService {
     public void deleteBykNr(Integer kNr) {
         customerRepository.deleteBykNr(kNr);
     }
+
+
 }

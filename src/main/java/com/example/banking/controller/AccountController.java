@@ -2,7 +2,6 @@ package com.example.banking.controller;
 
 import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.AccountResponse;
-import com.example.banking.repository.CustomerRepository;
 import com.example.banking.service.BankingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,19 @@ public class AccountController {
         if (account.isPresent())
             return ResponseEntity.ok(account.get());
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account with account number "+aNr+" not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account with account number "+aNr+" not found.");
+    }
+    @GetMapping("/accounts/customer-accounts/{kNr}")
+    public Object[] getCustomerAccountByKNr(
+            @PathVariable Integer kNr
+    ){
+        String empty = "Either customer with customer number " + kNr+ " does not exist or the customer has no accounts.";
+        List<AccountResponse> account = bankingService.findAccountByKNr(kNr);
+        if (account.isEmpty())
+            return new String[]{empty};
+        else
+            return bankingService.findAccountByKNr(kNr).toArray();
+
     }
 
     @PostMapping("/accounts")
@@ -57,7 +68,7 @@ public class AccountController {
 
         if (account.isPresent()){
         bankingService.deleteByaNr(aNr);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Account with account number "+aNr+" deleted");
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Account with account number "+aNr+" deleted.");
 
     }
         else

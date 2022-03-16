@@ -57,8 +57,7 @@ public class CustomerRepository {
                 request.getnName(),
                 request.getStraße(),
                 request.gethNr(),
-                request.getOrt(),
-                Collections.emptyList()
+                request.getOrt()
                 ));
         return ResponseEntity.ok().build();
     }

@@ -2,7 +2,6 @@ package com.example.banking.repository;
 
 import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.AccountResponse;
-import com.example.banking.model.CustomerCreateRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +55,12 @@ public class AccountRepository {
         Optional<AccountResponse> account = accounts.stream()
                 .filter(c -> c.getaNr().equals(aNr))
                 .findFirst();
+        return account;
+    }
+    public List<AccountResponse> FindAccountByKNr(Integer kNr) {
+        List<AccountResponse> account = accounts.stream()
+                .filter(c -> c.getkNr().equals(kNr))
+                .collect(Collectors.toList());
         return account;
     }
 //    public Optional<AccountResponse> findAccountByKNr(Integer kNr) {
