@@ -158,6 +158,27 @@
 			"response": []
 		},
 		{
+			"name": "GET Accounts of Customer by kNr",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/accounts/customer-accounts/1834057895",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"customer-accounts",
+						"1834057895"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "DELETE Account by aNr",
 			"request": {
 				"method": "DELETE",
@@ -193,7 +214,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"iban\": \"DE20 4003 8272 2819 9238 22\",\n    \"balanceInEuro\": 70.79,\n    \"startDate\": \"10.03.2022\"\n}",
+					"raw": "{\n    \"kNr\": 726196090,\n    \"iban\": \"DE20 4003 8272 2819 9238 22\",\n    \"balanceInEuro\": 70.79,\n    \n}",
 					"options": {
 						"raw": {
 							"language": "json"
