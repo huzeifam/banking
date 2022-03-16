@@ -39,7 +39,7 @@ public class CustomerController {
         if (customer.isPresent())
             return ResponseEntity.ok(customer.get());
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + kNr + " not found");
     }
 
 //    @GetMapping("/customers/kNr/customerAcc")
@@ -74,9 +74,9 @@ public class CustomerController {
             bankingService.deleteBykNr(kNr);
            bankingService.deleteAccountByKNr(arequest.getkNr());
 
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer and related accounts deleted");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + kNr + " and related accounts deleted");
         }
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer does not exist.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer with customer number " + kNr + " does not exist.");
     }
 }}

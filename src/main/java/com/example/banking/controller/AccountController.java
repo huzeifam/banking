@@ -37,7 +37,7 @@ public class AccountController {
         if (account.isPresent())
             return ResponseEntity.ok(account.get());
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account with account number "+aNr+" not found");
     }
 
     @PostMapping("/accounts")
@@ -57,11 +57,11 @@ public class AccountController {
 
         if (account.isPresent()){
         bankingService.deleteByaNr(aNr);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Account deleted");
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Account with account number "+aNr+" deleted");
 
     }
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Account does not exist.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Account with account number "+aNr+" does not exist.");
 
     }
 
