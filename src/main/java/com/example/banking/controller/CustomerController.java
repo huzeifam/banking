@@ -42,16 +42,7 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + kNr + " not found");
     }
 
-//    @GetMapping("/customers/kNr/customerAcc")
-//    public ResponseEntity<Object> getAccountByKNr(
-//            @PathVariable Integer kNr
-//    ){return customerAccountService.getAccountsForCustomer(kNr);
-//        /*Optional<CustomerAccountResponse> customerAccount = customerRepository.findAccountByKNr(kNr);
-//        if (customerAccount.isPresent())
-//            return ResponseEntity.ok(customerAccount.get());
-//        else
-//            return ResponseEntity.notFound().build();*/
-//    }
+
 
 
     @PostMapping("/customers")
