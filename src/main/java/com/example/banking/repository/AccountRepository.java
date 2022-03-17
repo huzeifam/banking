@@ -5,8 +5,6 @@ import com.example.banking.model.AccountResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,6 +15,7 @@ public class AccountRepository {
     List<AccountResponse> accounts = new ArrayList<>();
 
     public List<AccountResponse> findAll() {
+
         return accounts;
     }
 
@@ -27,17 +26,17 @@ public class AccountRepository {
                        arequest.getkNr(),
                        UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
                        arequest.getIban(),
-                       roundAndFormat(arequest.getBalanceInEuro(), 2, Locale.GERMAN),
+                       Math.round(arequest.getBalanceInEuro()*100.0)/100.0,
                        LocalDate.now())
                 );
             return ResponseEntity.ok().build();
     }
 
-    private double roundAndFormat(double balanceInEuro, int i, Locale german) {
-        java.text.NumberFormat nf = java.text.NumberFormat.getInstance(german);
-        nf.setMaximumFractionDigits(2);
-        return Math.round(balanceInEuro*100.0)/100.0;
-    }
+//    private double roundAndFormat(double balanceInEuro, int i, Locale german) {
+//        java.text.NumberFormat nf = java.text.NumberFormat.getInstance(german);
+//        nf.setMaximumFractionDigits(2);
+//        return Math.round(balanceInEuro*100.0)/100.0;
+//    }
 
     public void deleteByaNr(Integer aNr) {
         this.accounts = accounts.stream()
@@ -70,9 +69,31 @@ public class AccountRepository {
                 .filter(c -> c.getaNr().equals(aNr))
                 .findFirst();
         double currentBalance = (account.get().getBalanceInEuro());
-        return currentBalance;
+        return Math.round(currentBalance*100.0)/100.0;
     }
 
 
+    public double saveBalanceByANr(Integer aNr, Double amount) {
+        Optional<AccountResponse> account = accounts.stream()
+                .filter(c -> c.getaNr().equals(aNr))
+                .findFirst();
+        double currentBalance = (account.get().getBalanceInEuro());
+        double newBalance = currentBalance +Math.round(amount*100.0)/100.0;
 
+        account.get().setBalanceInEuro(newBalance);
+        return Math.round(newBalance*100.0)/100.0;
+    }
+
+    public double withdrawAmountByANr(Integer aNr, Double amount) {
+        Optional<AccountResponse> account = accounts.stream()
+                .filter(c -> c.getaNr().equals(aNr))
+                .findFirst();
+        double currentBalance = (account.get().getBalanceInEuro());
+        double newBalance = currentBalance -Math.round(amount*100.0)/100.0;
+        if (newBalance >= 0){
+            account.get().setBalanceInEuro(newBalance);
+            return Math.round(newBalance*100.0)/100.0;
+        }
+            return 0;
+    }
 }

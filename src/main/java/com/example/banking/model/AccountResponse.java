@@ -24,4 +24,8 @@ public class AccountResponse {
     public String getIban() { return iban; }
     public Double getBalanceInEuro() { return balanceInEuro; }
     public LocalDate getStartDate() { return startDate; }
+
+    public void setBalanceInEuro(Double balanceInEuro) {
+        this.balanceInEuro = balanceInEuro;
+    }
 }

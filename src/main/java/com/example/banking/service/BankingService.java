@@ -90,6 +90,11 @@ public class BankingService {
     }
 
 
+    public void depositAmount(Integer aNr, Double amount) {
+        accountRepository.saveBalanceByANr(aNr, amount);
+    }
 
-
+    public void withdrawAmount(Integer aNr, Double amount) {
+        accountRepository.withdrawAmountByANr(aNr, amount);
+    }
 }

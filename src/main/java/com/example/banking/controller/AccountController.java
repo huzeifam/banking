@@ -59,10 +59,42 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.OK).body(bankingService.getBalanceInEuro(aNr));
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 
+    @PutMapping("/accounts/{aNr}/deposit/{amount}")
+    public ResponseEntity<String> depositAmount(
+            @PathVariable Integer aNr,
+            @PathVariable Double amount
+    ){
+        Optional<AccountResponse> account = bankingService.findByANr(aNr);
+        if (account.isPresent()) {
+            bankingService.depositAmount(aNr, amount);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deposit success.\n\nPrevious balance: "+Math.round((account.get().getBalanceInEuro()-amount)*100.0)/100.0+ "€\nAmount: "+amount+"€ \nCurrent balance: "+Math.round(account.get().getBalanceInEuro()*100.0)/100.0 +"€");
+        }
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deposit amount failed. Account with account number "+aNr+ " does not exist.");
 
     }
 
+    @PutMapping("/accounts/{aNr}/withdraw/{amount}")
+    public ResponseEntity<String> withdrawAmount(
+            @PathVariable Integer aNr,
+            @PathVariable Double amount
+    ){
+        Optional<AccountResponse> account = bankingService.findByANr(aNr);
+        if (account.isPresent()){
+            if (account.get().getBalanceInEuro()-amount >= 0){
+
+            bankingService.withdrawAmount(aNr, amount);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Withdraw success.\n\nPrevious balance: "+Math.round((account.get().getBalanceInEuro()+amount)*100.0)/100.0+ "€\nAmount: "+amount+"€ \nCurrent balance: "+Math.round(account.get().getBalanceInEuro()*100.0)/100.0 +"€");
+        }
+            else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not withdraw.\n\nRequested amount: "+amount +"€\nCurrent balance: "+Math.round(account.get().getBalanceInEuro()*100.0)/100.0+"€ \n\nAmount is bigger than current balance.");
+            }
+        }
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Withdraw amount failed. Account with account number "+aNr+ " does not exist.");
+    }
     @PostMapping("/accounts")
     public ResponseEntity<Object> createAccount(
             @RequestBody AccountCreateRequest arequest
