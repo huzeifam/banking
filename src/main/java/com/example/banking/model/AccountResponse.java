@@ -22,7 +22,7 @@ public class AccountResponse {
     public Integer getkNr() {return kNr; }
     public Integer getaNr() { return aNr; }
     public String getIban() { return iban; }
-    public Double getBalanceInEuro() { return balanceInEuro; }
+    public Double getBalanceInEuro() { return Math.round(balanceInEuro*100.0)/100.0; }
     public LocalDate getStartDate() { return startDate; }
 
     public void setBalanceInEuro(Double balanceInEuro) {

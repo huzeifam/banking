@@ -26,7 +26,7 @@ public class AccountRepository {
                        arequest.getkNr(),
                        UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
                        arequest.getIban(),
-                       Math.round(arequest.getBalanceInEuro()*100.0)/100.0,
+                       arequest.getBalanceInEuro(),
                        LocalDate.now())
                 );
             return ResponseEntity.ok().build();
