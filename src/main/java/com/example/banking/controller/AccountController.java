@@ -51,6 +51,18 @@ public class AccountController {
 
     }
 
+    @GetMapping("/accounts/{aNr}/balance")
+    public ResponseEntity<Double> getBalanceInEuro(
+            @PathVariable Integer aNr
+    ){Optional<AccountResponse> account = bankingService.findByANr(aNr);
+        if (account.isPresent())
+            return ResponseEntity.status(HttpStatus.OK).body(bankingService.getBalanceInEuro(aNr));
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+
+    }
+
     @PostMapping("/accounts")
     public ResponseEntity<Object> createAccount(
             @RequestBody AccountCreateRequest arequest

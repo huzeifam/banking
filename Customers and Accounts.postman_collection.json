@@ -158,6 +158,39 @@
 			"response": []
 		},
 		{
+			"name": "GET Accountbalance by aNr",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"iban\": \"DE20 4003 8272 2819 9238 22\",\n    \"balanceInEuro\": 70.79,\n    \"startDate\": \"10.03.2022\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/accounts/256103831/balance",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"256103831",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GET Accounts of Customer by kNr",
 			"request": {
 				"method": "GET",

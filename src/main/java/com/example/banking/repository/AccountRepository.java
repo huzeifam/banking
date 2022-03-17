@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,10 +33,10 @@ public class AccountRepository {
             return ResponseEntity.ok().build();
     }
 
-    private String roundAndFormat(Double balanceInEuro, int i, Locale german) {
+    private double roundAndFormat(double balanceInEuro, int i, Locale german) {
         java.text.NumberFormat nf = java.text.NumberFormat.getInstance(german);
         nf.setMaximumFractionDigits(2);
-        return nf.format(new BigDecimal(balanceInEuro));
+        return Math.round(balanceInEuro*100.0)/100.0;
     }
 
     public void deleteByaNr(Integer aNr) {
@@ -63,11 +64,15 @@ public class AccountRepository {
                 .collect(Collectors.toList());
         return account;
     }
-//    public Optional<AccountResponse> findAccountByKNr(Integer kNr) {
-//        Optional<AccountResponse> account = accounts.stream()
-//                .filter(a -> a.getkNr().equals(kNr)).findAny();
-//        return account;
-//    }
+
+    public double findBalanceByANr(Integer aNr) {
+        Optional<AccountResponse> account = accounts.stream()
+                .filter(c -> c.getaNr().equals(aNr))
+                .findFirst();
+        double currentBalance = (account.get().getBalanceInEuro());
+        return currentBalance;
+    }
+
 
 
 }

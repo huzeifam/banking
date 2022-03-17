@@ -65,6 +65,10 @@ public class BankingService {
         accountRepository.deleteByaNr(aNr);
     }
 
+    public double getBalanceInEuro(Integer aNr) {
+        return accountRepository.findBalanceByANr(aNr);
+    }
+
     // customer
 
     public List<CustomerResponse> findAll() {
@@ -84,6 +88,8 @@ public class BankingService {
     public void deleteBykNr(Integer kNr) {
         customerRepository.deleteBykNr(kNr);
     }
+
+
 
 
 }
