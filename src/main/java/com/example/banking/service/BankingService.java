@@ -97,4 +97,10 @@ public class BankingService {
     public void withdrawAmount(Integer aNr, Double amount) {
         accountRepository.withdrawAmountByANr(aNr, amount);
     }
+
+
+    public void transferAmount(Integer aNr, Integer newANr, Double amount) {
+        accountRepository.transferAmountByANr(aNr, newANr, amount);
+
+    }
 }

@@ -69,7 +69,10 @@ public class AccountController {
         Optional<AccountResponse> account = bankingService.findByANr(aNr);
         if (account.isPresent()) {
             bankingService.depositAmount(aNr, amount);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deposit success.\n\nPrevious balance: "+Math.round((account.get().getBalanceInEuro()-amount)*100.0)/100.0+ "€\nAmount: "+amount+"€ \nCurrent balance: "+Math.round(account.get().getBalanceInEuro()*100.0)/100.0 +"€");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deposit success.\n\n" +
+                    "Previous balance: "+Math.round((account.get().getBalanceInEuro()-amount)*100.0)/100.0+ "€\n" +
+                    "Amount: "+amount+"€ \n" +
+                    "Current balance: "+Math.round(account.get().getBalanceInEuro()*100.0)/100.0 +"€");
         }
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deposit amount failed. Account with account number "+aNr+ " does not exist.");
@@ -86,15 +89,62 @@ public class AccountController {
             if (account.get().getBalanceInEuro()-amount >= 0){
 
             bankingService.withdrawAmount(aNr, amount);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Withdraw success.\n\nPrevious balance: "+Math.round((account.get().getBalanceInEuro()+amount)*100.0)/100.0+ "€\nAmount: "+amount+"€ \nCurrent balance: "+Math.round(account.get().getBalanceInEuro()*100.0)/100.0 +"€");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Withdraw success.\n\n" +
+                    "Previous balance: "+Math.round((account.get().getBalanceInEuro()+amount)*100.0)/100.0+ "€\n" +
+                    "Amount: "+amount+"€ \n" +
+                    "Current balance: "+Math.round(account.get().getBalanceInEuro()*100.0)/100.0 +"€");
         }
             else {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not withdraw.\n\nRequested amount: "+amount +"€\nCurrent balance: "+Math.round(account.get().getBalanceInEuro()*100.0)/100.0+"€ \n\nAmount is bigger than current balance.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not withdraw.\n\n" +
+                        "Requested amount: "+amount +"€\n" +
+                        "Current balance: "+Math.round(account.get().getBalanceInEuro()*100.0)/100.0+"€ \n\n" +
+                        "Amount is bigger than current balance.");
             }
         }
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Withdraw amount failed. Account with account number "+aNr+ " does not exist.");
     }
+
+    @PutMapping("/accounts/{aNr}/transfer/{newANr}/{amount}")
+    public ResponseEntity<String> transferAmount(
+            @PathVariable Integer aNr,
+            @PathVariable Integer newANr,
+            @PathVariable Double amount
+    ) {
+        Optional<AccountResponse> account1 = bankingService.findByANr(aNr);
+        Optional<AccountResponse> account2 = bankingService.findByANr(newANr);
+
+            if (account1.isPresent()) {
+                if (account2.isPresent()) {
+                    if (account1.get().getaNr() != account2.get().getaNr()) {
+                        if (account1.get().getBalanceInEuro() - amount >= 0) {
+                            bankingService.transferAmount(aNr, newANr, amount);
+                            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Transfer success. Transferred amount: " + amount + "€\n\n" +
+                                    "Transferring account with account number \"" + aNr + "\":\n" +
+                                    "Previous balance: " + Math.round((account1.get().getBalanceInEuro() + amount) * 100.0) / 100.0 + "€\n" +
+                                    "Current balance: " + Math.round(account1.get().getBalanceInEuro() * 100.0) / 100.0 + "€\n\n" +
+                                    "Receiving account with account number \"" + newANr + "\":\n" +
+                                    "Previous balance: " + Math.round((account2.get().getBalanceInEuro() - amount) * 100.0) / 100.0 + "€\n" +
+                                    "Current balance: " + Math.round(account2.get().getBalanceInEuro() * 100.0) / 100.0 + "€");
+                        } else
+                            return ResponseEntity.status(HttpStatus.CONFLICT).body("Transfer failed.\n" +
+                                    "Requested amount for transfer: " + amount + "€\n\n" +
+                                    "Current balance of transferring account with account number \"" + aNr + "\": " + Math.round(account1.get().getBalanceInEuro() * 100.0) / 100.0 + "€\n" +
+                                    "Current balance of receiving account with account number \"" + newANr + "\": " + Math.round(account2.get().getBalanceInEuro() * 100.0) / 100.0 + "€\n\n" +
+                                    "Amount is bigger than current balance of transferring account.");
+                    } else
+                        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Transferring account and receiving account are the same!");
+
+                } else
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transfer failed. The receiving account with account number " + newANr + " does not exist.");
+            } else if ( account2.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transfer failed. The transferring account with account number " + aNr + " does not exist.");
+            }else
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transfer failed. Accounts with account numbers \""+aNr+"\" and \""+newANr+"\" don't exist.");
+
+
+    }
+
     @PostMapping("/accounts")
     public ResponseEntity<Object> createAccount(
             @RequestBody AccountCreateRequest arequest

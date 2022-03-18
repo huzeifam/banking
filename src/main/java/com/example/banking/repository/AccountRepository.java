@@ -72,28 +72,46 @@ public class AccountRepository {
         return Math.round(currentBalance*100.0)/100.0;
     }
 
-
-    public double saveBalanceByANr(Integer aNr, Double amount) {
+    
+    public void saveBalanceByANr(Integer aNr, Double amount) {
         Optional<AccountResponse> account = accounts.stream()
                 .filter(c -> c.getaNr().equals(aNr))
                 .findFirst();
         double currentBalance = (account.get().getBalanceInEuro());
         double newBalance = currentBalance +Math.round(amount*100.0)/100.0;
 
-        account.get().setBalanceInEuro(newBalance);
-        return Math.round(newBalance*100.0)/100.0;
+        account.get().setBalanceInEuro(Math.round(newBalance*100.0)/100.0);
+
     }
 
-    public double withdrawAmountByANr(Integer aNr, Double amount) {
+    public void withdrawAmountByANr(Integer aNr, Double amount) {
         Optional<AccountResponse> account = accounts.stream()
                 .filter(c -> c.getaNr().equals(aNr))
                 .findFirst();
-        double currentBalance = (account.get().getBalanceInEuro());
+        double currentBalance = account.get().getBalanceInEuro();
         double newBalance = currentBalance -Math.round(amount*100.0)/100.0;
-        if (newBalance >= 0){
-            account.get().setBalanceInEuro(newBalance);
-            return Math.round(newBalance*100.0)/100.0;
+        if (newBalance >= 0)
+            account.get().setBalanceInEuro(Math.round(newBalance*100.0)/100.0);
+
+    }
+
+    public void transferAmountByANr(Integer aNr, Integer newANr, Double amount) {
+        Optional<AccountResponse> account1 = accounts.stream()
+                .filter(c -> c.getaNr().equals(aNr))
+                .findFirst();
+        Optional<AccountResponse> account2 = accounts.stream()
+                .filter(c -> c.getaNr().equals(newANr))
+                .findFirst();
+        double currentBalance1 = account1.get().getBalanceInEuro();
+        double currentBalance2 = account2.get().getBalanceInEuro();
+
+        double newBalance1 = currentBalance1 - Math.round(amount*100.0)/100.0;
+        double newBalance2 = currentBalance2 + Math.round(amount*100.0)/100.0;
+        if (account1.get().getaNr() != account2.get().getaNr()) {
+            if (newBalance1 >= 0) {
+                account1.get().setBalanceInEuro(Math.round(newBalance1 * 100.0) / 100.0);
+                account2.get().setBalanceInEuro(Math.round(newBalance2 * 100.0) / 100.0);
+            }
         }
-            return 0;
     }
 }

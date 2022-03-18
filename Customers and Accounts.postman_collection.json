@@ -21,27 +21,8 @@
 						"customers",
 						""
 					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE Customer by kNr",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/customers/380780479",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"customers",
-						"380780479"
-					]
-				}
+				},
+				"description": "Display a list with all customers"
 			},
 			"response": []
 		},
@@ -51,7 +32,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/customers/1834057895",
+					"raw": "localhost:8080/api/customers/kNr",
 					"host": [
 						"localhost"
 					],
@@ -59,9 +40,31 @@
 					"path": [
 						"api",
 						"customers",
-						"1834057895"
+						"kNr"
 					]
-				}
+				},
+				"description": "Display a customer by his customer number(kNr)"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Customer by kNr",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/customers/kNr",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"kNr"
+					]
+				},
+				"description": "Delete a customer by his customer number(kNr)\nAll the related accounts (accounts with same kNr) will also be deleted"
 			},
 			"response": []
 		},
@@ -102,7 +105,8 @@
 						"api",
 						"customers"
 					]
-				}
+				},
+				"description": "Create a customer. Customer number (kNr) will be generated automatically"
 			},
 			"response": []
 		},
@@ -121,7 +125,8 @@
 						"api",
 						"accounts"
 					]
-				}
+				},
+				"description": "Display a list with all accounts"
 			},
 			"response": []
 		},
@@ -135,7 +140,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"iban\": \"DE20 4003 8272 2819 9238 22\",\n    \"balanceInEuro\": 70.79,\n    \"startDate\": \"10.03.2022\"\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -143,7 +148,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/2074149342",
+					"raw": "localhost:8080/api/accounts/aNr",
 					"host": [
 						"localhost"
 					],
@@ -151,9 +156,10 @@
 					"path": [
 						"api",
 						"accounts",
-						"2074149342"
+						"aNr"
 					]
-				}
+				},
+				"description": "Display an account by account number(aNr)"
 			},
 			"response": []
 		},
@@ -163,7 +169,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/accounts/customer-accounts/444304541",
+					"raw": "localhost:8080/api/accounts/customer-accounts/kNr",
 					"host": [
 						"localhost"
 					],
@@ -172,9 +178,10 @@
 						"api",
 						"accounts",
 						"customer-accounts",
-						"444304541"
+						"kNr"
 					]
-				}
+				},
+				"description": "Display all accounts of a customer by his customer number(kNr)"
 			},
 			"response": []
 		},
@@ -188,7 +195,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"iban\": \"DE20 4003 8272 2819 9238 22\",\n    \"balanceInEuro\": 70.79,\n    \"startDate\": \"10.03.2022\"\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -196,7 +203,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/675415845/balance",
+					"raw": "localhost:8080/api/accounts/aNr/balance",
 					"host": [
 						"localhost"
 					],
@@ -204,10 +211,44 @@
 					"path": [
 						"api",
 						"accounts",
-						"675415845",
+						"aNr",
 						"balance"
 					]
-				}
+				},
+				"description": "Display the current balance of an account by account number(aNr)"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Accountbalance / transfer amount",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/accounts/aNr/transfer/newANr/amount",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"aNr",
+						"transfer",
+						"newANr",
+						"amount"
+					]
+				},
+				"description": "Change balance of two accounts by transferring an amount from the first account by account number(aNr) to the second account by account number(newANr)"
 			},
 			"response": []
 		},
@@ -218,7 +259,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"iban\": \"DE20 4003 8272 2819 9238 22\",\n    \"balanceInEuro\": 70.79,\n    \"startDate\": \"10.03.2022\"\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -226,7 +267,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/1225255860/deposit/20",
+					"raw": "localhost:8080/api/accounts/aNr/deposit/amount",
 					"host": [
 						"localhost"
 					],
@@ -234,11 +275,12 @@
 					"path": [
 						"api",
 						"accounts",
-						"1225255860",
+						"aNr",
 						"deposit",
-						"20"
+						"amount"
 					]
-				}
+				},
+				"description": "Deposit an amount into an account by account number (aNr)"
 			},
 			"response": []
 		},
@@ -249,7 +291,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"iban\": \"DE20 4003 8272 2819 9238 22\",\n    \"balanceInEuro\": 70.79,\n    \"startDate\": \"10.03.2022\"\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -257,7 +299,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/675415845/withdraw/1",
+					"raw": "localhost:8080/api/accounts/aNr/withdraw/amount",
 					"host": [
 						"localhost"
 					],
@@ -265,11 +307,12 @@
 					"path": [
 						"api",
 						"accounts",
-						"675415845",
+						"aNr",
 						"withdraw",
-						"1"
+						"amount"
 					]
-				}
+				},
+				"description": "Withdraw an amount from account by account number(aNr)"
 			},
 			"response": []
 		},
@@ -280,7 +323,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"iban\": \"DE20 4003 8272 2819 9238 22\",\n    \"balanceInEuro\": 70.79,\n    \"startDate\": \"10.03.2022\"\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -288,7 +331,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/256103831",
+					"raw": "localhost:8080/api/accounts/aNr",
 					"host": [
 						"localhost"
 					],
@@ -296,9 +339,10 @@
 					"path": [
 						"api",
 						"accounts",
-						"256103831"
+						"aNr"
 					]
-				}
+				},
+				"description": "Delete an account by account number(aNr)"
 			},
 			"response": []
 		},
@@ -326,7 +370,8 @@
 						"api",
 						"accounts"
 					]
-				}
+				},
+				"description": "Create an account for customer with customer number(kNr)\nAccount number(aNr) will be generated automatically"
 			},
 			"response": []
 		}
