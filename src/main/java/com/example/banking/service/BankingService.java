@@ -41,11 +41,11 @@ public class BankingService {
     }
 
 
-    public ResponseEntity<Object> createAccount(AccountCreateRequest arequest) {
-        Optional<CustomerResponse> customer = customerRepository.findByKNr(arequest.getkNr());
+    public ResponseEntity<Object> createAccount(AccountCreateRequest aRequest) {
+        Optional<CustomerResponse> customer = customerRepository.findByKNr(aRequest.getkNr());
 
         if (customer.isPresent()) {
-            accountRepository.save(arequest);
+            accountRepository.save(aRequest);
             return ResponseEntity.ok().build();
         }
         else{

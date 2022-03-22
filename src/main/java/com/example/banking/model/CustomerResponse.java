@@ -1,6 +1,6 @@
 package com.example.banking.model;
 
-import java.util.List;
+import java.time.LocalDate;
 
 
 public class CustomerResponse {
@@ -61,4 +61,34 @@ public class CustomerResponse {
         return ort;
     }
 
+
+
+
+    public void setPassNr(String passNr) {
+        this.passNr = passNr;
+    }
+
+    public void setGbDate(String gbDate) {
+        this.gbDate = gbDate;
+    }
+
+    public void setvName(String vName) {
+        this.vName = vName;
+    }
+
+    public void setnName(String nName) {
+        this.nName = nName;
+    }
+
+    public void setStraße(String straße) {
+        this.straße = straße;
+    }
+
+    public void sethNr(String hNr) {
+        this.hNr = hNr;
+    }
+
+    public void setOrt(String ort) {
+        this.ort = ort;
+    }
 }

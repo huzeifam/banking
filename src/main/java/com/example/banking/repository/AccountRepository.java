@@ -2,6 +2,9 @@ package com.example.banking.repository;
 
 import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.AccountResponse;
+import org.iban4j.CountryCode;
+import org.iban4j.Iban;
+import org.iban4j.IbanFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +22,17 @@ public class AccountRepository {
         return accounts;
     }
 
-    public ResponseEntity<Object> save(AccountCreateRequest arequest) {
+    public ResponseEntity<Object> save(AccountCreateRequest aRequest) {
+        Iban iban = new Iban.Builder()
+                .countryCode(CountryCode.DE)
+                        .buildRandom();
 
        accounts.add(
                new AccountResponse(
-                       arequest.getkNr(),
+                       aRequest.getkNr(),
                        UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
-                       arequest.getIban(),
-                       arequest.getBalanceInEuro(),
+                       (iban.getCountryCode()+ iban.getCheckDigit()+iban.getBban()).replaceAll("(\\w\\w\\w\\w)(\\w\\w\\w\\w)(\\w\\w\\w\\w)(\\w\\w\\w\\w)(\\w\\w\\w\\w)(\\w\\w)","$1 $2 $3 $4 $5 $6"),
+                       0.0,
                        LocalDate.now())
                 );
             return ResponseEntity.ok().build();
