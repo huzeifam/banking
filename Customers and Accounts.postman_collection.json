@@ -48,6 +48,36 @@
 			"response": []
 		},
 		{
+			"name": "Update Customer by kNr",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"passNr\": \"1234\",\n        \"gbDate\": \"20.12.1985\",\n        \"vName\": \"Max\",\n        \"nName\": \"Mustermann\",\n        \"straße\": \"Herriotstraße\",\n        \"hNr\": \"1\",\n        \"ort\":\"Frankfurt am Main\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/customers/kNr",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"kNr"
+					]
+				},
+				"description": "Display a customer by his customer number(kNr)"
+			},
+			"response": []
+		},
+		{
 			"name": "DELETE Customer by kNr",
 			"request": {
 				"method": "DELETE",
@@ -353,7 +383,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"kNr\": 492455242,\n    \"iban\": \"DE20 4003 8272 2819 9238 22\",\n    \"balanceInEuro\": 94.23526\n    \n}",
+					"raw": "{\n    \"kNr\": 957589145\n}",
 					"options": {
 						"raw": {
 							"language": "json"
