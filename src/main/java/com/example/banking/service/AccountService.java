@@ -41,7 +41,7 @@ public class AccountService {
 
 
     public ResponseEntity<Object> createAccount(AccountCreateRequest aRequest) {
-        Optional<CustomerResponse> customer = customerRepository.findByKNr(aRequest.getkNr());
+        Optional<CustomerResponse> customer = customerRepository.findById(aRequest.getkNr());
 
         if (customer.isPresent()) {
             accountRepository.save(aRequest);

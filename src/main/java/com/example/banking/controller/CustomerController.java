@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 @RestController
 public class CustomerController {
@@ -47,50 +49,71 @@ public class CustomerController {
 
 
     @PutMapping("/customers/{kNr}")
-    public ResponseEntity<Object> updateCustomer(
+    public CustomerResponse updateCustomer(
             @PathVariable Integer kNr,
             @RequestBody CustomerCreateRequest request
-    ) {
-        Optional<CustomerResponse> customer = customerService.findByKNr(kNr);
-        if (customer.isPresent()) {
+    )  {
+
+        CustomerResponse customer = customerService.findByKNr(kNr).orElseThrow();
 
 
-            if (request.getPassNr() != null)
-                customer.get().setPassNr(request.getPassNr());
+        if (request.getPassNr() != null)
+            customer.setPassNr(request.getPassNr());
 
-            if (request.getGbDate() != null)
-                customer.get().setGbDate(request.getGbDate());
+        if (request.getGbDate() != null)
+            customer.setGbDate(request.getGbDate());
 
-            if (request.getvName() != null)
-                customer.get().setvName(request.getvName());
+        if (request.getvName() != null)
+            customer.setvName(request.getvName());
 
-            if (request.getnName() != null)
-                customer.get().setnName(request.getnName());
+        if (request.getnName() != null)
+            customer.setnName(request.getnName());
 
-            if (request.getStraße() != null)
-                customer.get().setStraße(request.getStraße());
+        if (request.getStraße() != null)
+            customer.setStraße(request.getStraße());
 
-            if (request.gethNr() != null)
-                customer.get().sethNr(request.gethNr());
+        if (request.gethNr() != null)
+            customer.sethNr(request.gethNr());
 
-            if (request.getOrt() != null)
-                customer.get().setOrt(request.getOrt());
+        if (request.getOrt() != null)
+            customer.setOrt(request.getOrt());
 
-            return ResponseEntity.ok(customer.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + kNr + " not found.");
-        }
+    CustomerResponse savedCustomer = customerService.save(customer);
+        return mapToResponse(savedCustomer);
     }
 
 
     @PostMapping("/customers")
-    public ResponseEntity<Object> createCustomer(
+    public CustomerResponse createCustomer(
             @RequestBody CustomerCreateRequest request
 
     ) {
+        CustomerResponse response = new CustomerResponse(
+                UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
+                request.getPassNr(),
+                request.getGbDate(),
+                request.getvName(),
+                request.getnName(),
+                request.getStraße(),
+                request.gethNr(),
+                request.getOrt()
+        );
+        CustomerResponse savedCustomer = customerService.save(response);
 
-        return customerService.save(
-                request
+
+        return mapToResponse(savedCustomer);
+    }
+
+    private CustomerResponse mapToResponse(CustomerResponse savedCustomer) {
+        return new CustomerResponse(
+                savedCustomer.getkNr(),
+                savedCustomer.getPassNr(),
+                savedCustomer.getGbDate(),
+                savedCustomer.getvName(),
+                savedCustomer.getnName(),
+                savedCustomer.getStraße(),
+                savedCustomer.gethNr(),
+                savedCustomer.getOrt()
         );
     }
 

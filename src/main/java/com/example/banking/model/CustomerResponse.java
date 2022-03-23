@@ -19,6 +19,10 @@ public class CustomerResponse {
     private String hNr;
     private String ort;
 
+    public CustomerResponse(){
+
+    }
+
     public CustomerResponse(Integer kNr, String passNr,
                             String gbDate, String vName,
                             String nName, String straße,
