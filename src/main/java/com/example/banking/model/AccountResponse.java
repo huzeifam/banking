@@ -2,8 +2,12 @@ package com.example.banking.model;
 
 import org.iban4j.Iban;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
+//@Entity
+//@Table(name = "account")
 public class AccountResponse {
 
     private Integer kNr;

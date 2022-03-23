@@ -1,10 +1,15 @@
 package com.example.banking.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
-
+@Entity
+@Table(name = "customer")
 public class CustomerResponse {
 
+    @Id
     private Integer kNr;
     private String passNr;
     private String gbDate;

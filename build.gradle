@@ -14,8 +14,10 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation group: 'org.iban4j', name: 'iban4j', version: '3.2.3-RELEASE'
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
 
 }
 
