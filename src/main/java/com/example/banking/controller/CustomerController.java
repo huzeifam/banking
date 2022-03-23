@@ -4,7 +4,8 @@ package com.example.banking.controller;
 import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
-import com.example.banking.service.BankingService;
+import com.example.banking.service.AccountService;
+import com.example.banking.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,24 +17,28 @@ import java.util.Optional;
 public class CustomerController {
 
 
-    private final BankingService bankingService;
+    private final AccountService accountService;
+    private final CustomerService customerService;
 
 
-    public CustomerController(BankingService bankingService) {
+    public CustomerController(AccountService accountService, CustomerService customerService) {
 
-        this.bankingService = bankingService;
+        this.accountService = accountService;
+        this.customerService = customerService;
     }
 
     @GetMapping("/customers")
     public List<CustomerResponse> getAllCustomers() {
-        return bankingService.findAll();
+        return customerService.findAll();
     }
+
+
 
     @GetMapping("/customers/{kNr}")
     public ResponseEntity<Object> getCustomerByKNr(
             @PathVariable Integer kNr
     ) {
-        Optional<CustomerResponse> customer = bankingService.findByKNr(kNr);
+        Optional<CustomerResponse> customer = customerService.findByKNr(kNr);
         if (customer.isPresent())
             return ResponseEntity.ok(customer.get());
         else
@@ -46,7 +51,7 @@ public class CustomerController {
             @PathVariable Integer kNr,
             @RequestBody CustomerCreateRequest request
     ) {
-        Optional<CustomerResponse> customer = bankingService.findByKNr(kNr);
+        Optional<CustomerResponse> customer = customerService.findByKNr(kNr);
         if (customer.isPresent()) {
 
 
@@ -84,7 +89,7 @@ public class CustomerController {
 
     ) {
 
-        return bankingService.save(
+        return customerService.save(
                 request
         );
     }
@@ -95,12 +100,12 @@ public class CustomerController {
             @PathVariable Integer kNr,
             AccountCreateRequest aRequest
     ) {
-        Optional<CustomerResponse> customer = bankingService.findByKNr(kNr);
+        Optional<CustomerResponse> customer = customerService.findByKNr(kNr);
         {
-            Optional<CustomerResponse> account = bankingService.findByKNr(aRequest.getkNr());
+            Optional<CustomerResponse> account = customerService.findByKNr(aRequest.getkNr());
             if (customer.isPresent()) {
-                bankingService.deleteBykNr(kNr);
-                bankingService.deleteAccountByKNr(aRequest.getkNr());
+                customerService.deleteBykNr(kNr);
+                accountService.deleteAccountByKNr(aRequest.getkNr());
 
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + kNr + " and related accounts deleted.");
             } else

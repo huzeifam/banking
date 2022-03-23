@@ -2,7 +2,7 @@ package com.example.banking.controller;
 
 import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.AccountResponse;
-import com.example.banking.service.BankingService;
+import com.example.banking.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,25 +13,25 @@ import java.util.Optional;
 @RestController
 public class AccountController {
 
-    private final BankingService bankingService;
+    private final AccountService accountService;
 
 
-    public AccountController(BankingService bankingService) {
-        this.bankingService = bankingService;
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
 
     }
 
     @GetMapping("/accounts")
     public List<AccountResponse> getAllAccounts() {
 
-        return bankingService.findAllAccounts();
+        return accountService.findAllAccounts();
     }
 
     @GetMapping("/accounts/{aNr}")
     public ResponseEntity<Object> getAccountByANr(
             @PathVariable Integer aNr
     ) {
-        Optional<AccountResponse> account = bankingService.findByANr(aNr);
+        Optional<AccountResponse> account = accountService.findByANr(aNr);
         if (account.isPresent())
             return ResponseEntity.ok(account.get());
         else
@@ -43,11 +43,11 @@ public class AccountController {
             @PathVariable Integer kNr
     ) {
         String empty = "Either customer with customer number " + kNr + " does not exist or the customer has no accounts.";
-        List<AccountResponse> account = bankingService.findAccountByKNr(kNr);
+        List<AccountResponse> account = accountService.findAccountByKNr(kNr);
         if (account.isEmpty())
             return new String[]{empty};
         else
-            return bankingService.findAccountByKNr(kNr).toArray();
+            return accountService.findAccountByKNr(kNr).toArray();
 
     }
 
@@ -55,9 +55,9 @@ public class AccountController {
     public ResponseEntity<Double> getBalanceInEuro(
             @PathVariable Integer aNr
     ) {
-        Optional<AccountResponse> account = bankingService.findByANr(aNr);
+        Optional<AccountResponse> account = accountService.findByANr(aNr);
         if (account.isPresent())
-            return ResponseEntity.status(HttpStatus.OK).body(bankingService.getBalanceInEuro(aNr));
+            return ResponseEntity.status(HttpStatus.OK).body(accountService.getBalanceInEuro(aNr));
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
@@ -68,9 +68,9 @@ public class AccountController {
             @PathVariable Integer aNr,
             @PathVariable Double amount
     ) {
-        Optional<AccountResponse> account = bankingService.findByANr(aNr);
+        Optional<AccountResponse> account = accountService.findByANr(aNr);
         if (account.isPresent()) {
-            bankingService.depositAmount(aNr, amount);
+            accountService.depositAmount(aNr, amount);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deposit success.\n\n" +
                     "Previous balance: " + Math.round((account.get().getBalanceInEuro() - amount) * 100.0) / 100.0 + "€\n" +
                     "Amount: " + amount + "€ \n" +
@@ -85,11 +85,11 @@ public class AccountController {
             @PathVariable Integer aNr,
             @PathVariable Double amount
     ) {
-        Optional<AccountResponse> account = bankingService.findByANr(aNr);
+        Optional<AccountResponse> account = accountService.findByANr(aNr);
         if (account.isPresent()) {
             if (account.get().getBalanceInEuro() - amount >= 0) {
 
-                bankingService.withdrawAmount(aNr, amount);
+                accountService.withdrawAmount(aNr, amount);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Withdraw success.\n\n" +
                         "Previous balance: " + Math.round((account.get().getBalanceInEuro() + amount) * 100.0) / 100.0 + "€\n" +
                         "Amount: " + amount + "€ \n" +
@@ -110,14 +110,14 @@ public class AccountController {
             @PathVariable Integer newANr,
             @PathVariable Double amount
     ) {
-        Optional<AccountResponse> account1 = bankingService.findByANr(aNr);
-        Optional<AccountResponse> account2 = bankingService.findByANr(newANr);
+        Optional<AccountResponse> account1 = accountService.findByANr(aNr);
+        Optional<AccountResponse> account2 = accountService.findByANr(newANr);
 
         if (account1.isPresent()) {
             if (account2.isPresent()) {
                 if (account1.get().getaNr() != account2.get().getaNr()) {
                     if (account1.get().getBalanceInEuro() - amount >= 0) {
-                        bankingService.transferAmount(aNr, newANr, amount);
+                        accountService.transferAmount(aNr, newANr, amount);
                         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Transfer success. Transferred amount: " + amount + "€\n\n" +
                                 "Transferring account with account number \"" + aNr + "\":\n" +
                                 "Previous balance: " + Math.round((account1.get().getBalanceInEuro() + amount) * 100.0) / 100.0 + "€\n" +
@@ -148,7 +148,7 @@ public class AccountController {
     public ResponseEntity<Object> createAccount(
             @RequestBody AccountCreateRequest aRequest
     ) {
-        return bankingService.createAccount(
+        return accountService.createAccount(
                 aRequest
         );
     }
@@ -158,10 +158,10 @@ public class AccountController {
             @PathVariable Integer aNr
 
     ) {
-        Optional<AccountResponse> account = bankingService.findByANr(aNr);
+        Optional<AccountResponse> account = accountService.findByANr(aNr);
 
         if (account.isPresent()) {
-            bankingService.deleteByaNr(aNr);
+            accountService.deleteByaNr(aNr);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Account with account number " + aNr + " deleted.");
 
         } else

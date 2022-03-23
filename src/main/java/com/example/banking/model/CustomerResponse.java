@@ -1,12 +1,12 @@
 package com.example.banking.model;
 
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "customers")
 public class CustomerResponse {
 
     @Id
