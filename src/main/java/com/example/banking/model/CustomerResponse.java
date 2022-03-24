@@ -1,9 +1,7 @@
 package com.example.banking.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "customers")
@@ -19,11 +17,16 @@ public class CustomerResponse {
     private String hNr;
     private String ort;
 
+   /* @OneToMany(mappedBy = "customers", cascade = {
+            CascadeType.ALL
+    })
+    AccountResponse accountResponse;*/
+
     public CustomerResponse(){
 
     }
 
-    public CustomerResponse(Integer kNr, String passNr,
+    public CustomerResponse( Integer kNr,String passNr,
                             String gbDate, String vName,
                             String nName, String straße,
                             String hNr, String ort) {
