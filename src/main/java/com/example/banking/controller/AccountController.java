@@ -3,12 +3,16 @@ package com.example.banking.controller;
 import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.AccountResponse;
 import com.example.banking.service.AccountService;
+import org.iban4j.CountryCode;
+import org.iban4j.Iban;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class AccountController {
@@ -72,9 +76,9 @@ public class AccountController {
         if (account.isPresent()) {
             accountService.depositAmount(aNr, amount);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deposit success.\n\n" +
-                    "Previous balance: " + Math.round((account.get().getBalanceInEuro() - amount) * 100.0) / 100.0 + "€\n" +
+                    "Previous balance: " + Math.round(account.get().getBalanceInEuro() * 100.0) / 100.0 + "€\n" +
                     "Amount: " + amount + "€ \n" +
-                    "Current balance: " + Math.round(account.get().getBalanceInEuro() * 100.0) / 100.0 + "€");
+                    "Current balance: " + Math.round((account.get().getBalanceInEuro()+amount) * 100.0) / 100.0 + "€");
         } else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deposit amount failed. Account with account number " + aNr + " does not exist.");
 
@@ -91,9 +95,9 @@ public class AccountController {
 
                 accountService.withdrawAmount(aNr, amount);
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Withdraw success.\n\n" +
-                        "Previous balance: " + Math.round((account.get().getBalanceInEuro() + amount) * 100.0) / 100.0 + "€\n" +
+                        "Previous balance: " + Math.round((account.get().getBalanceInEuro()) * 100.0) / 100.0 + "€\n" +
                         "Amount: " + amount + "€ \n" +
-                        "Current balance: " + Math.round(account.get().getBalanceInEuro() * 100.0) / 100.0 + "€");
+                        "Current balance: " + Math.round((account.get().getBalanceInEuro()-amount) * 100.0) / 100.0 + "€");
             } else {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not withdraw.\n\n" +
                         "Requested amount: " + amount + "€\n" +
@@ -120,11 +124,11 @@ public class AccountController {
                         accountService.transferAmount(aNr, newANr, amount);
                         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Transfer success. Transferred amount: " + amount + "€\n\n" +
                                 "Transferring account with account number \"" + aNr + "\":\n" +
-                                "Previous balance: " + Math.round((account1.get().getBalanceInEuro() + amount) * 100.0) / 100.0 + "€\n" +
-                                "Current balance: " + Math.round(account1.get().getBalanceInEuro() * 100.0) / 100.0 + "€\n\n" +
+                                "Previous balance: " + Math.round(account1.get().getBalanceInEuro() * 100.0) / 100.0 + "€\n" +
+                                "Current balance: " + Math.round((account1.get().getBalanceInEuro()-amount) * 100.0) / 100.0 + "€\n\n" +
                                 "Receiving account with account number \"" + newANr + "\":\n" +
-                                "Previous balance: " + Math.round((account2.get().getBalanceInEuro() - amount) * 100.0) / 100.0 + "€\n" +
-                                "Current balance: " + Math.round(account2.get().getBalanceInEuro() * 100.0) / 100.0 + "€");
+                                "Previous balance: " + Math.round(account2.get().getBalanceInEuro()  * 100.0) / 100.0 + "€\n" +
+                                "Current balance: " + Math.round((account2.get().getBalanceInEuro()+ amount) * 100.0) / 100.0 + "€");
                     } else
                         return ResponseEntity.status(HttpStatus.CONFLICT).body("Transfer failed.\n" +
                                 "Requested amount for transfer: " + amount + "€\n\n" +
@@ -145,12 +149,23 @@ public class AccountController {
     }
 
     @PostMapping("/accounts")
-    public ResponseEntity<Object> createAccount(
+    public AccountResponse createAccount(
             @RequestBody AccountCreateRequest aRequest
     ) {
-        return accountService.createAccount(
-                aRequest
+        Iban iban = new Iban.Builder()
+                .countryCode(CountryCode.DE)
+                .buildRandom();
+
+
+        AccountResponse acct = new AccountResponse(
+                aRequest.getkNr(),
+                UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
+                (iban.getCountryCode()+ iban.getCheckDigit()+iban.getBban()).replaceAll("(\\w\\w\\w\\w)(\\w\\w\\w\\w)(\\w\\w\\w\\w)(\\w\\w\\w\\w)(\\w\\w\\w\\w)(\\w\\w)","$1 $2 $3 $4 $5 $6"),
+                0.0,
+                LocalDate.now()
         );
+        return accountService.createAccount(acct);
+
     }
 
     @DeleteMapping("/accounts/{aNr}")

@@ -1,18 +1,15 @@
 package com.example.banking.repository;
 
-import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.AccountResponse;
-import org.iban4j.CountryCode;
-import org.iban4j.Iban;
-import org.iban4j.IbanFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Service
+/*@Service
 public class AccountRepository {
 
     List<AccountResponse> accounts = new ArrayList<>();
@@ -120,4 +117,35 @@ public class AccountRepository {
             }
         }
     }
+}*/
+
+
+public interface AccountRepository extends CrudRepository<AccountResponse, Integer>, JpaRepository<AccountResponse, Integer> {
+
+
+
+    @Query(value = "DELETE FROM AccountResponse WHERE kNr = :kNr",nativeQuery = true)
+    void deleteAccountOfCustomerByKNr(Integer kNr);
+
+    @Query("select a from AccountResponse a where a.kNr = ?1")
+    List<AccountResponse> findAccountByKNr(Integer kNr);
+
+
+
+    @Query("select balanceInEuro from AccountResponse where aNr = ?1")
+    public double findBalanceByANr(Integer aNr);
+
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("update AccountResponse set balanceInEuro = balanceInEuro+?2 where aNr=?1")
+    public void saveBalanceByANr(Integer aNr, Double amount);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("update AccountResponse set balanceInEuro = balanceInEuro-?2 where aNr=?1")
+    public void withdrawAmountByANr(Integer aNr, Double amount);
+
+
+
 }

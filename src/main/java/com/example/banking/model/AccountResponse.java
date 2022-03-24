@@ -2,19 +2,25 @@ package com.example.banking.model;
 
 import org.iban4j.Iban;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
-//@Entity
-//@Table(name = "account")
+@Entity
+@Table(name = "accounts")
 public class AccountResponse {
 
-    private Integer kNr;
+    @Id
     private Integer aNr;
+    private Integer kNr;
     private String iban;
     private Double balanceInEuro;
     private LocalDate startDate;
+
+
+
+    public AccountResponse(){
+
+    }
 
     public AccountResponse(Integer kNr, Integer aNr, String iban,
                            Double balanceInEuro, LocalDate startDate) {

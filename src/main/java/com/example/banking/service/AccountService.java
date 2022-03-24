@@ -1,14 +1,12 @@
 package com.example.banking.service;
 
-import com.example.banking.model.AccountCreateRequest;
 import com.example.banking.model.AccountResponse;
 import com.example.banking.model.CustomerResponse;
 import com.example.banking.repository.AccountRepository;
 import com.example.banking.repository.CustomerRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,51 +22,47 @@ public class AccountService {
     }
 
 
-
     public List<AccountResponse> findAllAccounts() {
         return accountRepository.findAll();
     }
 
     public Optional<AccountResponse> findByANr(Integer aNr) {
 
-        return accountRepository.findByANr(aNr);
+        return accountRepository.findById(aNr);
     }
 
     public List<AccountResponse> findAccountByKNr(Integer kNr) {
 
-        return accountRepository.FindAccountByKNr(kNr);
+        return accountRepository.findAccountByKNr(kNr);
     }
 
 
-    public ResponseEntity<Object> createAccount(AccountCreateRequest aRequest) {
-        Optional<CustomerResponse> customer = customerRepository.findById(aRequest.getkNr());
+    public AccountResponse createAccount(AccountResponse aNr) {
+        Optional<CustomerResponse> customer = customerRepository.findById(aNr.getkNr());
 
         if (customer.isPresent()) {
-            accountRepository.save(aRequest);
-            return ResponseEntity.ok().build();
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not create account. Customer does not exist.");
+            return accountRepository.save(aNr);
+
+        } else {
+            return null;
         }
 
     }
 
 
-    public void deleteAccountByKNr(Integer kNr){
+    public void deleteAccountByKNr(Integer kNr) {
 
-        accountRepository.deleteAccountByKNr(kNr);
+        accountRepository.deleteAccountOfCustomerByKNr(kNr);
     }
 
     public void deleteByaNr(Integer aNr) {
 
-        accountRepository.deleteByaNr(aNr);
+        accountRepository.deleteById(aNr);
     }
 
     public double getBalanceInEuro(Integer aNr) {
         return accountRepository.findBalanceByANr(aNr);
     }
-
-
 
 
     public void depositAmount(Integer aNr, Double amount) {
@@ -81,7 +75,8 @@ public class AccountService {
 
 
     public void transferAmount(Integer aNr, Integer newANr, Double amount) {
-        accountRepository.transferAmountByANr(aNr, newANr, amount);
+        accountRepository.withdrawAmountByANr(aNr, amount);
+        accountRepository.saveBalanceByANr(newANr, amount);
 
     }
 }
