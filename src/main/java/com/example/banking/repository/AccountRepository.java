@@ -127,8 +127,8 @@ public interface AccountRepository extends CrudRepository<AccountResponse, Integ
 
     @Transactional
     @Modifying
-    @Query(value = "DELETE FROM AccountResponse a WHERE a.kNr = :kNr",nativeQuery = true)
-    void deleteAccountByKNr(@Param("kNr")Integer kNr);
+    @Query("DELETE FROM AccountResponse a WHERE a.kNr = ?1")
+    void deleteAccountByKNr(Integer kNr);
 
 
 

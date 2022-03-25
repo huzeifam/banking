@@ -18,8 +18,8 @@ public class CustomerResponse {
     private String hNr;
     private String ort;
 
-    @OneToMany(mappedBy = "kNr", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AccountResponse> accountResponse;
+//    @OneToMany(mappedBy = "kNr", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<AccountResponse> accountResponse;
 
     public CustomerResponse(){
 
