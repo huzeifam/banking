@@ -1,18 +1,16 @@
 package com.example.banking.model;
 
-import org.iban4j.Iban;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class AccountCreateRequest {
 
     private Integer kNr;
     private String iban;
     private Double balanceInEuro;
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     public AccountCreateRequest(Integer kNr, String iban,
-                                Double balanceInEuro, LocalDate startDate) {
+                                Double balanceInEuro, LocalDateTime startDate) {
         this.kNr = kNr;
         this.iban = iban;
         this.balanceInEuro = balanceInEuro;
@@ -24,7 +22,7 @@ public class AccountCreateRequest {
 
     public Double getBalanceInEuro() { return balanceInEuro; }
 
-    public LocalDate getStartDate() { return startDate; }
+    public LocalDateTime getStartDate() { return startDate; }
 
 
 }
