@@ -73,7 +73,7 @@
 						"kNr"
 					]
 				},
-				"description": "Display a customer by his customer number(kNr)"
+				"description": "Update a customer by his customer number(kNr)\nChange everything except for kNr"
 			},
 			"response": []
 		},
@@ -401,7 +401,7 @@
 						"accounts"
 					]
 				},
-				"description": "Create an account for customer with customer number(kNr)\nAccount number(aNr) will be generated automatically"
+				"description": "Create an account for customer with customer number(kNr)\nAccount number(aNr), Iban and start-date will be generated automatically. Balance starts with 0.0"
 			},
 			"response": []
 		}
