@@ -2,6 +2,7 @@ package com.example.banking.model;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
@@ -17,10 +18,8 @@ public class CustomerResponse {
     private String hNr;
     private String ort;
 
-   /* @OneToMany(mappedBy = "customers", cascade = {
-            CascadeType.ALL
-    })
-    AccountResponse accountResponse;*/
+    @OneToMany(mappedBy = "kNr", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountResponse> accountResponse;
 
     public CustomerResponse(){
 

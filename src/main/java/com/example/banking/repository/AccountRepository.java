@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -119,13 +121,16 @@ public class AccountRepository {
     }
 }*/
 
-
+@Repository
 public interface AccountRepository extends CrudRepository<AccountResponse, Integer>, JpaRepository<AccountResponse, Integer> {
 
 
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM AccountResponse a WHERE a.kNr = :kNr",nativeQuery = true)
+    void deleteAccountByKNr(@Param("kNr")Integer kNr);
 
-    @Query(value = "DELETE FROM AccountResponse WHERE kNr = :kNr",nativeQuery = true)
-    void deleteAccountOfCustomerByKNr(Integer kNr);
+
 
     @Query("select a from AccountResponse a where a.kNr = ?1")
     List<AccountResponse> findAccountByKNr(Integer kNr);

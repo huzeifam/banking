@@ -17,6 +17,10 @@ public class AccountResponse {
     private LocalDate startDate;
 
 
+    @ManyToOne
+    private CustomerResponse customerResponse;
+
+
 
     public AccountResponse(){
 

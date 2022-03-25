@@ -52,7 +52,8 @@ public class AccountService {
 
     public void deleteAccountByKNr(Integer kNr) {
 
-        accountRepository.deleteAccountOfCustomerByKNr(kNr);
+        accountRepository.deleteAccountByKNr(kNr);
+
     }
 
     public void deleteByaNr(Integer aNr) {
