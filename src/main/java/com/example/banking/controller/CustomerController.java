@@ -2,6 +2,7 @@ package com.example.banking.controller;
 
 
 import com.example.banking.model.AccountCreateRequest;
+import com.example.banking.model.AccountResponse;
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import com.example.banking.service.AccountService;
@@ -36,25 +37,25 @@ public class CustomerController {
 
 
 
-    @GetMapping("/customers/{kNr}")
+    @GetMapping("/customers/{customerNo}")
     public ResponseEntity<Object> getCustomerByKNr(
-            @PathVariable Integer kNr
+            @PathVariable Integer customerNo
     ) {
-        Optional<CustomerResponse> customer = customerService.findByKNr(kNr);
+        Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
         if (customer.isPresent())
             return ResponseEntity.ok(customer.get());
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + kNr + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
     }
 
 
-    @PutMapping("/customers/{kNr}")
+    @PutMapping("/customers/{customerNo}")
     public CustomerResponse updateCustomer(
-            @PathVariable Integer kNr,
+            @PathVariable Integer customerNo,
             @RequestBody CustomerCreateRequest request
     )  {
 
-        CustomerResponse customer = customerService.findByKNr(kNr).orElseThrow();
+        CustomerResponse customer = customerService.findByCustomerNo(customerNo).orElseThrow();
 
 
         if (request.getPassNr() != null)
@@ -63,17 +64,17 @@ public class CustomerController {
         if (request.getGbDate() != null)
             customer.setGbDate(request.getGbDate());
 
-        if (request.getvName() != null)
-            customer.setvName(request.getvName());
+        if (request.getFirstName() != null)
+            customer.setFirstName(request.getFirstName());
 
-        if (request.getnName() != null)
-            customer.setnName(request.getnName());
+        if (request.getLastName() != null)
+            customer.setLastName(request.getLastName());
 
-        if (request.getStraße() != null)
-            customer.setStraße(request.getStraße());
+        if (request.getStreet() != null)
+            customer.setStreet(request.getStreet());
 
-        if (request.gethNr() != null)
-            customer.sethNr(request.gethNr());
+        if (request.getStreetNo() != null)
+            customer.setStreetNo(request.getStreetNo());
 
         if (request.getOrt() != null)
             customer.setOrt(request.getOrt());
@@ -92,10 +93,10 @@ public class CustomerController {
                 UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
                 request.getPassNr(),
                 request.getGbDate(),
-                request.getvName(),
-                request.getnName(),
-                request.getStraße(),
-                request.gethNr(),
+                request.getFirstName(),
+                request.getLastName(),
+                request.getStreet(),
+                request.getStreetNo(),
                 request.getOrt()
 
 
@@ -109,33 +110,33 @@ public class CustomerController {
 
     private CustomerResponse mapToResponse(CustomerResponse savedCustomer) {
         return new CustomerResponse(
-                savedCustomer.getkNr(),
+                savedCustomer.getCustomerNo(),
                 savedCustomer.getPassNr(),
                 savedCustomer.getGbDate(),
-                savedCustomer.getvName(),
-                savedCustomer.getnName(),
-                savedCustomer.getStraße(),
-                savedCustomer.gethNr(),
+                savedCustomer.getFirstName(),
+                savedCustomer.getLastName(),
+                savedCustomer.getStreet(),
+                savedCustomer.getStreetNo(),
                 savedCustomer.getOrt()
         );
     }
 
 
-    @DeleteMapping("/customers/{kNr}")
+    @DeleteMapping("/customers/{customerNo}")
     public ResponseEntity deleteCustomer(
-            @PathVariable Integer kNr,
-            AccountCreateRequest aRequest
-    ) {
-        Optional<CustomerResponse> customer = customerService.findByKNr(kNr);
-        {
-            Optional<CustomerResponse> account = customerService.findByKNr(aRequest.getkNr());
-            if (customer.isPresent()) {
-                customerService.deleteBykNr(kNr);
-                accountService.deleteAccountByKNr(aRequest.getkNr());
+            @PathVariable Integer customerNo
 
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + kNr + " and related accounts deleted.");
+    ) {
+        Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
+        {
+
+            if (customer.isPresent()) {
+                customerService.deleteByCustomerNo(customerNo);
+                accountService.deleteAccountByCustomerNo(customerNo);
+
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
             } else
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer with customer number " + kNr + " does not exist.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer with customer number " + customerNo + " does not exist.");
         }
     }
 }

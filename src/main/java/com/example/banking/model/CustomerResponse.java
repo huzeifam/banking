@@ -9,13 +9,13 @@ import java.util.List;
 public class CustomerResponse {
 
     @Id
-    private Integer kNr;
+    private Integer customerNo;
     private String passNr;
     private String gbDate;
-    private String vName;
-    private String nName;
-    private String straße;
-    private String hNr;
+    private String firstName;
+    private String lastName;
+    private String street;
+    private String streetNo;
     private String ort;
 
 //    @OneToMany(mappedBy = "kNr", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -25,23 +25,23 @@ public class CustomerResponse {
 
     }
 
-    public CustomerResponse( Integer kNr,String passNr,
-                            String gbDate, String vName,
-                            String nName, String straße,
-                            String hNr, String ort) {
-        this.kNr = kNr;
+    public CustomerResponse( Integer customerNo,String passNr,
+                            String gbDate, String firstName,
+                            String lastName, String street,
+                            String streetNo, String ort) {
+        this.customerNo = customerNo;
         this.passNr = passNr;
         this.gbDate = gbDate;
-        this.vName = vName;
-        this.nName = nName;
-        this.straße = straße;
-        this.hNr = hNr;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.street = street;
+        this.streetNo = streetNo;
         this.ort = ort;
 
     }
 
-    public Integer getkNr() {
-        return kNr;
+    public Integer getCustomerNo() {
+        return customerNo;
     }
 
     public String getPassNr() {
@@ -52,20 +52,20 @@ public class CustomerResponse {
         return gbDate;
     }
 
-    public String getvName() {
-        return vName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getnName() {
-        return nName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getStraße() {
-        return straße;
+    public String getStreet() {
+        return street;
     }
 
-    public String gethNr() {
-        return hNr;
+    public String getStreetNo() {
+        return streetNo;
     }
 
     public String getOrt() {
@@ -83,20 +83,20 @@ public class CustomerResponse {
         this.gbDate = gbDate;
     }
 
-    public void setvName(String vName) {
-        this.vName = vName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setnName(String nName) {
-        this.nName = nName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public void setStraße(String straße) {
-        this.straße = straße;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public void sethNr(String hNr) {
-        this.hNr = hNr;
+    public void setStreetNo(String streetNo) {
+        this.streetNo = streetNo;
     }
 
     public void setOrt(String ort) {

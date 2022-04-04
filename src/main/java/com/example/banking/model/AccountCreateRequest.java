@@ -1,28 +1,19 @@
 package com.example.banking.model;
 
+
 import java.time.LocalDateTime;
 
 public class AccountCreateRequest {
 
-    private Integer kNr;
-    private String iban;
-    private Double balanceInEuro;
-    private LocalDateTime startDate;
+    private Integer customerNo;
 
-    public AccountCreateRequest(Integer kNr, String iban,
+
+    public AccountCreateRequest(Integer customerNo, String iban,
                                 Double balanceInEuro, LocalDateTime startDate) {
-        this.kNr = kNr;
-        this.iban = iban;
-        this.balanceInEuro = balanceInEuro;
-        this.startDate = startDate;
+        this.customerNo = customerNo;
+
     }
-    public Integer getkNr() { return kNr; }
-
-    public String getIban() { return iban; }
-
-    public Double getBalanceInEuro() { return balanceInEuro; }
-
-    public LocalDateTime getStartDate() { return startDate; }
+    public Integer getCustomerNo() { return customerNo; }
 
 
 }

@@ -1,0 +1,352 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080/api
+  description: Generated server url
+paths:
+  /customers/{customerNo}:
+    get:
+      tags:
+      - customer-controller
+      operationId: getCustomerByKNr
+      parameters:
+      - name: customerNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    put:
+      tags:
+      - customer-controller
+      operationId: updateCustomer
+      parameters:
+      - name: customerNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+    delete:
+      tags:
+      - customer-controller
+      operationId: deleteCustomer
+      parameters:
+      - name: customerNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /accounts/{accountNo}/withdraw/{amount}:
+    put:
+      tags:
+      - account-controller
+      operationId: withdrawAmount
+      parameters:
+      - name: accountNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: amount
+        in: path
+        required: true
+        schema:
+          type: number
+          format: double
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /accounts/{accountNo}/transfer/{destAccountNo}/{amount}:
+    put:
+      tags:
+      - account-controller
+      operationId: transferAmount
+      parameters:
+      - name: accountNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: destAccountNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: amount
+        in: path
+        required: true
+        schema:
+          type: number
+          format: double
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /accounts/{accountNo}/deposit/{amount}:
+    put:
+      tags:
+      - account-controller
+      operationId: depositAmount
+      parameters:
+      - name: accountNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: amount
+        in: path
+        required: true
+        schema:
+          type: number
+          format: double
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /customers:
+    get:
+      tags:
+      - customer-controller
+      operationId: getAllCustomers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerResponse'
+    post:
+      tags:
+      - customer-controller
+      operationId: createCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+  /accounts:
+    get:
+      tags:
+      - account-controller
+      operationId: getAllAccounts
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountResponse'
+    post:
+      tags:
+      - account-controller
+      operationId: createAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreateRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+  /accounts/{accountNo}:
+    get:
+      tags:
+      - account-controller
+      operationId: getAccountByANr
+      parameters:
+      - name: accountNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - account-controller
+      operationId: deleteAccount
+      parameters:
+      - name: accountNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /accounts/{accountNo}/balance:
+    get:
+      tags:
+      - account-controller
+      operationId: getBalanceInEuro
+      parameters:
+      - name: accountNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: number
+                format: double
+  /accounts/customer-accounts/{customerNo}:
+    get:
+      tags:
+      - account-controller
+      operationId: getCustomerAccountByKNr
+      parameters:
+      - name: customerNo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: object
+components:
+  schemas:
+    CustomerCreateRequest:
+      type: object
+      properties:
+        passNr:
+          type: string
+        gbDate:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        street:
+          type: string
+        streetNo:
+          type: string
+        ort:
+          type: string
+    CustomerResponse:
+      type: object
+      properties:
+        customerNo:
+          type: integer
+          format: int32
+        passNr:
+          type: string
+        gbDate:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        street:
+          type: string
+        streetNo:
+          type: string
+        ort:
+          type: string
+    AccountCreateRequest:
+      type: object
+      properties:
+        customerNo:
+          type: integer
+          format: int32
+    AccountResponse:
+      type: object
+      properties:
+        accountNo:
+          type: integer
+          format: int32
+        customerNo:
+          type: integer
+          format: int32
+        iban:
+          type: string
+        balanceInEuro:
+          type: number
+          format: double
+        startDate:
+          type: string
+          format: date-time

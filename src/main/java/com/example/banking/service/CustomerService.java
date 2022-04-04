@@ -22,16 +22,16 @@ public class CustomerService  {
 
     }
 
-    public Optional<CustomerResponse> findByKNr(Integer kNr) {
-        return customerRepository.findById(kNr);
+    public Optional<CustomerResponse> findByCustomerNo(Integer customerNo) {
+        return customerRepository.findById(customerNo);
     }
 
     public CustomerResponse save(CustomerResponse request) {
         return customerRepository.save(request);
     }
 
-    public void deleteBykNr(Integer kNr) {
-        customerRepository.deleteById(kNr);
+    public void deleteByCustomerNo(Integer customerNo) {
+        customerRepository.deleteById(customerNo);
     }
 }
 

@@ -6,7 +6,6 @@ import com.example.banking.repository.AccountRepository;
 import com.example.banking.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,22 +25,22 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    public Optional<AccountResponse> findByANr(Integer aNr) {
+    public Optional<AccountResponse> findByAccountNo(Integer accountNo) {
 
-        return accountRepository.findById(aNr);
+        return accountRepository.findById(accountNo);
     }
 
-    public List<AccountResponse> findAccountByKNr(Integer kNr) {
+    public List<AccountResponse> findAccountByCustomerNo(Integer customerNo) {
 
-        return accountRepository.findAccountByKNr(kNr);
+        return accountRepository.findAccountByCustomerNo(customerNo);
     }
 
 
-    public AccountResponse createAccount(AccountResponse aNr) {
-        Optional<CustomerResponse> customer = customerRepository.findById(aNr.getkNr());
+    public AccountResponse createAccount(AccountResponse accountNo) {
+        Optional<CustomerResponse> customer = customerRepository.findById(accountNo.getCustomerNo());
 
         if (customer.isPresent()) {
-            return accountRepository.save(aNr);
+            return accountRepository.save(accountNo);
 
         } else {
             return null;
@@ -50,34 +49,34 @@ public class AccountService {
     }
 
 
-    public void deleteAccountByKNr(Integer kNr) {
+    public void deleteAccountByCustomerNo(Integer customerNo) {
 
-        accountRepository.deleteAccountByKNr(kNr);
+        accountRepository.deleteAccountByCustomerNo(customerNo);
 
     }
 
-    public void deleteByaNr(Integer aNr) {
+    public void deleteByAccountNo(Integer accountNo) {
 
-        accountRepository.deleteById(aNr);
+        accountRepository.deleteById(accountNo);
     }
 
-    public double getBalanceInEuro(Integer aNr) {
-        return accountRepository.findBalanceByANr(aNr);
-    }
-
-
-    public void depositAmount(Integer aNr, Double amount) {
-        accountRepository.saveBalanceByANr(aNr, amount);
-    }
-
-    public void withdrawAmount(Integer aNr, Double amount) {
-        accountRepository.withdrawAmountByANr(aNr, amount);
+    public double getBalanceInEuro(Integer accountNo) {
+        return accountRepository.findBalanceByAccountNo(accountNo);
     }
 
 
-    public void transferAmount(Integer aNr, Integer newANr, Double amount) {
-        accountRepository.withdrawAmountByANr(aNr, amount);
-        accountRepository.saveBalanceByANr(newANr, amount);
+    public void depositAmount(Integer accountNo, Double amount) {
+        accountRepository.saveBalanceByAccountNo(accountNo, amount);
+    }
+
+    public void withdrawAmount(Integer accountNo, Double amount) {
+        accountRepository.withdrawAmountByAccountNo(accountNo, amount);
+    }
+
+
+    public void transferAmount(Integer accountNo, Integer destAccountNo, Double amount) {
+        accountRepository.withdrawAmountByAccountNo(accountNo, amount);
+        accountRepository.saveBalanceByAccountNo(destAccountNo, amount);
 
     }
 }

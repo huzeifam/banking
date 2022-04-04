@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "39a0ceea-a0aa-4a23-bda5-36cd4bb6d7b3",
+		"_postman_id": "912c6233-b56f-49d2-8716-8a5f1339b316",
 		"name": "Customers and Accounts",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -27,12 +27,12 @@
 			"response": []
 		},
 		{
-			"name": "GET Customer by kNr",
+			"name": "GET Customer by customerNo",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/customers/kNr",
+					"raw": "localhost:8080/api/customers/customerNo",
 					"host": [
 						"localhost"
 					],
@@ -40,21 +40,21 @@
 					"path": [
 						"api",
 						"customers",
-						"kNr"
+						"customerNo"
 					]
 				},
-				"description": "Display a customer by his customer number(kNr)"
+				"description": "Display a customer by his customer number(customerNo)"
 			},
 			"response": []
 		},
 		{
-			"name": "Update Customer by kNr",
+			"name": "Update Customer by customerNo",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"passNr\": \"1234\",\n        \"gbDate\": \"20.12.1985\",\n        \"vName\": \"Max\",\n        \"nName\": \"Mustermann\",\n        \"straße\": \"Herriotstraße\",\n        \"hNr\": \"1\",\n        \"ort\":\"Frankfurt am Main\"\n    }",
+					"raw": "{\n        \"passNr\": \"1234\",\n        \"gbDate\": \"20.12.1985\",\n        \"firstName\": \"Max\",\n        \"lastName\": \"Mustermann\",\n        \"street\": \"Herriotstraße\",\n        \"streetNo\": \"1\",\n        \"ort\": \"Frankfurt am Main\"\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -62,7 +62,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/customers/kNr",
+					"raw": "localhost:8080/api/customers/customerNo",
 					"host": [
 						"localhost"
 					],
@@ -70,20 +70,20 @@
 					"path": [
 						"api",
 						"customers",
-						"kNr"
+						"customerNo"
 					]
 				},
-				"description": "Update a customer by his customer number(kNr)\nChange everything except for kNr"
+				"description": "Update a customer by his customer number(customerNo)\nChange everything except for customerNo"
 			},
 			"response": []
 		},
 		{
-			"name": "DELETE Customer by kNr",
+			"name": "DELETE Customer by customerNo",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/customers/kNr",
+					"raw": "localhost:8080/api/customers/customerNo",
 					"host": [
 						"localhost"
 					],
@@ -91,10 +91,10 @@
 					"path": [
 						"api",
 						"customers",
-						"kNr"
+						"customerNo"
 					]
 				},
-				"description": "Delete a customer by his customer number(kNr)\nAll the related accounts (accounts with same kNr) will also be deleted"
+				"description": "Delete a customer by his customer number(customerNo)\nAll the related accounts (accounts with same customerNo) will also be deleted"
 			},
 			"response": []
 		},
@@ -118,7 +118,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"passNr\": \"1234\",\n        \"gbDate\": \"20.12.1985\",\n        \"vName\": \"Max\",\n        \"nName\": \"Mustermann\",\n        \"straße\": \"Herriotstraße\",\n        \"hNr\": \"1\",\n        \"ort\": \"Frankfurt am Main\"\n    }",
+					"raw": "{\n        \"passNr\": \"1234\",\n        \"gbDate\": \"20.12.1985\",\n        \"firstName\": \"Max\",\n        \"lastName\": \"Mustermann\",\n        \"street\": \"Herriotstraße\",\n        \"streetNo\": \"1\",\n        \"ort\": \"Frankfurt am Main\"\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -136,7 +136,7 @@
 						"customers"
 					]
 				},
-				"description": "Create a customer. Customer number (kNr) will be generated automatically"
+				"description": "Create a customer. Customer number (customerNo) will be generated automatically"
 			},
 			"response": []
 		},
@@ -161,7 +161,7 @@
 			"response": []
 		},
 		{
-			"name": "GET Account by aNr",
+			"name": "GET Account by accountNo",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -178,7 +178,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/aNr",
+					"raw": "localhost:8080/api/accounts/accountNo",
 					"host": [
 						"localhost"
 					],
@@ -186,20 +186,20 @@
 					"path": [
 						"api",
 						"accounts",
-						"aNr"
+						"accountNo"
 					]
 				},
-				"description": "Display an account by account number(aNr)"
+				"description": "Display an account by account number(accountNo)"
 			},
 			"response": []
 		},
 		{
-			"name": "GET Accounts of Customer by kNr",
+			"name": "GET Accounts of Customer by customerNo",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/accounts/customer-accounts/kNr",
+					"raw": "localhost:8080/api/accounts/customer-accounts/customerNo",
 					"host": [
 						"localhost"
 					],
@@ -208,15 +208,15 @@
 						"api",
 						"accounts",
 						"customer-accounts",
-						"kNr"
+						"customerNo"
 					]
 				},
-				"description": "Display all accounts of a customer by his customer number(kNr)"
+				"description": "Display all accounts of a customer by his customer number(customerNo)"
 			},
 			"response": []
 		},
 		{
-			"name": "GET Accountbalance by aNr",
+			"name": "GET Accountbalance by accountNo",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -233,7 +233,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/aNr/balance",
+					"raw": "localhost:8080/api/accounts/accountNo/balance",
 					"host": [
 						"localhost"
 					],
@@ -241,11 +241,11 @@
 					"path": [
 						"api",
 						"accounts",
-						"aNr",
+						"accountNo",
 						"balance"
 					]
 				},
-				"description": "Display the current balance of an account by account number(aNr)"
+				"description": "Display the current balance of an account by account number(accountNo)"
 			},
 			"response": []
 		},
@@ -264,7 +264,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/aNr/transfer/newANr/amount",
+					"raw": "localhost:8080/api/accounts/accountNo/transfer/destAccountNo/amount",
 					"host": [
 						"localhost"
 					],
@@ -272,18 +272,18 @@
 					"path": [
 						"api",
 						"accounts",
-						"aNr",
+						"accountNo",
 						"transfer",
-						"newANr",
+						"destAccountNo",
 						"amount"
 					]
 				},
-				"description": "Change balance of two accounts by transferring an amount from the first account by account number(aNr) to the second account by account number(newANr)"
+				"description": "Change balance of two accounts by transferring an amount from the first account by account number(accountNo) to the second account by account number(destAccountNo)"
 			},
 			"response": []
 		},
 		{
-			"name": "PUT Accountbalance by aNr / Deposit amount",
+			"name": "PUT Accountbalance by accountNo / Deposit amount",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -297,7 +297,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/aNr/deposit/amount",
+					"raw": "localhost:8080/api/accounts/accountNo/deposit/amount",
 					"host": [
 						"localhost"
 					],
@@ -305,17 +305,17 @@
 					"path": [
 						"api",
 						"accounts",
-						"aNr",
+						"accountNo",
 						"deposit",
 						"amount"
 					]
 				},
-				"description": "Deposit an amount into an account by account number (aNr)"
+				"description": "Deposit an amount into an account by account number (accountNo)"
 			},
 			"response": []
 		},
 		{
-			"name": "PUT Accountbalance by aNr / Withdraw amount",
+			"name": "PUT Accountbalance by accountNo / Withdraw amount",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -329,7 +329,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/aNr/withdraw/amount",
+					"raw": "localhost:8080/api/accounts/accountNo/withdraw/amount",
 					"host": [
 						"localhost"
 					],
@@ -337,17 +337,17 @@
 					"path": [
 						"api",
 						"accounts",
-						"aNr",
+						"accountNo",
 						"withdraw",
 						"amount"
 					]
 				},
-				"description": "Withdraw an amount from account by account number(aNr)"
+				"description": "Withdraw an amount from account by account number(accountNo)"
 			},
 			"response": []
 		},
 		{
-			"name": "DELETE Account by aNr",
+			"name": "DELETE Account by accountNo",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -361,7 +361,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/accounts/aNr",
+					"raw": "localhost:8080/api/accounts/accountNo",
 					"host": [
 						"localhost"
 					],
@@ -369,10 +369,10 @@
 					"path": [
 						"api",
 						"accounts",
-						"aNr"
+						"accountNo"
 					]
 				},
-				"description": "Delete an account by account number(aNr)"
+				"description": "Delete an account by account number(accountNo)"
 			},
 			"response": []
 		},
@@ -383,7 +383,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"kNr\": 957589145\n}",
+					"raw": "{\n    \"customerNo\": 742931084\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -401,7 +401,7 @@
 						"accounts"
 					]
 				},
-				"description": "Create an account for customer with customer number(kNr)\nAccount number(aNr), Iban and start-date will be generated automatically. Balance starts with 0.0"
+				"description": "Create an account for customer with customer number(customerNo)\nAccount number(accountNo), Iban and start-date will be generated automatically. Balance starts with 0.0"
 			},
 			"response": []
 		}

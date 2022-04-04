@@ -128,29 +128,29 @@ public interface AccountRepository extends CrudRepository<AccountResponse, Integ
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM AccountResponse a WHERE a.kNr = ?1")
-    void deleteAccountByKNr(Integer kNr);
+    @Query("DELETE FROM AccountResponse a WHERE a.customerNo = ?1")
+    void deleteAccountByCustomerNo(Integer customerNo);
 
 
 
-    @Query("select a from AccountResponse a where a.kNr = ?1")
-    List<AccountResponse> findAccountByKNr(Integer kNr);
+    @Query("select a from AccountResponse a where a.customerNo = ?1")
+    List<AccountResponse> findAccountByCustomerNo(Integer customerNo);
 
 
 
-    @Query("select balanceInEuro from AccountResponse where aNr = ?1")
-    public double findBalanceByANr(Integer aNr);
+    @Query("select balanceInEuro from AccountResponse where accountNo = ?1")
+    public double findBalanceByAccountNo(Integer accountNo);
 
 
     @Transactional
     @Modifying(clearAutomatically = true)
-    @Query("update AccountResponse set balanceInEuro = balanceInEuro+?2 where aNr=?1")
-    public void saveBalanceByANr(Integer aNr, Double amount);
+    @Query("update AccountResponse set balanceInEuro = balanceInEuro+?2 where accountNo=?1")
+    public void saveBalanceByAccountNo(Integer accountNo, Double amount);
 
     @Transactional
     @Modifying(clearAutomatically = true)
-    @Query("update AccountResponse set balanceInEuro = balanceInEuro-?2 where aNr=?1")
-    public void withdrawAmountByANr(Integer aNr, Double amount);
+    @Query("update AccountResponse set balanceInEuro = balanceInEuro-?2 where accountNo=?1")
+    public void withdrawAmountByAccountNo(Integer accountNo, Double amount);
 
 
 
