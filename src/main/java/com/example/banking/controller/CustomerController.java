@@ -38,7 +38,7 @@ public class CustomerController {
 
 
     @GetMapping("/customers/{customerNo}")
-    public ResponseEntity<Object> getCustomerByKNr(
+    public ResponseEntity<Object> getCustomerByCustomerNo(
             @PathVariable Integer customerNo
     ) {
         Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);

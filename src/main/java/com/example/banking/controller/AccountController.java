@@ -33,7 +33,7 @@ public class AccountController {
     }
 
     @GetMapping("/accounts/{accountNo}")
-    public ResponseEntity<Object> getAccountByANr(
+    public ResponseEntity<Object> getAccountByAccountNo(
             @PathVariable Integer accountNo
     ) {
         Optional<AccountResponse> account = accountService.findByAccountNo(accountNo);
@@ -44,7 +44,7 @@ public class AccountController {
     }
 
     @GetMapping("/accounts/customer-accounts/{customerNo}")
-    public Object[] getCustomerAccountByKNr(
+    public Object[] getCustomerAccountByCustomerNo(
             @PathVariable Integer customerNo
     ) {
         String empty = "Either customer with customer number " + customerNo + " does not exist or the customer has no accounts.";
