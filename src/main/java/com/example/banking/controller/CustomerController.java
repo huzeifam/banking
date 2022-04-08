@@ -1,11 +1,11 @@
 package com.example.banking.controller;
 
 
-import com.example.banking.model.AccountCreateRequest;
-import com.example.banking.model.AccountResponse;
+//import com.example.banking.model.AccountCreateRequest;
+//import com.example.banking.model.AccountResponse;
+//import com.example.banking.service.AccountService;
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
-import com.example.banking.service.AccountService;
 import com.example.banking.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +19,14 @@ import java.util.UUID;
 public class CustomerController {
 
 
-    private final AccountService accountService;
+//    private final AccountService accountService;
     private final CustomerService customerService;
 
 
 
-    public CustomerController(AccountService accountService, CustomerService customerService) {
+    public CustomerController(/*AccountService accountService,*/ CustomerService customerService) {
 
-        this.accountService = accountService;
+//        this.accountService = accountService;
         this.customerService = customerService;
     }
 
@@ -46,6 +46,11 @@ public class CustomerController {
             return ResponseEntity.ok(customer.get());
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
+    }
+
+    @GetMapping("/customers/numbers")
+    public List<Integer> getAllCustomerNo(){
+        return customerService.getCustomerNo();
     }
 
 
@@ -132,7 +137,7 @@ public class CustomerController {
 
             if (customer.isPresent()) {
                 customerService.deleteByCustomerNo(customerNo);
-                accountService.deleteAccountByCustomerNo(customerNo);
+//                accountService.deleteAccountByCustomerNo(customerNo);
 
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
             } else

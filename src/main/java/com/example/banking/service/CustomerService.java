@@ -2,6 +2,7 @@ package com.example.banking.service;
 
 import com.example.banking.model.CustomerResponse;
 import com.example.banking.repository.CustomerRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,10 @@ public class CustomerService  {
 
     public void deleteByCustomerNo(Integer customerNo) {
         customerRepository.deleteById(customerNo);
+    }
+
+    public List<Integer> getCustomerNo() {
+        return customerRepository.findAllCustomerNo();
     }
 }
 

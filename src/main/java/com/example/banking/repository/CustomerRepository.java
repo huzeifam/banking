@@ -1,17 +1,14 @@
 package com.example.banking.repository;
 
-import com.example.banking.model.AccountResponse;
-import com.example.banking.model.CustomerCreateRequest;
+//import com.example.banking.model.AccountResponse;
 import com.example.banking.model.CustomerResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 /*@Service
 public class CustomerRepository {
@@ -62,5 +59,8 @@ public class CustomerRepository {
 @Repository
 public interface CustomerRepository extends CrudRepository<CustomerResponse, Integer>, JpaRepository<CustomerResponse, Integer> {
 
+
+    @Query("select customerNo from CustomerResponse")
+    List<Integer> findAllCustomerNo();
 
 }
