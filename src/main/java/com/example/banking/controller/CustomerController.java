@@ -144,7 +144,10 @@ public class CustomerController {
             if (customer.isPresent()) {
                 customerService.deleteByCustomerNo(customerNo);
 //              accountService.deleteAccountByCustomerNo(customerNo);
-                restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+//                restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+
+
 
 
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
