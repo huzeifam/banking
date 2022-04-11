@@ -4,13 +4,16 @@ package com.example.banking.controller;
 //import com.example.banking.model.AccountCreateRequest;
 //import com.example.banking.model.AccountResponse;
 //import com.example.banking.service.AccountService;
+
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import com.example.banking.service.CustomerService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,6 +32,9 @@ public class CustomerController {
 //        this.accountService = accountService;
         this.customerService = customerService;
     }
+
+    @Autowired
+    RestTemplate restTemplate;
 
     @GetMapping("/customers")
     public List<CustomerResponse> getAllCustomers() {
@@ -137,7 +143,9 @@ public class CustomerController {
 
             if (customer.isPresent()) {
                 customerService.deleteByCustomerNo(customerNo);
-//                accountService.deleteAccountByCustomerNo(customerNo);
+//              accountService.deleteAccountByCustomerNo(customerNo);
+                restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+
 
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
             } else
