@@ -8,6 +8,10 @@ package com.example.banking.controller;
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
 import com.example.banking.service.CustomerService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -36,15 +40,17 @@ public class CustomerController {
     @Autowired
     RestTemplate restTemplate;
 
+    @Operation(summary = "Get all customers")
     @GetMapping("/customers")
     public List<CustomerResponse> getAllCustomers() {
         return customerService.findAll();
     }
 
 
-
+    @Operation(summary = "Find a customer by customer number")
     @GetMapping("/customers/{customerNo}")
     public ResponseEntity<Object> getCustomerByCustomerNo(
+            @Parameter(description = "Customer number of customer to be found")
             @PathVariable Integer customerNo
     ) {
         Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
@@ -54,14 +60,16 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
     }
 
+    @Hidden
     @GetMapping("/customers/numbers")
     public List<Integer> getAllCustomerNo(){
         return customerService.getCustomerNo();
     }
 
-
+    @Operation(summary = "Update a customer")
     @PutMapping("/customers/{customerNo}")
     public CustomerResponse updateCustomer(
+            @Parameter(description = "Customer number of customer to update")
             @PathVariable Integer customerNo,
             @RequestBody CustomerCreateRequest request
     )  {
@@ -94,7 +102,7 @@ public class CustomerController {
         return mapToResponse(savedCustomer);
     }
 
-
+    @Operation(summary = "Create a customer")
     @PostMapping("/customers")
     public CustomerResponse createCustomer(
             @RequestBody CustomerCreateRequest request
@@ -132,9 +140,10 @@ public class CustomerController {
         );
     }
 
-
+    @Operation(summary = "Delete a customer")
     @DeleteMapping("/customers/{customerNo}")
     public ResponseEntity deleteCustomer(
+            @Parameter(description = "Customer number of customer to delete")
             @PathVariable Integer customerNo
 
     ) {
@@ -144,8 +153,8 @@ public class CustomerController {
             if (customer.isPresent()) {
                 customerService.deleteByCustomerNo(customerNo);
 //              accountService.deleteAccountByCustomerNo(customerNo);
-//                restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
-                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+              restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+//                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
 
 
 
