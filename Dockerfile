@@ -1,4 +1,4 @@
 FROM openjdk:11
 EXPOSE 8080
-ADD build/libs/banking-0.0.1-SNAPSHOT.jar banking
-ENTRYPOINT ["java", "-jar", "banking"]
+ADD build/libs/customer-0.0.1-SNAPSHOT.jar customer
+ENTRYPOINT ["java", "-jar", "customer"]
