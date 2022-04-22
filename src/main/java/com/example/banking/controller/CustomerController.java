@@ -77,11 +77,11 @@ public class CustomerController {
         CustomerResponse customer = customerService.findByCustomerNo(customerNo).orElseThrow();
 
 
-        if (request.getPassNr() != null)
-            customer.setPassNr(request.getPassNr());
+        if (request.getIdCardNo() != null)
+            customer.setIdCardNo(request.getIdCardNo());
 
-        if (request.getGbDate() != null)
-            customer.setGbDate(request.getGbDate());
+        if (request.getBirthDate() != null)
+            customer.setBirthDate(request.getBirthDate());
 
         if (request.getFirstName() != null)
             customer.setFirstName(request.getFirstName());
@@ -95,8 +95,8 @@ public class CustomerController {
         if (request.getStreetNo() != null)
             customer.setStreetNo(request.getStreetNo());
 
-        if (request.getOrt() != null)
-            customer.setOrt(request.getOrt());
+        if (request.getCity() != null)
+            customer.setCity(request.getCity());
 
     CustomerResponse savedCustomer = customerService.save(customer);
         return mapToResponse(savedCustomer);
@@ -110,13 +110,13 @@ public class CustomerController {
     ) {
         CustomerResponse response = new CustomerResponse(
                 UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
-                request.getPassNr(),
-                request.getGbDate(),
+                request.getIdCardNo(),
+                request.getBirthDate(),
                 request.getFirstName(),
                 request.getLastName(),
                 request.getStreet(),
                 request.getStreetNo(),
-                request.getOrt()
+                request.getCity()
 
 
         );
@@ -130,13 +130,13 @@ public class CustomerController {
     private CustomerResponse mapToResponse(CustomerResponse savedCustomer) {
         return new CustomerResponse(
                 savedCustomer.getCustomerNo(),
-                savedCustomer.getPassNr(),
-                savedCustomer.getGbDate(),
+                savedCustomer.getIdCardNo(),
+                savedCustomer.getBirthDate(),
                 savedCustomer.getFirstName(),
                 savedCustomer.getLastName(),
                 savedCustomer.getStreet(),
                 savedCustomer.getStreetNo(),
-                savedCustomer.getOrt()
+                savedCustomer.getCity()
         );
     }
 

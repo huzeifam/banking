@@ -1,8 +1,9 @@
 package com.example.banking.model;
 
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "customers")
@@ -10,13 +11,13 @@ public class CustomerResponse {
 
     @Id
     private Integer customerNo;
-    private String passNr;
-    private String gbDate;
+    private String idCardNo;
+    private String birthDate;
     private String firstName;
     private String lastName;
     private String street;
     private String streetNo;
-    private String ort;
+    private String city;
 
 //    @OneToMany(mappedBy = "kNr", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<AccountResponse> accountResponse;
@@ -25,18 +26,18 @@ public class CustomerResponse {
 
     }
 
-    public CustomerResponse( Integer customerNo,String passNr,
-                            String gbDate, String firstName,
+    public CustomerResponse( Integer customerNo,String idCardNo,
+                            String birthDate, String firstName,
                             String lastName, String street,
-                            String streetNo, String ort) {
+                            String streetNo, String city) {
         this.customerNo = customerNo;
-        this.passNr = passNr;
-        this.gbDate = gbDate;
+        this.idCardNo = idCardNo;
+        this.birthDate = birthDate;
         this.firstName = firstName;
         this.lastName = lastName;
         this.street = street;
         this.streetNo = streetNo;
-        this.ort = ort;
+        this.city = city;
 
     }
 
@@ -44,12 +45,12 @@ public class CustomerResponse {
         return customerNo;
     }
 
-    public String getPassNr() {
-        return passNr;
+    public String getIdCardNo() {
+        return idCardNo;
     }
 
-    public String getGbDate() {
-        return gbDate;
+    public String getBirthDate() {
+        return birthDate;
     }
 
     public String getFirstName() {
@@ -68,19 +69,19 @@ public class CustomerResponse {
         return streetNo;
     }
 
-    public String getOrt() {
-        return ort;
+    public String getCity() {
+        return city;
     }
 
 
 
 
-    public void setPassNr(String passNr) {
-        this.passNr = passNr;
+    public void setIdCardNo(String idCardNo) {
+        this.idCardNo = idCardNo;
     }
 
-    public void setGbDate(String gbDate) {
-        this.gbDate = gbDate;
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
     public void setFirstName(String firstName) {
@@ -99,7 +100,7 @@ public class CustomerResponse {
         this.streetNo = streetNo;
     }
 
-    public void setOrt(String ort) {
-        this.ort = ort;
+    public void setCity(String city) {
+        this.city = city;
     }
 }

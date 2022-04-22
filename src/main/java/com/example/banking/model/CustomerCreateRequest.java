@@ -2,30 +2,30 @@ package com.example.banking.model;
 
 public class CustomerCreateRequest {
 
-    private String passNr;
-    private String gbDate;
+    private String idCardNo;
+    private String birthDate;
     private String firstName;
     private String lastName;
     private String street;
     private String streetNo;
-    private String ort;
+    private String city;
 
-    public CustomerCreateRequest(String passNr, String gbDate, String firstName, String lastName, String street, String streetNo, String ort) {
-        this.passNr = passNr;
-        this.gbDate = gbDate;
+    public CustomerCreateRequest(String idCardNo, String birthDate, String firstName, String lastName, String street, String streetNo, String city) {
+        this.idCardNo = idCardNo;
+        this.birthDate = birthDate;
         this.firstName = firstName;
         this.lastName = lastName;
         this.street = street;
         this.streetNo = streetNo;
-        this.ort = ort;
+        this.city = city;
     }
 
-    public String getPassNr() {
-        return passNr;
+    public String getIdCardNo() {
+        return idCardNo;
     }
 
-    public String getGbDate() {
-        return gbDate;
+    public String getBirthDate() {
+        return birthDate;
     }
 
     public String getFirstName() {
@@ -44,7 +44,7 @@ public class CustomerCreateRequest {
         return streetNo;
     }
 
-    public String getOrt() {
-        return ort;
+    public String getCity() {
+        return city;
     }
 }
