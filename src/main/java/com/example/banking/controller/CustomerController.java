@@ -146,6 +146,7 @@ public class CustomerController {
             @Parameter(description = "Customer number of customer to delete")
             @PathVariable Integer customerNo
 
+
     ) {
         Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
         {
@@ -153,8 +154,8 @@ public class CustomerController {
             if (customer.isPresent()) {
                 customerService.deleteByCustomerNo(customerNo);
 //              accountService.deleteAccountByCustomerNo(customerNo);
-              restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
-//                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+//              restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
 
 
 
