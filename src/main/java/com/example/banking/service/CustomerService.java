@@ -38,6 +38,14 @@ public class CustomerService  {
     public List<Integer> getCustomerNo() {
         return customerRepository.findAllCustomerNo();
     }
+
+    public ResponseEntity<String> getCustomerFirstName(Integer customerNo) {
+        return customerRepository.findCustomerFirstName(customerNo);
+    }
+
+    public ResponseEntity<String> getCustomerLastName(Integer customerNo) {
+        return customerRepository.findCustomerLastName(customerNo);
+    }
 }
 
 

@@ -11,13 +11,11 @@ import com.example.banking.service.CustomerService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -64,6 +62,29 @@ public class CustomerController {
     @GetMapping("/customers/numbers")
     public List<Integer> getAllCustomerNo(){
         return customerService.getCustomerNo();
+    }
+
+    @Hidden
+    @GetMapping("/customers/{customerNo}/first-name")
+    public ResponseEntity<String> getCustomerFirstName(
+            @PathVariable Integer customerNo
+    ){
+        Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
+        if (customer.isPresent())
+            return customerService.getCustomerFirstName(customerNo);
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number "+customerNo+" does not exist.");
+    }
+    @Hidden
+    @GetMapping("/customers/{customerNo}/last-name")
+    public ResponseEntity<String> getCustomerLastName(
+            @PathVariable Integer customerNo
+    ){
+        Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
+        if (customer.isPresent())
+            return customerService.getCustomerLastName(customerNo);
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number "+customerNo+" does not exist.");
     }
 
     @Operation(summary = "Update a customer")
@@ -154,8 +175,8 @@ public class CustomerController {
             if (customer.isPresent()) {
                 customerService.deleteByCustomerNo(customerNo);
 //              accountService.deleteAccountByCustomerNo(customerNo);
-//              restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
-                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+              restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+//                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
 
 
 
