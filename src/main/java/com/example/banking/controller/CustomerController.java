@@ -66,25 +66,21 @@ public class CustomerController {
 
     @Hidden
     @GetMapping("/customers/{customerNo}/first-name")
-    public ResponseEntity<String> getCustomerFirstName(
+    public String getCustomerFirstName(
             @PathVariable Integer customerNo
     ){
-        Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
-        if (customer.isPresent())
+
             return customerService.getCustomerFirstName(customerNo);
-        else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number "+customerNo+" does not exist.");
+
     }
     @Hidden
     @GetMapping("/customers/{customerNo}/last-name")
-    public ResponseEntity<String> getCustomerLastName(
+    public String getCustomerLastName(
             @PathVariable Integer customerNo
     ){
-        Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
-        if (customer.isPresent())
+
             return customerService.getCustomerLastName(customerNo);
-        else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number "+customerNo+" does not exist.");
+
     }
 
     @Operation(summary = "Update a customer")

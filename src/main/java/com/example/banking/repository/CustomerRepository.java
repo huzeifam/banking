@@ -64,8 +64,8 @@ public interface CustomerRepository extends CrudRepository<CustomerResponse, Int
     List<Integer> findAllCustomerNo();
 
     @Query("select firstName from CustomerResponse where customerNo = ?1")
-    ResponseEntity<String> findCustomerFirstName(Integer customerNo);
+    String findCustomerFirstName(Integer customerNo);
 
     @Query("select lastName from CustomerResponse where customerNo = ?1")
-    ResponseEntity<String> findCustomerLastName(Integer customerNo);
+    String findCustomerLastName(Integer customerNo);
 }

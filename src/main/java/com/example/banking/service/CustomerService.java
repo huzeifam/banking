@@ -39,11 +39,11 @@ public class CustomerService  {
         return customerRepository.findAllCustomerNo();
     }
 
-    public ResponseEntity<String> getCustomerFirstName(Integer customerNo) {
+    public String getCustomerFirstName(Integer customerNo) {
         return customerRepository.findCustomerFirstName(customerNo);
     }
 
-    public ResponseEntity<String> getCustomerLastName(Integer customerNo) {
+    public String getCustomerLastName(Integer customerNo) {
         return customerRepository.findCustomerLastName(customerNo);
     }
 }
