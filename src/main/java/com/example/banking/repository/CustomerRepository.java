@@ -8,7 +8,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /*@Service
 public class CustomerRepository {
@@ -68,4 +70,12 @@ public interface CustomerRepository extends CrudRepository<CustomerResponse, Int
 
     @Query("select lastName from CustomerResponse where customerNo = ?1")
     String findCustomerLastName(Integer customerNo);
+
+    @Query("select birthDate from CustomerResponse where customerNo = ?1")
+    LocalDate findCustomerBirthDate(Integer customerNo);
+
+    /*@Query("select c from CustomerResponse c where c.searchP = ?1 && c.searchW = ?2")
+    Optional<CustomerResponse> findCustomerByX(String searchW);*/
+
+
 }

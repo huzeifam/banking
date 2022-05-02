@@ -4,6 +4,8 @@ package com.example.banking.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "customers")
@@ -12,12 +14,18 @@ public class CustomerResponse {
     @Id
     private Integer customerNo;
     private String idCardNo;
-    private String birthDate;
+    private LocalDate birthDate;
     private String firstName;
     private String lastName;
+    private String sex;
+    private String email;
+    private String telephone;
     private String street;
     private String streetNo;
+    private String zipCode;
     private String city;
+    private String country;
+
 
 //    @OneToMany(mappedBy = "kNr", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<AccountResponse> accountResponse;
@@ -26,19 +34,22 @@ public class CustomerResponse {
 
     }
 
-    public CustomerResponse( Integer customerNo,String idCardNo,
-                            String birthDate, String firstName,
-                            String lastName, String street,
-                            String streetNo, String city) {
+    public CustomerResponse(Integer customerNo, String idCardNo, LocalDate birthDate, String firstName,
+                            String lastName, String sex, String email, String telephone, String street,
+                            String streetNo, String zipCode, String city, String country) {
         this.customerNo = customerNo;
         this.idCardNo = idCardNo;
         this.birthDate = birthDate;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.sex = sex;
+        this.email = email;
+        this.telephone = telephone;
         this.street = street;
         this.streetNo = streetNo;
+        this.zipCode = zipCode;
         this.city = city;
-
+        this.country = country;
     }
 
     public Integer getCustomerNo() {
@@ -49,7 +60,7 @@ public class CustomerResponse {
         return idCardNo;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
@@ -61,6 +72,18 @@ public class CustomerResponse {
         return lastName;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
     public String getStreet() {
         return street;
     }
@@ -69,10 +92,17 @@ public class CustomerResponse {
         return streetNo;
     }
 
+    public String getZipCode() {
+        return zipCode;
+    }
+
     public String getCity() {
         return city;
     }
 
+    public String getCountry() {
+        return country;
+    }
 
 
 
@@ -80,7 +110,7 @@ public class CustomerResponse {
         this.idCardNo = idCardNo;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -92,6 +122,18 @@ public class CustomerResponse {
         this.lastName = lastName;
     }
 
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
     public void setStreet(String street) {
         this.street = street;
     }
@@ -100,7 +142,15 @@ public class CustomerResponse {
         this.streetNo = streetNo;
     }
 
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

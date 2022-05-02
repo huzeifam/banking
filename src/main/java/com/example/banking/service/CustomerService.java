@@ -5,6 +5,7 @@ import com.example.banking.repository.CustomerRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,14 @@ public class CustomerService  {
     public String getCustomerLastName(Integer customerNo) {
         return customerRepository.findCustomerLastName(customerNo);
     }
+    public LocalDate getCustomerBirthDate(Integer customerNo) {
+        return customerRepository.findCustomerBirthDate(customerNo);
+    }/*
+    public Optional<CustomerResponse>getCustomerBySearch(String searchW){
+        return customerRepository.findCustomerByX(searchW);
+    }*/
+
+
 }
 
 

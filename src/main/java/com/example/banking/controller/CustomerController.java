@@ -7,6 +7,8 @@ package com.example.banking.controller;
 
 import com.example.banking.model.CustomerCreateRequest;
 import com.example.banking.model.CustomerResponse;
+import com.example.banking.model.CustomerSearchEnum;
+import com.example.banking.model.CustomerSexEnum;
 import com.example.banking.service.CustomerService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +18,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,6 +61,23 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
     }
 
+    /*@Operation(summary = "Find all customers with search word")
+    @GetMapping("/customers/{searchW}")
+    public ResponseEntity<Object> getCustomerBySearch(
+        @Parameter(description = "Search parameter")
+        //@PathVariable String searchP,
+        @RequestParam CustomerSearchEnum searchP,
+        @Parameter(description = "Search word")
+        @PathVariable String searchW
+    ){
+        Optional<CustomerResponse> search = customerService.getCustomerBySearch(searchW);
+        if (!search.isEmpty())
+            return ResponseEntity.ok(search.get());
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not find customer with matching criteria");
+    }*/
+
+
     @Hidden
     @GetMapping("/customers/numbers")
     public List<Integer> getAllCustomerNo(){
@@ -80,15 +100,34 @@ public class CustomerController {
     ){
 
             return customerService.getCustomerLastName(customerNo);
-
     }
+
+    @Hidden
+    @GetMapping("/customers/{customerNo}/age")
+    public Integer getCustomerAge(
+            @PathVariable Integer customerNo
+    ){
+        LocalDate birthDate = customerService.getCustomerBirthDate(customerNo);
+
+        Integer age= LocalDate.now().getYear() - birthDate.getYear();
+
+        if(LocalDate.now().getMonthValue() < birthDate.getMonthValue())  {
+            return --age;
+        } else if (LocalDate.now().getMonthValue() > birthDate.getMonthValue()) {
+            return age;
+        } else if (LocalDate.now().getDayOfMonth() < birthDate.getDayOfMonth()) {
+            return --age;
+        } else return age;}
+
 
     @Operation(summary = "Update a customer")
     @PutMapping("/customers/{customerNo}")
     public CustomerResponse updateCustomer(
             @Parameter(description = "Customer number of customer to update")
             @PathVariable Integer customerNo,
-            @RequestBody CustomerCreateRequest request
+            @RequestBody CustomerCreateRequest request,
+            @Parameter(description = "Select gender")
+            @RequestParam CustomerSexEnum gender
     )  {
 
         CustomerResponse customer = customerService.findByCustomerNo(customerNo).orElseThrow();
@@ -106,14 +145,29 @@ public class CustomerController {
         if (request.getLastName() != null)
             customer.setLastName(request.getLastName());
 
+        if (gender.getSex() != null)
+            customer.setSex(gender.getSex());
+
+        if (request.getEmail() != null)
+            customer.setEmail(request.getEmail());
+
+        if (request.getTelephone() != null)
+            customer.setTelephone(request.getTelephone());
+
         if (request.getStreet() != null)
             customer.setStreet(request.getStreet());
 
         if (request.getStreetNo() != null)
             customer.setStreetNo(request.getStreetNo());
 
+        if (request.getZipCode() != null)
+            customer.setZipCode(request.getZipCode());
+
         if (request.getCity() != null)
             customer.setCity(request.getCity());
+
+        if (request.getCountry() != null)
+            customer.setCountry(request.getCountry());
 
     CustomerResponse savedCustomer = customerService.save(customer);
         return mapToResponse(savedCustomer);
@@ -122,7 +176,9 @@ public class CustomerController {
     @Operation(summary = "Create a customer")
     @PostMapping("/customers")
     public CustomerResponse createCustomer(
-            @RequestBody CustomerCreateRequest request
+            @RequestBody CustomerCreateRequest request,
+            @Parameter(description = "Select gender")
+            @RequestParam CustomerSexEnum gender
 
     ) {
         CustomerResponse response = new CustomerResponse(
@@ -131,9 +187,14 @@ public class CustomerController {
                 request.getBirthDate(),
                 request.getFirstName(),
                 request.getLastName(),
+                gender.getSex(),
+                request.getEmail(),
+                request.getTelephone(),
                 request.getStreet(),
                 request.getStreetNo(),
-                request.getCity()
+                request.getZipCode(),
+                request.getCity(),
+                request.getCountry()
 
 
         );
@@ -151,9 +212,14 @@ public class CustomerController {
                 savedCustomer.getBirthDate(),
                 savedCustomer.getFirstName(),
                 savedCustomer.getLastName(),
+                savedCustomer.getSex(),
+                savedCustomer.getEmail(),
+                savedCustomer.getTelephone(),
                 savedCustomer.getStreet(),
                 savedCustomer.getStreetNo(),
-                savedCustomer.getCity()
+                savedCustomer.getZipCode(),
+                savedCustomer.getCity(),
+                savedCustomer.getCountry()
         );
     }
 
@@ -162,24 +228,28 @@ public class CustomerController {
     public ResponseEntity deleteCustomer(
             @Parameter(description = "Customer number of customer to delete")
             @PathVariable Integer customerNo
-
-
     ) {
         Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
         {
-
             if (customer.isPresent()) {
-                customerService.deleteByCustomerNo(customerNo);
-//              accountService.deleteAccountByCustomerNo(customerNo);
-              restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+                Double totalBalance = restTemplate.getForObject("http://localhost:8085/api/accounts/"+customerNo+"/totalbalance", Double.class);
+//                Double totalBalance = restTemplate.getForObject("http://account:8085/api/accounts/{customerNo}/totalbalance", Double.class);
+                if (totalBalance != null) {
+                    if (totalBalance > 0) {
+                        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. 1 or more Accounts still contain Money. Please withdraw the remaining Ammount " + totalBalance + "$ and try again");
+                    } else
+                        customerService.deleteByCustomerNo(customerNo);
+
+                    restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
 //                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
+                }else
+                    customerService.deleteByCustomerNo(customerNo);
 
-
-
-
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " deleted.");
             } else
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer with customer number " + customerNo + " does not exist.");
         }
     }
+
 }
