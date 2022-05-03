@@ -1,4 +1,4 @@
-package com.example.banking.model;
+package com.example.customer.model;
 
 public enum CustomerSearchEnum {
     FirstName("firstName"),

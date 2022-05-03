@@ -1,4 +1,4 @@
-package com.example.banking;
+package com.example.customer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,11 +7,11 @@ import org.springframework.web.client.RestTemplate;
 
 
 @SpringBootApplication
-public class BankingApplication {
+public class CustomerApplication {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(BankingApplication.class, args);
+		SpringApplication.run(CustomerApplication.class, args);
 	}
 
 

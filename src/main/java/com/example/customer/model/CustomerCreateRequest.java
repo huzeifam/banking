@@ -1,6 +1,9 @@
-package com.example.banking.model;
+package com.example.customer.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class CustomerCreateRequest {
@@ -10,7 +13,6 @@ public class CustomerCreateRequest {
     private LocalDate birthDate;
     private String firstName;
     private String lastName;
-
     private String email;
     private String telephone;
     private String street;
@@ -18,6 +20,7 @@ public class CustomerCreateRequest {
     private String zipCode;
     private String city;
     private String country;
+
 
 
     public CustomerCreateRequest(String idCardNo, LocalDate birthDate, String firstName, String lastName, String email, String telephone, String street, String streetNo, String zipCode, String city, String country) {
@@ -38,9 +41,7 @@ public class CustomerCreateRequest {
         return idCardNo;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
+    public LocalDate getBirthDate() {return birthDate;}
 
     public String getFirstName() {
         return firstName;

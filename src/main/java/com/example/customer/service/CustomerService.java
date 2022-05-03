@@ -1,8 +1,7 @@
-package com.example.banking.service;
+package com.example.customer.service;
 
-import com.example.banking.model.CustomerResponse;
-import com.example.banking.repository.CustomerRepository;
-import org.springframework.http.ResponseEntity;
+import com.example.customer.model.CustomerResponse;
+import com.example.customer.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -49,10 +48,10 @@ public class CustomerService  {
     }
     public LocalDate getCustomerBirthDate(Integer customerNo) {
         return customerRepository.findCustomerBirthDate(customerNo);
-    }/*
-    public Optional<CustomerResponse>getCustomerBySearch(String searchW){
-        return customerRepository.findCustomerByX(searchW);
-    }*/
+    }
+    public List<CustomerResponse>getCustomerBySearch(String parameter, String word){
+        return customerRepository.findCustomerByParameterAndWord(parameter, word);
+    }
 
 
 }

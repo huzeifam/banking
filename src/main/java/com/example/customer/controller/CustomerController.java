@@ -1,15 +1,15 @@
-package com.example.banking.controller;
+package com.example.customer.controller;
 
 
 //import com.example.banking.model.AccountCreateRequest;
 //import com.example.banking.model.AccountResponse;
 //import com.example.banking.service.AccountService;
 
-import com.example.banking.model.CustomerCreateRequest;
-import com.example.banking.model.CustomerResponse;
-import com.example.banking.model.CustomerSearchEnum;
-import com.example.banking.model.CustomerSexEnum;
-import com.example.banking.service.CustomerService;
+import com.example.customer.model.CustomerCreateRequest;
+import com.example.customer.model.CustomerResponse;
+import com.example.customer.model.CustomerSearchEnum;
+import com.example.customer.model.CustomerSexEnum;
+import com.example.customer.service.CustomerService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -61,21 +61,21 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
     }
 
-    /*@Operation(summary = "Find all customers with search word")
-    @GetMapping("/customers/{searchW}")
-    public ResponseEntity<Object> getCustomerBySearch(
+    @Operation(summary = "Find all customers with search word")
+    @GetMapping("/customers/{word}")
+    public List<CustomerResponse> getCustomerBySearch(
         @Parameter(description = "Search parameter")
-        //@PathVariable String searchP,
-        @RequestParam CustomerSearchEnum searchP,
+        //@PathVariable String parameter,
+        @RequestParam CustomerSearchEnum parameter,
         @Parameter(description = "Search word")
-        @PathVariable String searchW
+        @PathVariable String word
     ){
-        Optional<CustomerResponse> search = customerService.getCustomerBySearch(searchW);
-        if (!search.isEmpty())
-            return ResponseEntity.ok(search.get());
+        List<CustomerResponse> search = customerService.getCustomerBySearch(String.valueOf(parameter), word);
+        if (search.isEmpty())
+            return null;
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not find customer with matching criteria");
-    }*/
+            return search;
+    }
 
 
     @Hidden
@@ -236,7 +236,7 @@ public class CustomerController {
 //                Double totalBalance = restTemplate.getForObject("http://account:8085/api/accounts/{customerNo}/totalbalance", Double.class);
                 if (totalBalance != null) {
                     if (totalBalance > 0) {
-                        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. 1 or more Accounts still contain Money. Please withdraw the remaining Ammount " + totalBalance + "$ and try again");
+                        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. 1 or more Accounts still contain Money. Please withdraw the remaining Ammount " + totalBalance + "€ and try again");
                     } else
                         customerService.deleteByCustomerNo(customerNo);
 

@@ -1,16 +1,14 @@
-package com.example.banking.repository;
+package com.example.customer.repository;
 
 //import com.example.banking.model.AccountResponse;
-import com.example.banking.model.CustomerResponse;
+import com.example.customer.model.CustomerResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 /*@Service
 public class CustomerRepository {
@@ -74,8 +72,9 @@ public interface CustomerRepository extends CrudRepository<CustomerResponse, Int
     @Query("select birthDate from CustomerResponse where customerNo = ?1")
     LocalDate findCustomerBirthDate(Integer customerNo);
 
-    /*@Query("select c from CustomerResponse c where c.searchP = ?1 && c.searchW = ?2")
-    Optional<CustomerResponse> findCustomerByX(String searchW);*/
+    @Query("select c from CustomerResponse c where c.word = ?2 AND c.parameter = ?1")
+    List<CustomerResponse> findCustomerByParameterAndWord(String parameter, String word);
 
 
 }
+

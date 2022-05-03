@@ -1,11 +1,13 @@
-package com.example.banking.model;
+package com.example.customer.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "customers")
@@ -25,6 +27,11 @@ public class CustomerResponse {
     private String zipCode;
     private String city;
     private String country;
+    @JsonIgnore
+    private String parameter;
+    @JsonIgnore
+    private String word;
+
 
 
 //    @OneToMany(mappedBy = "kNr", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -60,9 +67,7 @@ public class CustomerResponse {
         return idCardNo;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
+    public LocalDate getBirthDate() {return birthDate;}
 
     public String getFirstName() {
         return firstName;
