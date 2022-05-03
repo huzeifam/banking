@@ -240,9 +240,11 @@ public class CustomerController {
                         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.");
                     } else {
                         restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
-                    }
 //                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+                    }
                     List customerAccounts = restTemplate.getForObject("http://localhost:8085/api/accounts/customer-accounts/" + customerNo, List.class);
+//                    List customerAccounts = restTemplate.getForObject("http://account:8085/api/accounts/customer-accounts/" + customerNo, List.class);
+
                     if (customerAccounts.isEmpty()) {
                         customerService.deleteByCustomerNo(customerNo);
                         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
