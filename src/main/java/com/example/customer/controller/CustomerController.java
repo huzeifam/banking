@@ -1,15 +1,15 @@
-package com.example.customer.controller;
+package com.example.banking.controller;
 
 
 //import com.example.banking.model.AccountCreateRequest;
 //import com.example.banking.model.AccountResponse;
 //import com.example.banking.service.AccountService;
 
-import com.example.customer.model.CustomerCreateRequest;
-import com.example.customer.model.CustomerResponse;
-import com.example.customer.model.CustomerSearchEnum;
-import com.example.customer.model.CustomerSexEnum;
-import com.example.customer.service.CustomerService;
+import com.example.banking.model.CustomerCreateRequest;
+import com.example.banking.model.CustomerResponse;
+import com.example.banking.model.CustomerSearchEnum;
+import com.example.banking.model.CustomerSexEnum;
+import com.example.banking.service.CustomerService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,9 +27,8 @@ import java.util.UUID;
 public class CustomerController {
 
 
-//    private final AccountService accountService;
+    //    private final AccountService accountService;
     private final CustomerService customerService;
-
 
 
     public CustomerController(/*AccountService accountService,*/ CustomerService customerService) {
@@ -61,26 +60,26 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
     }
 
-    @Operation(summary = "Find all customers with search word")
-    @GetMapping("/customers/{word}")
-    public List<CustomerResponse> getCustomerBySearch(
+    /*@Operation(summary = "Find all customers with search word")
+    @GetMapping("/customers/{searchW}")
+    public ResponseEntity<Object> getCustomerBySearch(
         @Parameter(description = "Search parameter")
-        //@PathVariable String parameter,
-        @RequestParam CustomerSearchEnum parameter,
+        //@PathVariable String searchP,
+        @RequestParam CustomerSearchEnum searchP,
         @Parameter(description = "Search word")
-        @PathVariable String word
+        @PathVariable String searchW
     ){
-        List<CustomerResponse> search = customerService.getCustomerBySearch(String.valueOf(parameter), word);
-        if (search.isEmpty())
-            return null;
+        Optional<CustomerResponse> search = customerService.getCustomerBySearch(searchW);
+        if (!search.isEmpty())
+            return ResponseEntity.ok(search.get());
         else
-            return search;
-    }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not find customer with matching criteria");
+    }*/
 
 
     @Hidden
     @GetMapping("/customers/numbers")
-    public List<Integer> getAllCustomerNo(){
+    public List<Integer> getAllCustomerNo() {
         return customerService.getCustomerNo();
     }
 
@@ -88,36 +87,38 @@ public class CustomerController {
     @GetMapping("/customers/{customerNo}/first-name")
     public String getCustomerFirstName(
             @PathVariable Integer customerNo
-    ){
+    ) {
 
-            return customerService.getCustomerFirstName(customerNo);
+        return customerService.getCustomerFirstName(customerNo);
 
     }
+
     @Hidden
     @GetMapping("/customers/{customerNo}/last-name")
     public String getCustomerLastName(
             @PathVariable Integer customerNo
-    ){
+    ) {
 
-            return customerService.getCustomerLastName(customerNo);
+        return customerService.getCustomerLastName(customerNo);
     }
 
     @Hidden
     @GetMapping("/customers/{customerNo}/age")
     public Integer getCustomerAge(
             @PathVariable Integer customerNo
-    ){
+    ) {
         LocalDate birthDate = customerService.getCustomerBirthDate(customerNo);
 
-        Integer age= LocalDate.now().getYear() - birthDate.getYear();
+        Integer age = LocalDate.now().getYear() - birthDate.getYear();
 
-        if(LocalDate.now().getMonthValue() < birthDate.getMonthValue())  {
+        if (LocalDate.now().getMonthValue() < birthDate.getMonthValue()) {
             return --age;
         } else if (LocalDate.now().getMonthValue() > birthDate.getMonthValue()) {
             return age;
         } else if (LocalDate.now().getDayOfMonth() < birthDate.getDayOfMonth()) {
             return --age;
-        } else return age;}
+        } else return age;
+    }
 
 
     @Operation(summary = "Update a customer")
@@ -128,7 +129,7 @@ public class CustomerController {
             @RequestBody CustomerCreateRequest request,
             @Parameter(description = "Select gender")
             @RequestParam CustomerSexEnum gender
-    )  {
+    ) {
 
         CustomerResponse customer = customerService.findByCustomerNo(customerNo).orElseThrow();
 
@@ -169,7 +170,7 @@ public class CustomerController {
         if (request.getCountry() != null)
             customer.setCountry(request.getCountry());
 
-    CustomerResponse savedCustomer = customerService.save(customer);
+        CustomerResponse savedCustomer = customerService.save(customer);
         return mapToResponse(savedCustomer);
     }
 
@@ -232,24 +233,35 @@ public class CustomerController {
         Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
         {
             if (customer.isPresent()) {
-                Double totalBalance = restTemplate.getForObject("http://localhost:8085/api/accounts/"+customerNo+"/totalbalance", Double.class);
+                Double totalBalance = restTemplate.getForObject("http://localhost:8085/api/accounts/" + customerNo + "/totalbalance", Double.class);
 //                Double totalBalance = restTemplate.getForObject("http://account:8085/api/accounts/{customerNo}/totalbalance", Double.class);
                 if (totalBalance != null) {
                     if (totalBalance > 0) {
-                        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. 1 or more Accounts still contain Money. Please withdraw the remaining Ammount " + totalBalance + "€ and try again");
-                    } else
-                        customerService.deleteByCustomerNo(customerNo);
-
-                    restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
+                        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.");
+                    } else {
+                        restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
+                    }
 //                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
-                    return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
-                }else
-                    customerService.deleteByCustomerNo(customerNo);
+                    List customerAccounts = restTemplate.getForObject("http://localhost:8085/api/accounts/customer-accounts/" + customerNo, List.class);
+                    if (customerAccounts.isEmpty()) {
+                        customerService.deleteByCustomerNo(customerNo);
+                        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
+                    } else {
+                        return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not delete customer. Possible reasons: Customer (" + customerNo + ") -\n" +
+                                "-still has at least one account which contains money.\n" +
+                                "-still has at least one account with an ongoing credit.\n\n" +
+                                "All accounts of customer with zero balance and zero ongoing credits were deleted.\n" +
+                                "Please check first and try again.");
+                    }
+                }
+             else {
+                customerService.deleteByCustomerNo(customerNo);
 
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " deleted.");
-            } else
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer with customer number " + customerNo + " does not exist.");
-        }
+            }
+        }else
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer with customer number " + customerNo + " does not exist.");
     }
+}
 
 }
