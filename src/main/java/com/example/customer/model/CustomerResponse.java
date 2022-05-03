@@ -1,11 +1,10 @@
-package com.example.banking.model;
+package com.example.customer.model;
 
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "customers")

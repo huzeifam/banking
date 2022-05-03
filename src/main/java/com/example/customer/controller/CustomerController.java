@@ -1,15 +1,14 @@
-package com.example.banking.controller;
+package com.example.customer.controller;
 
 
 //import com.example.banking.model.AccountCreateRequest;
 //import com.example.banking.model.AccountResponse;
 //import com.example.banking.service.AccountService;
 
-import com.example.banking.model.CustomerCreateRequest;
-import com.example.banking.model.CustomerResponse;
-import com.example.banking.model.CustomerSearchEnum;
-import com.example.banking.model.CustomerSexEnum;
-import com.example.banking.service.CustomerService;
+import com.example.customer.model.CustomerCreateRequest;
+import com.example.customer.model.CustomerResponse;
+import com.example.customer.model.CustomerSexEnum;
+import com.example.customer.service.CustomerService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

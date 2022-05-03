@@ -1,4 +1,4 @@
-package com.example.banking.model;
+package com.example.customer.model;
 
 import java.time.LocalDate;
 
