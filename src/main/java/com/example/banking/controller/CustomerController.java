@@ -236,7 +236,7 @@ public class CustomerController {
 //                Double totalBalance = restTemplate.getForObject("http://account:8085/api/accounts/{customerNo}/totalbalance", Double.class);
                 if (totalBalance != null) {
                     if (totalBalance > 0) {
-                        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. 1 or more Accounts still contain Money. Please withdraw the remaining Ammount " + totalBalance + "$ and try again");
+                        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. One or more Accounts still contain Money. Please withdraw the remaining Amount \"" + totalBalance + "€\" and try again");
                     } else
                         customerService.deleteByCustomerNo(customerNo);
 
