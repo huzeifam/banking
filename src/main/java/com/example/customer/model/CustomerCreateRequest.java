@@ -2,8 +2,9 @@ package com.example.customer.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.swing.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 
 
 public class CustomerCreateRequest {
@@ -20,10 +21,13 @@ public class CustomerCreateRequest {
     private String zipCode;
     private String city;
     private String country;
+    /*@JsonIgnore
+    private AbstractButton jCheckBox;*/
+    private boolean naturalPerson;
 
 
 
-    public CustomerCreateRequest(String idCardNo, LocalDate birthDate, String firstName, String lastName, String email, String telephone, String street, String streetNo, String zipCode, String city, String country) {
+    public CustomerCreateRequest(String idCardNo, LocalDate birthDate, String firstName, String lastName, String email, String telephone, String street, String streetNo, String zipCode, String city, String country, boolean naturalPerson) {
         this.idCardNo = idCardNo;
         this.birthDate = birthDate;
         this.firstName = firstName;
@@ -35,6 +39,7 @@ public class CustomerCreateRequest {
         this.zipCode = zipCode;
         this.city = city;
         this.country = country;
+        this.naturalPerson = naturalPerson;
     }
 
     public String getIdCardNo() {
@@ -78,4 +83,5 @@ public class CustomerCreateRequest {
     public String getCountry() {
         return country;
     }
+    public boolean isNaturalPerson() {return naturalPerson;}
 }

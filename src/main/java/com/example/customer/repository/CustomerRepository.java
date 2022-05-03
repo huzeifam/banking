@@ -72,8 +72,8 @@ public interface CustomerRepository extends CrudRepository<CustomerResponse, Int
     @Query("select birthDate from CustomerResponse where customerNo = ?1")
     LocalDate findCustomerBirthDate(Integer customerNo);
 
-    @Query("select c from CustomerResponse c where c.word = ?2 AND c.parameter = ?1")
-    List<CustomerResponse> findCustomerByParameterAndWord(String parameter, String word);
+    /*@Query("select c from CustomerResponse c where c.word = ?2 AND c.parameter = ?1")
+    List<CustomerResponse> findCustomerByParameterAndWord(String parameter, String word);*/
 
 
 }

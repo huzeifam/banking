@@ -1,15 +1,15 @@
-package com.example.banking.controller;
+package com.example.customer.controller;
 
 
 //import com.example.banking.model.AccountCreateRequest;
 //import com.example.banking.model.AccountResponse;
 //import com.example.banking.service.AccountService;
 
-import com.example.banking.model.CustomerCreateRequest;
-import com.example.banking.model.CustomerResponse;
-import com.example.banking.model.CustomerSearchEnum;
-import com.example.banking.model.CustomerSexEnum;
-import com.example.banking.service.CustomerService;
+import com.example.customer.model.CustomerCreateRequest;
+import com.example.customer.model.CustomerResponse;
+import com.example.customer.model.CustomerSearchEnum;
+import com.example.customer.model.CustomerSexEnum;
+import com.example.customer.service.CustomerService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -195,7 +195,8 @@ public class CustomerController {
                 request.getStreetNo(),
                 request.getZipCode(),
                 request.getCity(),
-                request.getCountry()
+                request.getCountry(),
+                request.isNaturalPerson()
 
 
         );
@@ -220,7 +221,8 @@ public class CustomerController {
                 savedCustomer.getStreetNo(),
                 savedCustomer.getZipCode(),
                 savedCustomer.getCity(),
-                savedCustomer.getCountry()
+                savedCustomer.getCountry(),
+                savedCustomer.isNaturalPerson()
         );
     }
 
@@ -240,9 +242,11 @@ public class CustomerController {
                         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.");
                     } else {
                         restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
-                    }
 //                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+                    }
                     List customerAccounts = restTemplate.getForObject("http://localhost:8085/api/accounts/customer-accounts/" + customerNo, List.class);
+//                    List customerAccounts = restTemplate.getForObject("http://account:8085/api/accounts/customer-accounts/" + customerNo, List.class);
+
                     if (customerAccounts.isEmpty()) {
                         customerService.deleteByCustomerNo(customerNo);
                         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
