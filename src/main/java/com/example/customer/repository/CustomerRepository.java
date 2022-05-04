@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /*@Service
 public class CustomerRepository {
@@ -72,8 +73,6 @@ public interface CustomerRepository extends CrudRepository<CustomerResponse, Int
     @Query("select birthDate from CustomerResponse where customerNo = ?1")
     LocalDate findCustomerBirthDate(Integer customerNo);
 
-    /*@Query("select c from CustomerResponse c where c.word = ?2 AND c.parameter = ?1")
-    List<CustomerResponse> findCustomerByParameterAndWord(String parameter, String word);*/
 
 
 }

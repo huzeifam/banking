@@ -49,9 +49,6 @@ public class CustomerService  {
     public LocalDate getCustomerBirthDate(Integer customerNo) {
         return customerRepository.findCustomerBirthDate(customerNo);
     }
-   /* public List<CustomerResponse>getCustomerBySearch(String parameter, String word){
-        return customerRepository.findCustomerByParameterAndWord(parameter, word);}*/
-
 
 }
 

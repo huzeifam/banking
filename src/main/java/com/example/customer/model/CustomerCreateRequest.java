@@ -21,13 +21,17 @@ public class CustomerCreateRequest {
     private String zipCode;
     private String city;
     private String country;
-    /*@JsonIgnore
-    private AbstractButton jCheckBox;*/
+    private boolean hasOnlineBanking;
+    private boolean investing;
     private boolean naturalPerson;
+    private boolean hasAnotherBank;
+    private boolean isSaving;
+    private boolean isCreditWorthy;
 
 
-
-    public CustomerCreateRequest(String idCardNo, LocalDate birthDate, String firstName, String lastName, String email, String telephone, String street, String streetNo, String zipCode, String city, String country, boolean naturalPerson) {
+    public CustomerCreateRequest(String idCardNo, LocalDate birthDate, String firstName, String lastName, String email, String telephone,
+                                 String street, String streetNo, String zipCode, String city, String country, boolean hasOnlineBanking,
+                                 boolean investing, boolean naturalPerson, boolean hasAnotherBank, boolean isSaving, boolean isCreditWorthy) {
         this.idCardNo = idCardNo;
         this.birthDate = birthDate;
         this.firstName = firstName;
@@ -39,7 +43,12 @@ public class CustomerCreateRequest {
         this.zipCode = zipCode;
         this.city = city;
         this.country = country;
+        this.hasOnlineBanking = hasOnlineBanking;
+        this.investing = investing;
         this.naturalPerson = naturalPerson;
+        this.hasAnotherBank = hasAnotherBank;
+        this.isSaving = isSaving;
+        this.isCreditWorthy = isCreditWorthy;
     }
 
     public String getIdCardNo() {
@@ -83,5 +92,28 @@ public class CustomerCreateRequest {
     public String getCountry() {
         return country;
     }
-    public boolean isNaturalPerson() {return naturalPerson;}
+
+    public boolean isHasOnlineBanking() {
+        return hasOnlineBanking;
+    }
+
+    public boolean isInvesting() {
+        return investing;
+    }
+
+    public boolean isNaturalPerson() {
+        return naturalPerson;
+    }
+
+    public boolean isHasAnotherBank() {
+        return hasAnotherBank;
+    }
+
+    public boolean isSaving() {
+        return isSaving;
+    }
+
+    public boolean isCreditWorthy() {
+        return isCreditWorthy;
+    }
 }

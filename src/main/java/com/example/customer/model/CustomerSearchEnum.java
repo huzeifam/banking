@@ -1,23 +1,21 @@
 package com.example.customer.model;
 
 public enum CustomerSearchEnum {
-    FirstName("firstName"),
     LastName("lastName"),
-    Gender("sex"),
-    Street("street"),
-    ZipCode("zipCode"),
     City("city"),
     Country("country");
 
 
-    private String searchP;
+    private String parameter;
 
-    CustomerSearchEnum(String searchP) {
-        this.searchP = searchP;
+    CustomerSearchEnum(String parameter) {
+        this.parameter = parameter;
     }
 
-    public String getSearchP() {
-        return searchP;
+    public String getParameter() {
+        return parameter;
     }
+
+
 }
 

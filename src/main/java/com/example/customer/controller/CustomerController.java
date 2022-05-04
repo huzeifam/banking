@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 public class CustomerController {
@@ -29,6 +31,7 @@ public class CustomerController {
 
     //    private final AccountService accountService;
     private final CustomerService customerService;
+    private List<CustomerResponse> search;
 
 
     public CustomerController(/*AccountService accountService,*/ CustomerService customerService) {
@@ -60,21 +63,41 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
     }
 
-    /*@Operation(summary = "Find all customers with search word")
-    @GetMapping("/customers/{searchW}")
-    public ResponseEntity<Object> getCustomerBySearch(
-        @Parameter(description = "Search parameter")
-        //@PathVariable String searchP,
-        @RequestParam CustomerSearchEnum searchP,
-        @Parameter(description = "Search word")
-        @PathVariable String searchW
-    ){
-        Optional<CustomerResponse> search = customerService.getCustomerBySearch(searchW);
-        if (!search.isEmpty())
-            return ResponseEntity.ok(search.get());
-        else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not find customer with matching criteria");
-    }*/
+
+    @Operation(summary = "Find all customers with search word")
+    @GetMapping("/customers/search/{word}")
+    public Object[] getCustomersByWord(
+            @Parameter(description = "Search parameter")
+            @RequestParam CustomerSearchEnum parameter,
+            @Parameter(description = "Search word")
+            @PathVariable String word
+    ) {
+        List<CustomerResponse> search = customerService.findAll();
+        String notFound = ("Could not find matching word in parameter");
+        List<CustomerResponse> filterdList = new ArrayList<>();
+        int i;
+        for (i = 0; i < search.size(); i++) {
+            if (parameter.getParameter().matches("lastName")){
+                filterdList = search.stream().filter(customerResponse -> customerResponse.getLastName().equals(word)).collect(Collectors.toList());
+                if (filterdList.isEmpty())
+                    return new String[] {notFound};
+                else
+                return filterdList.toArray();}
+            else if (parameter.getParameter().matches("city")){
+                filterdList = search.stream().filter(customerResponse -> customerResponse.getCity().equals(word)).collect(Collectors.toList());
+                if (filterdList.isEmpty())
+                    return new String[] {notFound};
+                else
+                return filterdList.toArray();}
+            else if (parameter.getParameter().matches("country")){
+                filterdList = search.stream().filter(customerResponse -> customerResponse.getCountry().equals(word)).collect(Collectors.toList());
+                if (filterdList.isEmpty())
+                    return new String[] {notFound};
+                else
+                return filterdList.toArray();}
+        }
+        return new String[] {notFound};
+    }
 
 
     @Hidden
@@ -170,6 +193,13 @@ public class CustomerController {
         if (request.getCountry() != null)
             customer.setCountry(request.getCountry());
 
+        customer.setHasOnlineBanking(request.isHasOnlineBanking());
+        customer.setInvesting(request.isInvesting());
+        customer.setNaturalPerson(request.isNaturalPerson());
+        customer.setHasAnotherBank(request.isHasAnotherBank());
+        customer.setSaving(request.isSaving());
+        customer.setCreditWorthy(request.isCreditWorthy());
+
         CustomerResponse savedCustomer = customerService.save(customer);
         return mapToResponse(savedCustomer);
     }
@@ -196,7 +226,12 @@ public class CustomerController {
                 request.getZipCode(),
                 request.getCity(),
                 request.getCountry(),
-                request.isNaturalPerson()
+                request.isHasOnlineBanking(),
+                request.isInvesting(),
+                request.isNaturalPerson(),
+                request.isHasAnotherBank(),
+                request.isSaving(),
+                request.isCreditWorthy()
 
 
         );
@@ -222,13 +257,18 @@ public class CustomerController {
                 savedCustomer.getZipCode(),
                 savedCustomer.getCity(),
                 savedCustomer.getCountry(),
-                savedCustomer.isNaturalPerson()
+                savedCustomer.isHasOnlineBanking(),
+                savedCustomer.isInvesting(),
+                savedCustomer.isNaturalPerson(),
+                savedCustomer.isHasAnotherBank(),
+                savedCustomer.isSaving(),
+                savedCustomer.isCreditWorthy()
         );
     }
 
     @Operation(summary = "Delete a customer")
     @DeleteMapping("/customers/{customerNo}")
-    public ResponseEntity deleteCustomer(
+    public ResponseEntity<String> deleteCustomer(
             @Parameter(description = "Customer number of customer to delete")
             @PathVariable Integer customerNo
     ) {

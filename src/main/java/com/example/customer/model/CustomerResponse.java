@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.swing.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "customers")
@@ -28,13 +26,14 @@ public class CustomerResponse {
     private String zipCode;
     private String city;
     private String country;
-    @JsonIgnore
-    private String parameter;
+    private boolean hasOnlineBanking;
+    private boolean investing;
+    private boolean naturalPerson;
+    private boolean hasAnotherBank;
+    private boolean isSaving;
+    private boolean isCreditWorthy;
     @JsonIgnore
     private String word;
-    @JsonIgnore
-    private AbstractButton jCheckbox;
-    private boolean naturalPerson = jCheckbox.isSelected();
 
 
 
@@ -45,9 +44,10 @@ public class CustomerResponse {
 
     }
 
-    public CustomerResponse(Integer customerNo, String idCardNo, LocalDate birthDate, String firstName,
-                            String lastName, String sex, String email, String telephone, String street,
-                            String streetNo, String zipCode, String city, String country, boolean naturalPerson) {
+    public CustomerResponse(Integer customerNo, String idCardNo, LocalDate birthDate, String firstName, String lastName,
+                            String sex, String email, String telephone, String street, String streetNo, String zipCode,
+                            String city, String country, boolean hasOnlineBanking, boolean investing,
+                            boolean naturalPerson, boolean hasAnotherBank, boolean isSaving, boolean isCreditWorthy) {
         this.customerNo = customerNo;
         this.idCardNo = idCardNo;
         this.birthDate = birthDate;
@@ -61,7 +61,12 @@ public class CustomerResponse {
         this.zipCode = zipCode;
         this.city = city;
         this.country = country;
+        this.hasOnlineBanking = hasOnlineBanking;
+        this.investing = investing;
         this.naturalPerson = naturalPerson;
+        this.hasAnotherBank = hasAnotherBank;
+        this.isSaving = isSaving;
+        this.isCreditWorthy = isCreditWorthy;
     }
 
     public Integer getCustomerNo() {
@@ -72,7 +77,9 @@ public class CustomerResponse {
         return idCardNo;
     }
 
-    public LocalDate getBirthDate() {return birthDate;}
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -114,9 +121,32 @@ public class CustomerResponse {
         return country;
     }
 
+    public boolean isHasOnlineBanking() {
+        return hasOnlineBanking;
+    }
+
+    public boolean isInvesting() {
+        return investing;
+    }
+
     public boolean isNaturalPerson() {
         return naturalPerson;
     }
+
+    public boolean isHasAnotherBank() {
+        return hasAnotherBank;
+    }
+
+    public boolean isSaving() {
+        return isSaving;
+    }
+
+    public boolean isCreditWorthy() {
+        return isCreditWorthy;
+    }
+
+
+
 
     public void setIdCardNo(String idCardNo) {
         this.idCardNo = idCardNo;
@@ -166,7 +196,27 @@ public class CustomerResponse {
         this.country = country;
     }
 
+    public void setHasOnlineBanking(boolean hasOnlineBanking) {
+        this.hasOnlineBanking = hasOnlineBanking;
+    }
+
+    public void setInvesting(boolean investing) {
+        this.investing = investing;
+    }
+
     public void setNaturalPerson(boolean naturalPerson) {
         this.naturalPerson = naturalPerson;
+    }
+
+    public void setHasAnotherBank(boolean hasAnotherBank) {
+        this.hasAnotherBank = hasAnotherBank;
+    }
+
+    public void setSaving(boolean saving) {
+        isSaving = saving;
+    }
+
+    public void setCreditWorthy(boolean creditWorthy) {
+        isCreditWorthy = creditWorthy;
     }
 }
