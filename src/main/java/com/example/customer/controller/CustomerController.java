@@ -106,17 +106,21 @@ public class CustomerController {
     public Integer getCustomerAge(
             @PathVariable Integer customerNo
     ) {
-        LocalDate birthDate = customerService.getCustomerBirthDate(customerNo);
+        Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
+        if (customer.isPresent()) {
+            LocalDate birthDate = customerService.getCustomerBirthDate(customerNo);
+            Integer age = LocalDate.now().getYear() - birthDate.getYear();
 
-        Integer age = LocalDate.now().getYear() - birthDate.getYear();
-
-        if (LocalDate.now().getMonthValue() < birthDate.getMonthValue()) {
-            return --age;
-        } else if (LocalDate.now().getMonthValue() > birthDate.getMonthValue()) {
-            return age;
-        } else if (LocalDate.now().getDayOfMonth() < birthDate.getDayOfMonth()) {
-            return --age;
-        } else return age;
+            if (LocalDate.now().getMonthValue() < birthDate.getMonthValue()) {
+                return --age;
+            } else if (LocalDate.now().getMonthValue() > birthDate.getMonthValue()) {
+                return age;
+            } else if (LocalDate.now().getDayOfMonth() < birthDate.getDayOfMonth()) {
+                return --age;
+            } else return age;
+        }
+        else
+            return null;
     }
 
 
