@@ -30,8 +30,8 @@ public class CustomerResponse {
     private boolean investing;
     private boolean naturalPerson;
     private boolean hasAnotherBank;
-    private boolean isSaving;
-    private boolean isCreditWorthy;
+    private boolean saving;
+    private boolean creditWorthy;
     @JsonIgnore
     private String word;
 
@@ -47,7 +47,7 @@ public class CustomerResponse {
     public CustomerResponse(Integer customerNo, String idCardNo, LocalDate birthDate, String firstName, String lastName,
                             String sex, String email, String telephone, String street, String streetNo, String zipCode,
                             String city, String country, boolean hasOnlineBanking, boolean investing,
-                            boolean naturalPerson, boolean hasAnotherBank, boolean isSaving, boolean isCreditWorthy) {
+                            boolean naturalPerson, boolean hasAnotherBank, boolean saving, boolean creditWorthy) {
         this.customerNo = customerNo;
         this.idCardNo = idCardNo;
         this.birthDate = birthDate;
@@ -65,8 +65,8 @@ public class CustomerResponse {
         this.investing = investing;
         this.naturalPerson = naturalPerson;
         this.hasAnotherBank = hasAnotherBank;
-        this.isSaving = isSaving;
-        this.isCreditWorthy = isCreditWorthy;
+        this.saving = saving;
+        this.creditWorthy = creditWorthy;
     }
 
     public Integer getCustomerNo() {
@@ -137,12 +137,12 @@ public class CustomerResponse {
         return hasAnotherBank;
     }
 
-    public boolean isSaving() {
-        return isSaving;
+    public boolean getSaving() {
+        return saving;
     }
 
-    public boolean isCreditWorthy() {
-        return isCreditWorthy;
+    public boolean getCreditWorthy() {
+        return creditWorthy;
     }
 
 
@@ -213,10 +213,10 @@ public class CustomerResponse {
     }
 
     public void setSaving(boolean saving) {
-        isSaving = saving;
+        saving = saving;
     }
 
     public void setCreditWorthy(boolean creditWorthy) {
-        isCreditWorthy = creditWorthy;
+        creditWorthy = creditWorthy;
     }
 }

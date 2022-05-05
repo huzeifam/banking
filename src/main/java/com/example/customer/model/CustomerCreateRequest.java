@@ -1,8 +1,5 @@
 package com.example.customer.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.swing.*;
 import java.time.LocalDate;
 
 
@@ -25,13 +22,13 @@ public class CustomerCreateRequest {
     private boolean investing;
     private boolean naturalPerson;
     private boolean hasAnotherBank;
-    private boolean isSaving;
-    private boolean isCreditWorthy;
+    private boolean saving;
+    private boolean creditWorthy;
 
 
     public CustomerCreateRequest(String idCardNo, LocalDate birthDate, String firstName, String lastName, String email, String telephone,
                                  String street, String streetNo, String zipCode, String city, String country, boolean hasOnlineBanking,
-                                 boolean investing, boolean naturalPerson, boolean hasAnotherBank, boolean isSaving, boolean isCreditWorthy) {
+                                 boolean investing, boolean naturalPerson, boolean hasAnotherBank, boolean saving, boolean creditWorthy) {
         this.idCardNo = idCardNo;
         this.birthDate = birthDate;
         this.firstName = firstName;
@@ -47,8 +44,8 @@ public class CustomerCreateRequest {
         this.investing = investing;
         this.naturalPerson = naturalPerson;
         this.hasAnotherBank = hasAnotherBank;
-        this.isSaving = isSaving;
-        this.isCreditWorthy = isCreditWorthy;
+        this.saving = saving;
+        this.creditWorthy = creditWorthy;
     }
 
     public String getIdCardNo() {
@@ -109,11 +106,11 @@ public class CustomerCreateRequest {
         return hasAnotherBank;
     }
 
-    public boolean isSaving() {
-        return isSaving;
+    public boolean getSaving() {
+        return saving;
     }
 
-    public boolean isCreditWorthy() {
-        return isCreditWorthy;
+    public boolean getCreditWorthy() {
+        return creditWorthy;
     }
 }

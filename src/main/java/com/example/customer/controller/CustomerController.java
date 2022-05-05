@@ -336,8 +336,8 @@ public class CustomerController {
         customer.setInvesting(request.isInvesting());
         customer.setNaturalPerson(request.isNaturalPerson());
         customer.setHasAnotherBank(request.isHasAnotherBank());
-        customer.setSaving(request.isSaving());
-        customer.setCreditWorthy(request.isCreditWorthy());
+        customer.setSaving(request.getSaving());
+        customer.setCreditWorthy(request.getCreditWorthy());
 
         CustomerResponse savedCustomer = customerService.save(customer);
         return mapToResponse(savedCustomer);
@@ -370,8 +370,8 @@ public class CustomerController {
                 request.isInvesting(),
                 request.isNaturalPerson(),
                 request.isHasAnotherBank(),
-                request.isSaving(),
-                request.isCreditWorthy()
+                request.getSaving(),
+                request.getCreditWorthy()
 
 
         );
@@ -398,8 +398,8 @@ public class CustomerController {
                 request.isInvesting(),
                 request.isNaturalPerson(),
                 request.isHasAnotherBank(),
-                request.isSaving(),
-                request.isCreditWorthy()
+                request.getSaving(),
+                request.getCreditWorthy()
 
 
         );
@@ -427,8 +427,8 @@ public class CustomerController {
                 savedCustomer.isInvesting(),
                 savedCustomer.isNaturalPerson(),
                 savedCustomer.isHasAnotherBank(),
-                savedCustomer.isSaving(),
-                savedCustomer.isCreditWorthy()
+                savedCustomer.getSaving(),
+                savedCustomer.getCreditWorthy()
         );
     }
 
