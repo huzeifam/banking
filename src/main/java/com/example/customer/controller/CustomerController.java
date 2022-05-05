@@ -5,10 +5,7 @@ package com.example.customer.controller;
 //import com.example.banking.model.AccountResponse;
 //import com.example.banking.service.AccountService;
 
-import com.example.customer.model.CustomerCreateRequest;
-import com.example.customer.model.CustomerResponse;
-import com.example.customer.model.CustomerSearchEnum;
-import com.example.customer.model.CustomerSexEnum;
+import com.example.customer.model.*;
 import com.example.customer.service.CustomerService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,6 +39,31 @@ public class CustomerController {
 
     @Autowired
     RestTemplate restTemplate;
+
+
+    public AllTimeCustomers addToArchive(AllTimeCustomers allTimeCustomers) {
+        return customerService.addToArchive(allTimeCustomers);
+    }
+
+    //    Archiv
+    @GetMapping("/archive")
+    public List<AllTimeCustomers> getCustomersOfAllTime() {
+        return customerService.findofAllTime();
+    }
+
+    @GetMapping("/archive/{customerNo}")
+    public ResponseEntity<Object> getCustomerInArchiveByCustomerNo(
+            @PathVariable Integer customerNo
+    ){
+        Optional<AllTimeCustomers> customer = customerService.findInArchiveByCustomerNo(customerNo);
+        if (customer.isPresent())
+            return ResponseEntity.ok(customer.get());
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
+    }
+
+//    ___________________________________________________________________
+
 
     @Operation(summary = "Get all customers")
     @GetMapping("/customers")
@@ -77,26 +99,27 @@ public class CustomerController {
         List<CustomerResponse> filterdList = new ArrayList<>();
         int i;
         for (i = 0; i < search.size(); i++) {
-            if (parameter.getParameter().matches("lastName")){
+            if (parameter.getParameter().matches("lastName")) {
                 filterdList = search.stream().filter(customerResponse -> customerResponse.getLastName().equals(word)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
-                    return new String[] {notFound};
+                    return new String[]{notFound};
                 else
-                return filterdList.toArray();}
-            else if (parameter.getParameter().matches("city")){
+                    return filterdList.toArray();
+            } else if (parameter.getParameter().matches("city")) {
                 filterdList = search.stream().filter(customerResponse -> customerResponse.getCity().equals(word)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
-                    return new String[] {notFound};
+                    return new String[]{notFound};
                 else
-                return filterdList.toArray();}
-            else if (parameter.getParameter().matches("country")){
+                    return filterdList.toArray();
+            } else if (parameter.getParameter().matches("country")) {
                 filterdList = search.stream().filter(customerResponse -> customerResponse.getCountry().equals(word)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
-                    return new String[] {notFound};
+                    return new String[]{notFound};
                 else
-                return filterdList.toArray();}
+                    return filterdList.toArray();
+            }
         }
-        return new String[] {notFound};
+        return new String[]{notFound};
     }
 
 
@@ -142,8 +165,7 @@ public class CustomerController {
             } else if (LocalDate.now().getDayOfMonth() < birthDate.getDayOfMonth()) {
                 return --age;
             } else return age;
-        }
-        else
+        } else
             return null;
     }
 
@@ -216,8 +238,9 @@ public class CustomerController {
             @RequestParam CustomerSexEnum gender
 
     ) {
+        Integer customerNo = UUID.randomUUID().hashCode() & Integer.MAX_VALUE;
         CustomerResponse response = new CustomerResponse(
-                UUID.randomUUID().hashCode() & Integer.MAX_VALUE,
+                customerNo,
                 request.getIdCardNo(),
                 request.getBirthDate(),
                 request.getFirstName(),
@@ -240,9 +263,35 @@ public class CustomerController {
 
         );
 
+
         CustomerResponse savedCustomer = customerService.save(response);
 
+//        Für das Archiv
+        AllTimeCustomers archive = new AllTimeCustomers(
+                customerNo,
+                request.getIdCardNo(),
+                request.getBirthDate(),
+                request.getFirstName(),
+                request.getLastName(),
+                gender.getSex(),
+                request.getEmail(),
+                request.getTelephone(),
+                request.getStreet(),
+                request.getStreetNo(),
+                request.getZipCode(),
+                request.getCity(),
+                request.getCountry(),
+                request.isHasOnlineBanking(),
+                request.isInvesting(),
+                request.isNaturalPerson(),
+                request.isHasAnotherBank(),
+                request.isSaving(),
+                request.isCreditWorthy()
 
+
+        );
+        addToArchive(archive);
+//
         return mapToResponse(savedCustomer);
     }
 
@@ -277,39 +326,40 @@ public class CustomerController {
             @PathVariable Integer customerNo
     ) {
         Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
-        {
-            if (customer.isPresent()) {
-//                Double totalBalance = restTemplate.getForObject("http://localhost:8085/api/accounts/" + customerNo + "/totalbalance", Double.class);
-                Double totalBalance = restTemplate.getForObject("http://account:8085/api/accounts/{customerNo}/totalbalance", Double.class);
-                if (totalBalance != null) {
-                    if (totalBalance > 0) {
-                        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.");
-                    } else {
-//                        restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
-                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
-                    }
-//                    List customerAccounts = restTemplate.getForObject("http://localhost:8085/api/accounts/customer-accounts/" + customerNo, List.class);
-                    List customerAccounts = restTemplate.getForObject("http://account:8085/api/accounts/customer-accounts/" + customerNo, List.class);
 
-                    if (customerAccounts.isEmpty()) {
-                        customerService.deleteByCustomerNo(customerNo);
-                        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
-                    } else {
-                        return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not delete customer. Possible reasons: Customer (" + customerNo + ") -\n" +
-                                "-still has at least one account which contains money.\n" +
-                                "-still has at least one account with an ongoing credit.\n\n" +
-                                "All accounts of customer with zero balance and zero ongoing credits were deleted.\n" +
-                                "Please check first and try again.");
-                    }
+        if (customer.isPresent()) {
+            Double totalBalance = restTemplate.getForObject("http://localhost:8085/api/accounts/" + customerNo + "/totalbalance", Double.class);
+//                Double totalBalance = restTemplate.getForObject("http://account:8085/api/accounts/{customerNo}/totalbalance", Double.class);
+            if (totalBalance != null) {
+                if (totalBalance > 0) {
+                    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.");
+                } else {
+                    restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
+//                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
                 }
-             else {
+                List customerAccounts = restTemplate.getForObject("http://localhost:8085/api/accounts/customer-accounts/" + customerNo, List.class);
+//                    List customerAccounts = restTemplate.getForObject("http://account:8085/api/accounts/customer-accounts/" + customerNo, List.class);
+
+                if (customerAccounts.isEmpty()) {
+                    customerService.deleteByCustomerNo(customerNo);
+                    return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
+                } else {
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not delete customer. Possible reasons: Customer (" + customerNo + ") -\n" +
+                            "-still has at least one account which contains money.\n" +
+                            "-still has at least one account with an ongoing credit.\n\n" +
+                            "All accounts of customer with zero balance and zero ongoing credits were deleted.\n" +
+                            "Please check first and try again.");
+                }
+            } else {
                 customerService.deleteByCustomerNo(customerNo);
 
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " deleted.");
             }
-        }else
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer with customer number " + customerNo + " does not exist.");
+        } else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer with customer number " + customerNo + " does not exist.");
     }
 }
 
-}
+
+
+

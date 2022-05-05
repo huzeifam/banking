@@ -1,6 +1,8 @@
 package com.example.customer.service;
 
+import com.example.customer.model.AllTimeCustomers;
 import com.example.customer.model.CustomerResponse;
+import com.example.customer.repository.AllTimeCustomersRepository;
 import com.example.customer.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +14,11 @@ import java.util.Optional;
 public class CustomerService  {
 
    private final CustomerRepository customerRepository;
+   private final AllTimeCustomersRepository allTimeCustomersRepository;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, AllTimeCustomersRepository allTimeCustomersRepository) {
         this.customerRepository = customerRepository;
+        this.allTimeCustomersRepository = allTimeCustomersRepository;
     }
 
     public List<CustomerResponse> findAll() {
@@ -50,6 +54,19 @@ public class CustomerService  {
         return customerRepository.findCustomerBirthDate(customerNo);
     }
 
+    public List<AllTimeCustomers> findofAllTime() {
+        return allTimeCustomersRepository.findAll();
+    }
+
+//    Archiv
+
+    public AllTimeCustomers addToArchive(AllTimeCustomers allTimeCustomers) {
+        return allTimeCustomersRepository.save(allTimeCustomers);
+    }
+
+    public Optional<AllTimeCustomers> findInArchiveByCustomerNo(Integer customerNo) {
+        return allTimeCustomersRepository.findById(customerNo);
+    }
 }
 
 
