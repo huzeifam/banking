@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -62,6 +63,80 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
     }
 
+    @Operation(summary = "Find all customers in archive with search word")
+    @GetMapping("/archive/search/{word}")
+    public Object[] getCustomersInArchiveByWord(
+            @Parameter(description = "Search parameter")
+            @RequestParam CustomerSearchEnum parameter,
+            @Parameter(description = "Search word")
+            @PathVariable String word
+    ) {
+        List<AllTimeCustomers> search = customerService.findofAllTime();
+        String notFound = ("Could not find matching word in parameter");
+//        String notFoundMale = ("No Customer with gender (male)");
+//        String notFoundFemale = ("No Customer with gender (female)");
+//        String notFoundOthers = ("No Customer with gender (others)");
+        List<AllTimeCustomers> filterdList = new ArrayList<>();
+
+        for (int i = 0; i < search.size(); i++) {
+            if (parameter.getParameter().matches("lastName")) {
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getLastName().equals(word)).collect(Collectors.toList());
+                if (filterdList.isEmpty())
+                    return new String[]{notFound};
+                else
+                    return filterdList.toArray();
+            }else if (parameter.getParameter().matches("firstName")){
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getFirstName().equals(word)).collect(Collectors.toList());
+                if (filterdList.isEmpty())
+                    return new String[]{notFound};
+                else
+                    return filterdList.toArray();
+            }
+//            else if (parameter.getParameter().matches("sex-male")){
+//                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getSex().equals("Male")).collect(Collectors.toList());
+//                if (filterdList.isEmpty())
+//                    return new String[]{notFoundMale};
+//                else
+//                    return filterdList.toArray();
+//            }
+//            else if (parameter.getParameter().matches("sex-female")){
+//                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getSex().equals("Female")).collect(Collectors.toList());
+//                if (filterdList.isEmpty())
+//                    return new String[]{notFoundFemale};
+//                else
+//                    return filterdList.toArray();
+//            }
+//            else if (parameter.getParameter().matches("sex-others")){
+//                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getSex().equals("Others")).collect(Collectors.toList());
+//                if (filterdList.isEmpty())
+//                    return new String[]{notFoundOthers};
+//                else
+//                    return filterdList.toArray();
+//            }
+            else if (parameter.getParameter().matches("idCardNo")){
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getIdCardNo().equals(word)).collect(Collectors.toList());
+                if (filterdList.isEmpty())
+                    return new String[]{notFound};
+                else
+                    return filterdList.toArray();
+            }
+            else if (parameter.getParameter().matches("city")) {
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getCity().equals(word)).collect(Collectors.toList());
+                if (filterdList.isEmpty())
+                    return new String[]{notFound};
+                else
+                    return filterdList.toArray();
+            } else if (parameter.getParameter().matches("country")) {
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getCountry().equals(word)).collect(Collectors.toList());
+                if (filterdList.isEmpty())
+                    return new String[]{notFound};
+                else
+                    return filterdList.toArray();
+            }
+        }
+        return new String[]{notFound};
+    }
+
 //    ___________________________________________________________________
 
 
@@ -96,6 +171,9 @@ public class CustomerController {
     ) {
         List<CustomerResponse> search = customerService.findAll();
         String notFound = ("Could not find matching word in parameter");
+//        String notFoundMale = ("No Customer with gender (male)");
+//        String notFoundFemale = ("No Customer with gender (female)");
+//        String notFoundOthers = ("No Customer with gender (others)");
         List<CustomerResponse> filterdList = new ArrayList<>();
         int i;
         for (i = 0; i < search.size(); i++) {
@@ -105,7 +183,42 @@ public class CustomerController {
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
-            } else if (parameter.getParameter().matches("city")) {
+            }else if (parameter.getParameter().matches("firstName")){
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getFirstName().equals(word)).collect(Collectors.toList());
+                if (filterdList.isEmpty())
+                    return new String[]{notFound};
+                else
+                    return filterdList.toArray();
+            }
+//            else if (parameter.getParameter().matches("sex-male")){
+//                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getSex().equals("Male")).collect(Collectors.toList());
+//                if (filterdList.isEmpty())
+//                    return new String[]{notFoundMale};
+//                else
+//                    return filterdList.toArray();
+//            }
+//            else if (parameter.getParameter().matches("sex-female")){
+//                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getSex().equals("Female")).collect(Collectors.toList());
+//                if (filterdList.isEmpty())
+//                    return new String[]{notFoundFemale};
+//                else
+//                    return filterdList.toArray();
+//            }
+//            else if (parameter.getParameter().matches("sex-others")){
+//                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getSex().equals("Others")).collect(Collectors.toList());
+//                if (filterdList.isEmpty())
+//                    return new String[]{notFoundOthers};
+//                else
+//                    return filterdList.toArray();
+//            }
+            else if (parameter.getParameter().matches("idCardNo")){
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getIdCardNo().equals(word)).collect(Collectors.toList());
+                if (filterdList.isEmpty())
+                    return new String[]{notFound};
+                else
+                    return filterdList.toArray();
+            }
+            else if (parameter.getParameter().matches("city")) {
                 filterdList = search.stream().filter(customerResponse -> customerResponse.getCity().equals(word)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
