@@ -8,6 +8,7 @@ public class CustomerCreateRequest {
 
 
     private String idCardNo;
+    private String nationality;
     private LocalDate birthDate;
     private String firstName;
     private String lastName;
@@ -26,10 +27,11 @@ public class CustomerCreateRequest {
     private boolean creditWorthy;
 
 
-    public CustomerCreateRequest(String idCardNo, LocalDate birthDate, String firstName, String lastName, String email, String telephone,
+    public CustomerCreateRequest(String idCardNo, String nationality, LocalDate birthDate, String firstName, String lastName, String email, String telephone,
                                  String street, String streetNo, String zipCode, String city, String country, boolean hasOnlineBanking,
                                  boolean investing, boolean naturalPerson, boolean hasAnotherBank, boolean saving, boolean creditWorthy) {
         this.idCardNo = idCardNo;
+        this.nationality = nationality;
         this.birthDate = birthDate;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,6 +52,10 @@ public class CustomerCreateRequest {
 
     public String getIdCardNo() {
         return idCardNo;
+    }
+
+    public String getNationality() {
+        return nationality;
     }
 
     public LocalDate getBirthDate() {return birthDate;}

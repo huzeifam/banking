@@ -15,13 +15,16 @@ public class CustomerResponse {
     @Id
     private Integer customerNo;
     private String idCardNo;
+    private String nationality;
     private LocalDate birthDate;
+    private String academicTitle;
     private String firstName;
     private String lastName;
     private String sex;
     private String email;
     private String emailType;
     private String telephone;
+    private String telephoneNumberType;
     private String street;
     private String streetNo;
     private String zipCode;
@@ -45,19 +48,22 @@ public class CustomerResponse {
 
     }
 
-    public CustomerResponse(Integer customerNo, String idCardNo, LocalDate birthDate, String firstName, String lastName,
-                            String sex, String email, String emailType, String telephone, String street, String streetNo, String zipCode,
+    public CustomerResponse(Integer customerNo, String idCardNo, String nationality, LocalDate birthDate, String academicTitle, String firstName, String lastName,
+                            String sex, String email, String emailType, String telephone, String telephoneNumberType, String street, String streetNo, String zipCode,
                             String city, String country, boolean hasOnlineBanking, boolean investing,
                             boolean naturalPerson, boolean hasAnotherBank, boolean saving, boolean creditWorthy) {
         this.customerNo = customerNo;
         this.idCardNo = idCardNo;
+        this.nationality = nationality;
         this.birthDate = birthDate;
+        this.academicTitle = academicTitle;
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
         this.email = email;
         this.emailType = emailType;
         this.telephone = telephone;
+        this.telephoneNumberType = telephoneNumberType;
         this.street = street;
         this.streetNo = streetNo;
         this.zipCode = zipCode;
@@ -79,8 +85,16 @@ public class CustomerResponse {
         return idCardNo;
     }
 
+    public String getNationality() {
+        return nationality;
+    }
+
     public LocalDate getBirthDate() {
         return birthDate;
+    }
+
+    public String getAcademicTitle() {
+        return academicTitle;
     }
 
     public String getFirstName() {
@@ -105,6 +119,10 @@ public class CustomerResponse {
 
     public String getTelephone() {
         return telephone;
+    }
+
+    public String getTelephoneNumberType() {
+        return telephoneNumberType;
     }
 
     public String getStreet() {
@@ -162,8 +180,16 @@ public class CustomerResponse {
         this.idCardNo = idCardNo;
     }
 
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public void setAcademicTitle(String academicTitle) {
+        this.academicTitle = academicTitle;
     }
 
     public void setFirstName(String firstName) {
@@ -188,6 +214,10 @@ public class CustomerResponse {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public void setTelephoneNumberType(String telephoneNumberType) {
+        this.telephoneNumberType = telephoneNumberType;
     }
 
     public void setStreet(String street) {

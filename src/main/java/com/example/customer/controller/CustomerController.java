@@ -55,7 +55,7 @@ public class CustomerController {
     @GetMapping("/archive/{customerNo}")
     public ResponseEntity<Object> getCustomerInArchiveByCustomerNo(
             @PathVariable Integer customerNo
-    ){
+    ) {
         Optional<AllTimeCustomers> customer = customerService.findInArchiveByCustomerNo(customerNo);
         if (customer.isPresent())
             return ResponseEntity.ok(customer.get());
@@ -85,7 +85,7 @@ public class CustomerController {
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
-            }else if (parameter.getParameter().matches("firstName")){
+            } else if (parameter.getParameter().matches("firstName")) {
                 filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getFirstName().equals(word)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
@@ -113,14 +113,13 @@ public class CustomerController {
 //                else
 //                    return filterdList.toArray();
 //            }
-            else if (parameter.getParameter().matches("idCardNo")){
+            else if (parameter.getParameter().matches("idCardNo")) {
                 filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getIdCardNo().equals(word)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
-            }
-            else if (parameter.getParameter().matches("city")) {
+            } else if (parameter.getParameter().matches("city")) {
                 filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getCity().equals(word)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
@@ -183,7 +182,7 @@ public class CustomerController {
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
-            }else if (parameter.getParameter().matches("firstName")){
+            } else if (parameter.getParameter().matches("firstName")) {
                 filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getFirstName().equals(word)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
@@ -211,14 +210,13 @@ public class CustomerController {
 //                else
 //                    return filterdList.toArray();
 //            }
-            else if (parameter.getParameter().matches("idCardNo")){
+            else if (parameter.getParameter().matches("idCardNo")) {
                 filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getIdCardNo().equals(word)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
-            }
-            else if (parameter.getParameter().matches("city")) {
+            } else if (parameter.getParameter().matches("city")) {
                 filterdList = search.stream().filter(customerResponse -> customerResponse.getCity().equals(word)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
@@ -292,7 +290,11 @@ public class CustomerController {
             @Parameter(description = "Select gender")
             @RequestParam CustomerSexEnum gender,
             @Parameter(description = "Select type of email")
-            @RequestParam EmailTypeEnum email
+            @RequestParam EmailTypeEnum email,
+            @Parameter(description = "Select academicTitle")
+            @RequestParam AcademicTitleEnum academicTitle,
+            @Parameter(description = "Select type of telephone number")
+            @RequestParam TelephonetypeEnum telephonetype
     ) {
         if (customerService.findByCustomerNo(customerNo).isPresent()) {
             CustomerResponse customer = customerService.findByCustomerNo(customerNo).orElseThrow();
@@ -303,9 +305,17 @@ public class CustomerController {
                 customer.setIdCardNo(request.getIdCardNo());
                 allTimeCustomers.setIdCardNo(request.getIdCardNo());
             }
+            if (request.getNationality() != null) {
+                customer.setNationality(request.getNationality());
+                allTimeCustomers.setNationality(request.getNationality());
+            }
             if (request.getBirthDate() != null) {
                 customer.setBirthDate(request.getBirthDate());
                 allTimeCustomers.setBirthDate(request.getBirthDate());
+            }
+            if (academicTitle.getAcademicTitle() != null) {
+                customer.setAcademicTitle(academicTitle.getAcademicTitle());
+                allTimeCustomers.setAcademicTitle(academicTitle.getAcademicTitle());
             }
             if (request.getFirstName() != null) {
                 customer.setFirstName(request.getFirstName());
@@ -323,13 +333,17 @@ public class CustomerController {
                 customer.setEmail(request.getEmail());
                 allTimeCustomers.setEmail(request.getEmail());
             }
-            if (email.getEmailType() != null){
+            if (email.getEmailType() != null) {
                 customer.setEmailType(email.getEmailType());
                 allTimeCustomers.setEmailType(email.getEmailType());
             }
             if (request.getTelephone() != null) {
                 customer.setTelephone(request.getTelephone());
                 allTimeCustomers.setTelephone(request.getTelephone());
+            }
+            if (telephonetype.getTelephoneNumberType() != null) {
+                customer.setTelephoneNumberType(telephonetype.getTelephoneNumberType());
+                allTimeCustomers.setTelephoneNumberType(telephonetype.getTelephoneNumberType());
             }
             if (request.getStreet() != null) {
                 customer.setStreet(request.getStreet());
@@ -384,20 +398,27 @@ public class CustomerController {
             @Parameter(description = "Select gender")
             @RequestParam CustomerSexEnum gender,
             @Parameter(description = "Select type of email")
-            @RequestParam EmailTypeEnum email
+            @RequestParam EmailTypeEnum email,
+            @Parameter(description = "Select academic title")
+            @RequestParam AcademicTitleEnum academicTitle,
+            @Parameter(description = "Select type of telephone number")
+            @RequestParam TelephonetypeEnum telephonetype
 
     ) {
         Integer customerNo = UUID.randomUUID().hashCode() & Integer.MAX_VALUE;
         CustomerResponse response = new CustomerResponse(
                 customerNo,
                 request.getIdCardNo(),
+                request.getNationality(),
                 request.getBirthDate(),
+                academicTitle.getAcademicTitle(),
                 request.getFirstName(),
                 request.getLastName(),
                 gender.getSex(),
                 request.getEmail(),
                 email.getEmailType(),
                 request.getTelephone(),
+                telephonetype.getTelephoneNumberType(),
                 request.getStreet(),
                 request.getStreetNo(),
                 request.getZipCode(),
@@ -412,6 +433,7 @@ public class CustomerController {
 
 
         );
+
 
 
         CustomerResponse savedCustomer = customerService.save(response);
@@ -420,13 +442,16 @@ public class CustomerController {
         AllTimeCustomers archive = new AllTimeCustomers(
                 customerNo,
                 request.getIdCardNo(),
+                request.getNationality(),
                 request.getBirthDate(),
+                academicTitle.getAcademicTitle(),
                 request.getFirstName(),
                 request.getLastName(),
                 gender.getSex(),
                 request.getEmail(),
                 email.getEmailType(),
                 request.getTelephone(),
+                telephonetype.getTelephoneNumberType(),
                 request.getStreet(),
                 request.getStreetNo(),
                 request.getZipCode(),
@@ -441,6 +466,14 @@ public class CustomerController {
 
 
         );
+        if (academicTitle.getAcademicTitle() == null) {
+            response.setAcademicTitle("-");
+            archive.setAcademicTitle("-");
+        }
+        if (gender.getSex() == null) {
+            response.setSex("No gender specified!");
+            archive.setSex("No gender specified!");
+        }
         addToArchive(archive);
 //
         return mapToResponse(savedCustomer);
@@ -450,13 +483,16 @@ public class CustomerController {
         return new CustomerResponse(
                 savedCustomer.getCustomerNo(),
                 savedCustomer.getIdCardNo(),
+                savedCustomer.getNationality(),
                 savedCustomer.getBirthDate(),
+                savedCustomer.getAcademicTitle(),
                 savedCustomer.getFirstName(),
                 savedCustomer.getLastName(),
                 savedCustomer.getSex(),
                 savedCustomer.getEmail(),
                 savedCustomer.getEmailType(),
                 savedCustomer.getTelephone(),
+                savedCustomer.getTelephoneNumberType(),
                 savedCustomer.getStreet(),
                 savedCustomer.getStreetNo(),
                 savedCustomer.getZipCode(),
@@ -486,7 +522,7 @@ public class CustomerController {
                 if (totalBalance > 0) {
                     restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
                     return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.\n" +
-                            "The remaining accounts of customer ("+customerNo+") with zero balance were deleted (except for accounts with ongoing credits).");
+                            "The remaining accounts of customer (" + customerNo + ") with zero balance were deleted (except for accounts with ongoing credits).");
                 } else {
                     restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
 //                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
@@ -504,7 +540,6 @@ public class CustomerController {
                                 "Please check first and try again.");
                     }
                 }
-
 
 
             } else {

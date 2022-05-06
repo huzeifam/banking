@@ -1,8 +1,9 @@
 package com.example.customer.model;
 
 public enum EmailTypeEnum {
-    Private_Adress("private"),
-    Business_Adress("business");
+    Null(null),
+    PrivateAdress("private"),
+    BusinessAdress("business");
 
 
     private String emailType;

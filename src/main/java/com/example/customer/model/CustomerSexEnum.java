@@ -1,6 +1,7 @@
 package com.example.customer.model;
 
 public enum CustomerSexEnum {
+    Null(null),
     Male("Male"),
     Female("Female"),
     Others("Other");
