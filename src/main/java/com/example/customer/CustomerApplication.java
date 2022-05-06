@@ -107,12 +107,56 @@ public class CustomerApplication {
 		archiveCustomer2.setSaving(true);
 		archiveCustomer2.setCreditWorthy(true);
 
+		CustomerResponse customer3 = new CustomerResponse();
+		customer3.setCustomerNo(743928374);
+		customer3.setIdCardNo("TT0011789");
+		customer3.setBirthDate(LocalDate.parse("2008-10-15"));
+		customer3.setFirstName("Maria");
+		customer3.setLastName("Mustermann");
+		customer3.setSex("Female");
+		customer3.setEmail("maria.mustermann@email.de");
+		customer3.setTelephone("+49176987654321");
+		customer3.setStreet("Musterstraße");
+		customer3.setStreetNo("1");
+		customer3.setZipCode("12345");
+		customer3.setCity("Musterstadt");
+		customer3.setCountry("Deutschland");
+		customer3.setHasOnlineBanking(false);
+		customer3.setInvesting(false);
+		customer3.setNaturalPerson(true);
+		customer3.setHasAnotherBank(false);
+		customer3.setSaving(false);
+		customer3.setCreditWorthy(false);
+
+		AllTimeCustomers archiveCustomer3 = new AllTimeCustomers();
+		archiveCustomer3.setCustomerNo(743928374);
+		archiveCustomer3.setIdCardNo("TT0011789");
+		archiveCustomer3.setBirthDate(LocalDate.parse("2008-10-15"));
+		archiveCustomer3.setFirstName("Maria");
+		archiveCustomer3.setLastName("Mustermann");
+		archiveCustomer3.setSex("Female");
+		archiveCustomer3.setEmail("maria.mustermann@email.de");
+		archiveCustomer3.setTelephone("+49176987654321");
+		archiveCustomer3.setStreet("Musterstraße");
+		archiveCustomer3.setStreetNo("1");
+		archiveCustomer3.setZipCode("93052");
+		archiveCustomer3.setCity("Musterstadt");
+		archiveCustomer3.setCountry("Deutschland");
+		archiveCustomer3.setHasOnlineBanking(false);
+		archiveCustomer3.setInvesting(false);
+		archiveCustomer3.setNaturalPerson(true);
+		archiveCustomer3.setHasAnotherBank(false);
+		archiveCustomer3.setSaving(false);
+		archiveCustomer3.setCreditWorthy(false);
+
 
 		customerRepository.save(customer1);
 		customerRepository.save(customer2);
+		customerRepository.save(customer3);
 
 		allTimeCustomersRepository.save(archiveCustomer1);
 		allTimeCustomersRepository.save(archiveCustomer2);
+		allTimeCustomersRepository.save(archiveCustomer3);
 	}
 
 
