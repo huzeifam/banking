@@ -292,55 +292,83 @@ public class CustomerController {
             @Parameter(description = "Select gender")
             @RequestParam CustomerSexEnum gender
     ) {
+        if (customerService.findByCustomerNo(customerNo).isPresent()) {
+            CustomerResponse customer = customerService.findByCustomerNo(customerNo).orElseThrow();
+            AllTimeCustomers allTimeCustomers = customerService.findInArchiveByCustomerNo(customerNo).orElseThrow();
 
-        CustomerResponse customer = customerService.findByCustomerNo(customerNo).orElseThrow();
 
+            if (request.getIdCardNo() != null) {
+                customer.setIdCardNo(request.getIdCardNo());
+                allTimeCustomers.setIdCardNo(request.getIdCardNo());
+            }
+            if (request.getBirthDate() != null) {
+                customer.setBirthDate(request.getBirthDate());
+                allTimeCustomers.setBirthDate(request.getBirthDate());
+            }
+            if (request.getFirstName() != null) {
+                customer.setFirstName(request.getFirstName());
+                allTimeCustomers.setFirstName(request.getFirstName());
+            }
+            if (request.getLastName() != null) {
+                customer.setLastName(request.getLastName());
+                allTimeCustomers.setLastName(request.getLastName());
+            }
+            if (gender.getSex() != null) {
+                customer.setSex(gender.getSex());
+                allTimeCustomers.setSex(gender.getSex());
+            }
+            if (request.getEmail() != null) {
+                customer.setEmail(request.getEmail());
+                allTimeCustomers.setEmail(request.getEmail());
+            }
+            if (request.getTelephone() != null) {
+                customer.setTelephone(request.getTelephone());
+                allTimeCustomers.setTelephone(request.getTelephone());
+            }
+            if (request.getStreet() != null) {
+                customer.setStreet(request.getStreet());
+                allTimeCustomers.setStreet(request.getStreet());
+            }
+            if (request.getStreetNo() != null) {
+                customer.setStreetNo(request.getStreetNo());
+                allTimeCustomers.setStreetNo(request.getStreetNo());
+            }
+            if (request.getZipCode() != null) {
+                customer.setZipCode(request.getZipCode());
+                allTimeCustomers.setZipCode(request.getZipCode());
+            }
+            if (request.getCity() != null) {
+                customer.setCity(request.getCity());
+                allTimeCustomers.setCity(request.getCity());
+            }
+            if (request.getCountry() != null) {
+                customer.setCountry(request.getCountry());
+                allTimeCustomers.setCountry(request.getCountry());
+            }
 
-        if (request.getIdCardNo() != null)
-            customer.setIdCardNo(request.getIdCardNo());
+            customer.setHasOnlineBanking(request.isHasOnlineBanking());
+            allTimeCustomers.setHasOnlineBanking(request.isHasOnlineBanking());
 
-        if (request.getBirthDate() != null)
-            customer.setBirthDate(request.getBirthDate());
+            customer.setInvesting(request.isInvesting());
+            allTimeCustomers.setInvesting(request.isInvesting());
 
-        if (request.getFirstName() != null)
-            customer.setFirstName(request.getFirstName());
+            customer.setNaturalPerson(request.isNaturalPerson());
+            allTimeCustomers.setNaturalPerson(request.isNaturalPerson());
 
-        if (request.getLastName() != null)
-            customer.setLastName(request.getLastName());
+            customer.setHasAnotherBank(request.isHasAnotherBank());
+            allTimeCustomers.setHasAnotherBank(request.isHasAnotherBank());
 
-        if (gender.getSex() != null)
-            customer.setSex(gender.getSex());
+            customer.setSaving(request.getSaving());
+            allTimeCustomers.setSaving(request.getSaving());
 
-        if (request.getEmail() != null)
-            customer.setEmail(request.getEmail());
+            customer.setCreditWorthy(request.getCreditWorthy());
+            allTimeCustomers.setCreditWorthy(request.getCreditWorthy());
+            customerService.addToArchive(allTimeCustomers);
+            CustomerResponse savedCustomer = customerService.save(customer);
+            return mapToResponse(savedCustomer);
+        }
 
-        if (request.getTelephone() != null)
-            customer.setTelephone(request.getTelephone());
-
-        if (request.getStreet() != null)
-            customer.setStreet(request.getStreet());
-
-        if (request.getStreetNo() != null)
-            customer.setStreetNo(request.getStreetNo());
-
-        if (request.getZipCode() != null)
-            customer.setZipCode(request.getZipCode());
-
-        if (request.getCity() != null)
-            customer.setCity(request.getCity());
-
-        if (request.getCountry() != null)
-            customer.setCountry(request.getCountry());
-
-        customer.setHasOnlineBanking(request.isHasOnlineBanking());
-        customer.setInvesting(request.isInvesting());
-        customer.setNaturalPerson(request.isNaturalPerson());
-        customer.setHasAnotherBank(request.isHasAnotherBank());
-        customer.setSaving(request.getSaving());
-        customer.setCreditWorthy(request.getCreditWorthy());
-
-        CustomerResponse savedCustomer = customerService.save(customer);
-        return mapToResponse(savedCustomer);
+        return null;
     }
 
     @Operation(summary = "Create a customer")
