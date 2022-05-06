@@ -146,7 +146,9 @@ public class AllTimeCustomers {
     }
 
 
-
+    public void setCustomerNo(Integer customerNo) {
+        this.customerNo = customerNo;
+    }
 
     public void setIdCardNo(String idCardNo) {
         this.idCardNo = idCardNo;

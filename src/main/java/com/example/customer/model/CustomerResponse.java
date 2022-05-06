@@ -146,7 +146,9 @@ public class CustomerResponse {
     }
 
 
-
+    public void setCustomerNo(Integer customerNo) {
+        this.customerNo = customerNo;
+    }
 
     public void setIdCardNo(String idCardNo) {
         this.idCardNo = idCardNo;

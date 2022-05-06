@@ -473,24 +473,29 @@ public class CustomerController {
 //                Double totalBalance = restTemplate.getForObject("http://account:8085/api/accounts/{customerNo}/totalbalance", Double.class);
             if (totalBalance != null) {
                 if (totalBalance > 0) {
-                    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.");
+                    restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
+                    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.\n" +
+                            "The remaining accounts of customer ("+customerNo+") with zero balance were deleted (except for accounts with ongoing credits).");
                 } else {
                     restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
 //                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
-                }
-                List customerAccounts = restTemplate.getForObject("http://localhost:8085/api/accounts/customer-accounts/" + customerNo, List.class);
+                    List customerAccounts = restTemplate.getForObject("http://localhost:8085/api/accounts/customer-accounts/" + customerNo, List.class);
 //                    List customerAccounts = restTemplate.getForObject("http://account:8085/api/accounts/customer-accounts/" + customerNo, List.class);
 
-                if (customerAccounts.isEmpty()) {
-                    customerService.deleteByCustomerNo(customerNo);
-                    return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
-                } else {
-                    return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not delete customer. Possible reasons: Customer (" + customerNo + ") -\n" +
-                            "-still has at least one account which contains money.\n" +
-                            "-still has at least one account with an ongoing credit.\n\n" +
-                            "All accounts of customer with zero balance and zero ongoing credits were deleted.\n" +
-                            "Please check first and try again.");
+                    if (customerAccounts == null) {
+                        customerService.deleteByCustomerNo(customerNo);
+                        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
+                    } else {
+                        return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not delete customer. Possible reasons: Customer (" + customerNo + ") -\n" +
+                                "-still has at least one account which contains money.\n" +
+                                "-still has at least one account with an ongoing credit.\n\n" +
+                                "All accounts of customer with zero balance and zero ongoing credits were deleted.\n" +
+                                "Please check first and try again.");
+                    }
                 }
+
+
+
             } else {
                 customerService.deleteByCustomerNo(customerNo);
 
