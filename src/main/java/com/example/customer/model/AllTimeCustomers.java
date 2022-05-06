@@ -20,6 +20,7 @@ public class AllTimeCustomers {
     private String lastName;
     private String sex;
     private String email;
+    private String emailType;
     private String telephone;
     private String street;
     private String streetNo;
@@ -45,7 +46,7 @@ public class AllTimeCustomers {
     }
 
     public AllTimeCustomers(Integer customerNo, String idCardNo, LocalDate birthDate, String firstName, String lastName,
-                            String sex, String email, String telephone, String street, String streetNo, String zipCode,
+                            String sex, String email, String emailType, String telephone, String street, String streetNo, String zipCode,
                             String city, String country, boolean hasOnlineBanking, boolean investing,
                             boolean naturalPerson, boolean hasAnotherBank, boolean isSaving, boolean isCreditWorthy) {
         this.customerNo = customerNo;
@@ -55,6 +56,7 @@ public class AllTimeCustomers {
         this.lastName = lastName;
         this.sex = sex;
         this.email = email;
+        this.emailType = emailType;
         this.telephone = telephone;
         this.street = street;
         this.streetNo = streetNo;
@@ -95,6 +97,10 @@ public class AllTimeCustomers {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getEmailType() {
+        return emailType;
     }
 
     public String getTelephone() {
@@ -172,6 +178,10 @@ public class AllTimeCustomers {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setEmailType(String emailType) {
+        this.emailType = emailType;
     }
 
     public void setTelephone(String telephone) {

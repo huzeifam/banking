@@ -290,7 +290,9 @@ public class CustomerController {
             @PathVariable Integer customerNo,
             @RequestBody CustomerCreateRequest request,
             @Parameter(description = "Select gender")
-            @RequestParam CustomerSexEnum gender
+            @RequestParam CustomerSexEnum gender,
+            @Parameter(description = "Select type of email")
+            @RequestParam EmailTypeEnum email
     ) {
         if (customerService.findByCustomerNo(customerNo).isPresent()) {
             CustomerResponse customer = customerService.findByCustomerNo(customerNo).orElseThrow();
@@ -320,6 +322,10 @@ public class CustomerController {
             if (request.getEmail() != null) {
                 customer.setEmail(request.getEmail());
                 allTimeCustomers.setEmail(request.getEmail());
+            }
+            if (email.getEmailType() != null){
+                customer.setEmailType(email.getEmailType());
+                allTimeCustomers.setEmailType(email.getEmailType());
             }
             if (request.getTelephone() != null) {
                 customer.setTelephone(request.getTelephone());
@@ -358,11 +364,11 @@ public class CustomerController {
             customer.setHasAnotherBank(request.isHasAnotherBank());
             allTimeCustomers.setHasAnotherBank(request.isHasAnotherBank());
 
-            customer.setSaving(request.getSaving());
-            allTimeCustomers.setSaving(request.getSaving());
+            customer.setSaving(request.isSaving());
+            allTimeCustomers.setSaving(request.isSaving());
 
-            customer.setCreditWorthy(request.getCreditWorthy());
-            allTimeCustomers.setCreditWorthy(request.getCreditWorthy());
+            customer.setCreditWorthy(request.isCreditWorthy());
+            allTimeCustomers.setCreditWorthy(request.isCreditWorthy());
             customerService.addToArchive(allTimeCustomers);
             CustomerResponse savedCustomer = customerService.save(customer);
             return mapToResponse(savedCustomer);
@@ -376,7 +382,9 @@ public class CustomerController {
     public CustomerResponse createCustomer(
             @RequestBody CustomerCreateRequest request,
             @Parameter(description = "Select gender")
-            @RequestParam CustomerSexEnum gender
+            @RequestParam CustomerSexEnum gender,
+            @Parameter(description = "Select type of email")
+            @RequestParam EmailTypeEnum email
 
     ) {
         Integer customerNo = UUID.randomUUID().hashCode() & Integer.MAX_VALUE;
@@ -388,6 +396,7 @@ public class CustomerController {
                 request.getLastName(),
                 gender.getSex(),
                 request.getEmail(),
+                email.getEmailType(),
                 request.getTelephone(),
                 request.getStreet(),
                 request.getStreetNo(),
@@ -398,8 +407,8 @@ public class CustomerController {
                 request.isInvesting(),
                 request.isNaturalPerson(),
                 request.isHasAnotherBank(),
-                request.getSaving(),
-                request.getCreditWorthy()
+                request.isSaving(),
+                request.isCreditWorthy()
 
 
         );
@@ -416,6 +425,7 @@ public class CustomerController {
                 request.getLastName(),
                 gender.getSex(),
                 request.getEmail(),
+                email.getEmailType(),
                 request.getTelephone(),
                 request.getStreet(),
                 request.getStreetNo(),
@@ -426,8 +436,8 @@ public class CustomerController {
                 request.isInvesting(),
                 request.isNaturalPerson(),
                 request.isHasAnotherBank(),
-                request.getSaving(),
-                request.getCreditWorthy()
+                request.isSaving(),
+                request.isCreditWorthy()
 
 
         );
@@ -445,6 +455,7 @@ public class CustomerController {
                 savedCustomer.getLastName(),
                 savedCustomer.getSex(),
                 savedCustomer.getEmail(),
+                savedCustomer.getEmailType(),
                 savedCustomer.getTelephone(),
                 savedCustomer.getStreet(),
                 savedCustomer.getStreetNo(),
@@ -455,8 +466,8 @@ public class CustomerController {
                 savedCustomer.isInvesting(),
                 savedCustomer.isNaturalPerson(),
                 savedCustomer.isHasAnotherBank(),
-                savedCustomer.getSaving(),
-                savedCustomer.getCreditWorthy()
+                savedCustomer.isSaving(),
+                savedCustomer.isCreditWorthy()
         );
     }
 

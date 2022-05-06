@@ -20,6 +20,7 @@ public class CustomerResponse {
     private String lastName;
     private String sex;
     private String email;
+    private String emailType;
     private String telephone;
     private String street;
     private String streetNo;
@@ -45,7 +46,7 @@ public class CustomerResponse {
     }
 
     public CustomerResponse(Integer customerNo, String idCardNo, LocalDate birthDate, String firstName, String lastName,
-                            String sex, String email, String telephone, String street, String streetNo, String zipCode,
+                            String sex, String email, String emailType, String telephone, String street, String streetNo, String zipCode,
                             String city, String country, boolean hasOnlineBanking, boolean investing,
                             boolean naturalPerson, boolean hasAnotherBank, boolean saving, boolean creditWorthy) {
         this.customerNo = customerNo;
@@ -55,6 +56,7 @@ public class CustomerResponse {
         this.lastName = lastName;
         this.sex = sex;
         this.email = email;
+        this.emailType = emailType;
         this.telephone = telephone;
         this.street = street;
         this.streetNo = streetNo;
@@ -97,6 +99,10 @@ public class CustomerResponse {
         return email;
     }
 
+    public String getEmailType() {
+        return emailType;
+    }
+
     public String getTelephone() {
         return telephone;
     }
@@ -137,13 +143,15 @@ public class CustomerResponse {
         return hasAnotherBank;
     }
 
-    public boolean getSaving() {
+    public boolean isSaving() {
         return saving;
     }
 
-    public boolean getCreditWorthy() {
+    public boolean isCreditWorthy() {
         return creditWorthy;
     }
+
+
 
 
     public void setCustomerNo(Integer customerNo) {
@@ -172,6 +180,10 @@ public class CustomerResponse {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setEmailType(String emailType) {
+        this.emailType = emailType;
     }
 
     public void setTelephone(String telephone) {

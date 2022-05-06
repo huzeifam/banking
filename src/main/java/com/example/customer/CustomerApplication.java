@@ -31,6 +31,7 @@ public class CustomerApplication {
 		customer1.setLastName("Mustermann");
 		customer1.setSex("Female");
 		customer1.setEmail("erika.mustermann@email.de");
+		customer1.setEmailType("private");
 		customer1.setTelephone("+49176123456345");
 		customer1.setStreet("Marktplatz");
 		customer1.setStreetNo("1");
@@ -52,6 +53,7 @@ public class CustomerApplication {
 		archiveCustomer1.setLastName("Mustermann");
 		archiveCustomer1.setSex("Female");
 		archiveCustomer1.setEmail("erika.mustermann@email.de");
+		archiveCustomer1.setEmailType("private");
 		archiveCustomer1.setTelephone("+49176123456345");
 		archiveCustomer1.setStreet("Marktplatz");
 		archiveCustomer1.setStreetNo("1");
@@ -73,6 +75,7 @@ public class CustomerApplication {
 		customer2.setLastName("Mustermann");
 		customer2.setSex("Male");
 		customer2.setEmail("max.mustermann@email.de");
+		customer2.setEmailType("private");
 		customer2.setTelephone("+49176123456789");
 		customer2.setStreet("Hauptstraße");
 		customer2.setStreetNo("11");
@@ -94,6 +97,7 @@ public class CustomerApplication {
 		archiveCustomer2.setLastName("Mustermann");
 		archiveCustomer2.setSex("Male");
 		archiveCustomer2.setEmail("max.mustermann@email.de");
+		archiveCustomer2.setEmailType("private");
 		archiveCustomer2.setTelephone("+49176123456789");
 		archiveCustomer2.setStreet("Hauptstraße");
 		archiveCustomer2.setStreetNo("11");
@@ -115,6 +119,7 @@ public class CustomerApplication {
 		customer3.setLastName("Mustermann");
 		customer3.setSex("Female");
 		customer3.setEmail("maria.mustermann@email.de");
+		customer3.setEmailType("private");
 		customer3.setTelephone("+49176987654321");
 		customer3.setStreet("Musterstraße");
 		customer3.setStreetNo("1");
@@ -136,6 +141,7 @@ public class CustomerApplication {
 		archiveCustomer3.setLastName("Mustermann");
 		archiveCustomer3.setSex("Female");
 		archiveCustomer3.setEmail("maria.mustermann@email.de");
+		archiveCustomer3.setEmailType("private");
 		archiveCustomer3.setTelephone("+49176987654321");
 		archiveCustomer3.setStreet("Musterstraße");
 		archiveCustomer3.setStreetNo("1");

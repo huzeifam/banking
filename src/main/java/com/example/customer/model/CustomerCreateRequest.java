@@ -106,11 +106,12 @@ public class CustomerCreateRequest {
         return hasAnotherBank;
     }
 
-    public boolean getSaving() {
+    public boolean isSaving() {
         return saving;
     }
 
-    public boolean getCreditWorthy() {
+    public boolean isCreditWorthy() {
         return creditWorthy;
     }
+
 }
