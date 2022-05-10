@@ -521,6 +521,8 @@ public class CustomerController {
             if (totalBalance != null) {
                 if (totalBalance > 0) {
                     restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
+//                    restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
+
                     return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.\n" +
                             "The remaining accounts of customer (" + customerNo + ") with zero balance were deleted (except for accounts with ongoing credits).");
                 } else {
