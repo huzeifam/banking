@@ -467,15 +467,16 @@ public class CustomerController {
 
         );
         if (academicTitle.getAcademicTitle() == null) {
-            response.setAcademicTitle("-");
+            savedCustomer.setAcademicTitle("-");
             archive.setAcademicTitle("-");
         }
         if (gender.getSex() == null) {
-            response.setSex("No gender specified!");
+            savedCustomer.setSex("No gender specified!");
             archive.setSex("No gender specified!");
         }
         addToArchive(archive);
 //
+
         return mapToResponse(savedCustomer);
     }
 
