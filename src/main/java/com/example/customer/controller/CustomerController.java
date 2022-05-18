@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -63,7 +62,7 @@ public class CustomerController {
         if (customer.isPresent())
             return ResponseEntity.ok(customer.get());
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer (customer number: " + customerNo + ") not found.");
     }
 
     @Operation(summary = "Find all customers in archive with search word")
@@ -75,7 +74,7 @@ public class CustomerController {
             @PathVariable String word
     ) {
         List<AllTimeCustomers> search = customerService.findofAllTime();
-        String notFound = ("No \""+word+"\" in parameter \""+parameter+"\"");
+        String notFound = (word+" in parameter "+parameter+" not found");
 //        String notFoundMale = ("No Customer with gender (male)");
 //        String notFoundFemale = ("No Customer with gender (female)");
 //        String notFoundOthers = ("No Customer with gender (others)");
@@ -83,13 +82,19 @@ public class CustomerController {
 
         for (int i = 0; i < search.size(); i++) {
             if (parameter.getParameter().matches("lastName")) {
-                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getLastName().equals(word)).collect(Collectors.toList());
+                String searchWord = word.substring(0,1).toUpperCase();
+                searchWord += word.substring(1);
+                String finalSearchWord = searchWord;
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getLastName().equals(finalSearchWord)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
             } else if (parameter.getParameter().matches("firstName")) {
-                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getFirstName().equals(word)).collect(Collectors.toList());
+                String searchWord = word.substring(0,1).toUpperCase();
+                searchWord += word.substring(1);
+                String finalSearchWord = searchWord;
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getFirstName().equals(finalSearchWord)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
@@ -117,19 +122,25 @@ public class CustomerController {
 //                    return filterdList.toArray();
 //            }
             else if (parameter.getParameter().matches("idCardNo")) {
-                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getIdCardNo().equals(word)).collect(Collectors.toList());
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getIdCardNo().equals(word.toUpperCase())).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
             } else if (parameter.getParameter().matches("city")) {
-                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getCity().equals(word)).collect(Collectors.toList());
+                String searchWord = word.substring(0,1).toUpperCase();
+                searchWord += word.substring(1);
+                String finalSearchWord = searchWord;
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getCity().equals(finalSearchWord)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
             } else if (parameter.getParameter().matches("country")) {
-                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getCountry().equals(word)).collect(Collectors.toList());
+                String searchWord = word.substring(0,1).toUpperCase();
+                searchWord += word.substring(1);
+                String finalSearchWord = searchWord;
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getCountry().equals(finalSearchWord)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
@@ -159,7 +170,7 @@ public class CustomerController {
         if (customer.isPresent())
             return ResponseEntity.ok(customer.get());
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer (customer number: " + customerNo + ") not found.");
     }
 
 
@@ -172,7 +183,7 @@ public class CustomerController {
             @PathVariable String word
     ) {
         List<CustomerResponse> search = customerService.findAll();
-        String notFound = ("No \""+word+"\" in parameter \""+parameter+"\"");
+        String notFound = (word+" in parameter "+parameter+" not found");
 //        String notFoundMale = ("No Customer with gender (male)");
 //        String notFoundFemale = ("No Customer with gender (female)");
 //        String notFoundOthers = ("No Customer with gender (others)");
@@ -180,13 +191,19 @@ public class CustomerController {
         int i;
         for (i = 0; i < search.size(); i++) {
             if (parameter.getParameter().matches("lastName")) {
-                filterdList = search.stream().filter(customerResponse -> customerResponse.getLastName().equals(word)).collect(Collectors.toList());
+                String searchWord = word.substring(0,1).toUpperCase();
+                searchWord += word.substring(1);
+                String finalSearchWord = searchWord;
+                filterdList = search.stream().filter(customerResponse -> customerResponse.getLastName().equals(finalSearchWord)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
             } else if (parameter.getParameter().matches("firstName")) {
-                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getFirstName().equals(word)).collect(Collectors.toList());
+                String searchWord = word.substring(0,1).toUpperCase();
+                searchWord += word.substring(1);
+                String finalSearchWord = searchWord;
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getFirstName().equals(finalSearchWord)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
@@ -214,19 +231,25 @@ public class CustomerController {
 //                    return filterdList.toArray();
 //            }
             else if (parameter.getParameter().matches("idCardNo")) {
-                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getIdCardNo().equals(word)).collect(Collectors.toList());
+                filterdList = search.stream().filter(allTimeCustomers -> allTimeCustomers.getIdCardNo().equals(word.toUpperCase())).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
             } else if (parameter.getParameter().matches("city")) {
-                filterdList = search.stream().filter(customerResponse -> customerResponse.getCity().equals(word)).collect(Collectors.toList());
+                String searchWord = word.substring(0,1).toUpperCase();
+                searchWord += word.substring(1);
+                String finalSearchWord = searchWord;
+                filterdList = search.stream().filter(customerResponse -> customerResponse.getCity().equals(finalSearchWord)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
                     return filterdList.toArray();
             } else if (parameter.getParameter().matches("country")) {
-                filterdList = search.stream().filter(customerResponse -> customerResponse.getCountry().equals(word)).collect(Collectors.toList());
+                String searchWord = word.substring(0,1).toUpperCase();
+                searchWord += word.substring(1);
+                String finalSearchWord = searchWord;
+                filterdList = search.stream().filter(customerResponse -> customerResponse.getCountry().equals(finalSearchWord)).collect(Collectors.toList());
                 if (filterdList.isEmpty())
                     return new String[]{notFound};
                 else
@@ -299,8 +322,9 @@ public class CustomerController {
             @Parameter(description = "Select type of telephone number")
             @RequestParam TelephonetypeEnum telephonetype
     ) {
+        CustomerResponse customer = null;
         if (customerService.findByCustomerNo(customerNo).isPresent()) {
-            CustomerResponse customer = customerService.findByCustomerNo(customerNo).orElseThrow();
+            customer = customerService.findByCustomerNo(customerNo).orElseThrow();
             AllTimeCustomers allTimeCustomers = customerService.findInArchiveByCustomerNo(customerNo).orElseThrow();
 
 
@@ -390,8 +414,7 @@ public class CustomerController {
             CustomerResponse savedCustomer = customerService.save(customer);
             return mapToResponse(savedCustomer);
         }
-
-        return null;
+        return  null;
     }
 
     @Operation(summary = "Create a customer")
@@ -520,20 +543,20 @@ public class CustomerController {
         Optional<CustomerResponse> customer = customerService.findByCustomerNo(customerNo);
 
         if (customer.isPresent()) {
-            Double totalBalance = restTemplate.getForObject("http://localhost:8085/api/accounts/" + customerNo + "/totalbalance", Double.class);
-//                                Double totalBalance = restTemplate.getForObject("http://account:8085/api/accounts/"+customerNo+"/totalbalance", Double.class);
+//            Double totalBalance = restTemplate.getForObject("http://localhost:8085/api/accounts/" + customerNo + "/totalbalance", Double.class);
+                                Double totalBalance = restTemplate.getForObject("http://account:8085/api/accounts/"+customerNo+"/totalbalance", Double.class);
             if (totalBalance != null) {
                 if (totalBalance > 0) {
-                    restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
-//                    restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
+//                    restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
+                    restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
 
-                    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.\n" +
+                    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + Math.round(totalBalance*100.0)/100.0 + "€\" and try again.\n" +
                             "The remaining accounts of customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") with zero balance were deleted (except for accounts with ongoing credits).");
                 } else {
-                    restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
-//                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
-                    List customerAccounts = restTemplate.getForObject("http://localhost:8085/api/accounts/customer-accounts/" + customerNo, List.class);
-//                    List customerAccounts = restTemplate.getForObject("http://account:8085/api/accounts/customer-accounts/" + customerNo, List.class);
+//                    restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
+                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
+//                    List customerAccounts = restTemplate.getForObject("http://localhost:8085/api/accounts/customer-accounts/" + customerNo, List.class);
+                    List customerAccounts = restTemplate.getForObject("http://account:8085/api/accounts/customer-accounts/" + customerNo, List.class);
 
                     if (customerAccounts == null) {
                         customerService.deleteByCustomerNo(customerNo);
@@ -554,7 +577,7 @@ public class CustomerController {
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") deleted.");
             }
         } else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") does not exist.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer (customer number: " + customerNo + ") does not exist.");
     }
 }
 
