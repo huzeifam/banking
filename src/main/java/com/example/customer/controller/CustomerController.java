@@ -47,20 +47,23 @@ public class CustomerController {
     }
 
     //    Archiv
+    @Operation(summary = "Get all customers in archive")
     @GetMapping("/archive")
     public List<AllTimeCustomers> getCustomersOfAllTime() {
         return customerService.findofAllTime();
     }
 
+    @Operation(summary = "Find a customer in archive by customer number")
     @GetMapping("/archive/{customerNo}")
     public ResponseEntity<Object> getCustomerInArchiveByCustomerNo(
+            @Parameter(description = "Customer number of customer to be found")
             @PathVariable Integer customerNo
     ) {
         Optional<AllTimeCustomers> customer = customerService.findInArchiveByCustomerNo(customerNo);
         if (customer.isPresent())
             return ResponseEntity.ok(customer.get());
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") not found.");
     }
 
     @Operation(summary = "Find all customers in archive with search word")
@@ -72,7 +75,7 @@ public class CustomerController {
             @PathVariable String word
     ) {
         List<AllTimeCustomers> search = customerService.findofAllTime();
-        String notFound = ("Could not find matching word in parameter");
+        String notFound = ("No \""+word+"\" in parameter \""+parameter+"\"");
 //        String notFoundMale = ("No Customer with gender (male)");
 //        String notFoundFemale = ("No Customer with gender (female)");
 //        String notFoundOthers = ("No Customer with gender (others)");
@@ -156,7 +159,7 @@ public class CustomerController {
         if (customer.isPresent())
             return ResponseEntity.ok(customer.get());
         else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer with customer number " + customerNo + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") not found.");
     }
 
 
@@ -169,7 +172,7 @@ public class CustomerController {
             @PathVariable String word
     ) {
         List<CustomerResponse> search = customerService.findAll();
-        String notFound = ("Could not find matching word in parameter");
+        String notFound = ("No \""+word+"\" in parameter \""+parameter+"\"");
 //        String notFoundMale = ("No Customer with gender (male)");
 //        String notFoundFemale = ("No Customer with gender (female)");
 //        String notFoundOthers = ("No Customer with gender (others)");
@@ -525,7 +528,7 @@ public class CustomerController {
 //                    restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
 
                     return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Could not delete. At least one account still contains money. Please withdraw the remaining amount \"" + totalBalance + "€\" and try again.\n" +
-                            "The remaining accounts of customer (" + customerNo + ") with zero balance were deleted (except for accounts with ongoing credits).");
+                            "The remaining accounts of customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") with zero balance were deleted (except for accounts with ongoing credits).");
                 } else {
                     restTemplate.delete("http://localhost:8085/api/accounts/customer-accounts/{customerNo}", customerNo);
 //                restTemplate.delete("http://account:8085/api/accounts/customer-accounts/{customerNo}",customerNo);
@@ -534,9 +537,9 @@ public class CustomerController {
 
                     if (customerAccounts == null) {
                         customerService.deleteByCustomerNo(customerNo);
-                        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " and related accounts deleted.");
+                        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") and related accounts deleted.");
                     } else {
-                        return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not delete customer. Possible reasons: Customer (" + customerNo + ") -\n" +
+                        return ResponseEntity.status(HttpStatus.CONFLICT).body("Could not delete customer. Possible reasons: Customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") -\n" +
                                 "-still has at least one account which contains money.\n" +
                                 "-still has at least one account with an ongoing credit.\n\n" +
                                 "All accounts of customer with zero balance and zero ongoing credits were deleted.\n" +
@@ -548,10 +551,10 @@ public class CustomerController {
             } else {
                 customerService.deleteByCustomerNo(customerNo);
 
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer with customer number " + customerNo + " deleted.");
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") deleted.");
             }
         } else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer with customer number " + customerNo + " does not exist.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not delete. Customer (customer number: " + customerNo + ", name: "+customer.get().getFirstName()+" "+customer.get().getLastName()+") does not exist.");
     }
 }
 
