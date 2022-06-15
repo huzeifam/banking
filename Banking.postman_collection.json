@@ -1,0 +1,584 @@
+{
+	"info": {
+		"_postman_id": "4dbd249d-7230-4c1d-8483-d6b67ac57831",
+		"name": "Banking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "GET Customers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/customer",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"customer"
+							]
+						},
+						"description": "Display a list with all customers"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Customer by customerNo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/customer/{customerNo}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"customer",
+								"{customerNo}"
+							]
+						},
+						"description": "Display a customer by his customer number(customerNo)"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Customer by word",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/customer/search/{word}?parameter=LastName",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"customer",
+								"search",
+								"{word}"
+							],
+							"query": [
+								{
+									"key": "parameter",
+									"value": "LastName",
+									"description": "Value(LastName, FirstName, IdCardNumber, City, Country)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer by customerNo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"city\": \"Regensburg\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/customer/{customerNo}?gender=Null&email=Null&academicTitle=Null&telephonetype=Null",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"customer",
+								"{customerNo}"
+							],
+							"query": [
+								{
+									"key": "gender",
+									"value": "Null",
+									"description": "Value(Null, Male, Female, Others)"
+								},
+								{
+									"key": "email",
+									"value": "Null",
+									"description": "Value(Null, PrivateAdress, BusinessAdress)"
+								},
+								{
+									"key": "academicTitle",
+									"value": "Null",
+									"description": "Value(Null, NoTitle, Doctor, Professor, Professor_Doctor) "
+								},
+								{
+									"key": "telephonetype",
+									"value": "Null",
+									"description": "Value(Null, BusinessPhone, PrivatePhone, MobilePhone)"
+								}
+							]
+						},
+						"description": "Update a customer by his customer number(customerNo)\nChange everything except for customerNo"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Customer by customerNo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost/customer/{customerNo}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"customer",
+								"{customerNo}"
+							]
+						},
+						"description": "Delete a customer by his customer number(customerNo)\nAll the related accounts (accounts with same customerNo) will also be deleted"
+					},
+					"response": []
+				},
+				{
+					"name": "POST Customer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const dateNow = new Date();",
+									"postman.setGlobalVariable(\"todayDate\", dateNow.toLocaleDateString());",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idCardNo\": \"string\",\n  \"nationality\": \"string\",\n  \"birthDate\": \"2022-06-15\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"email\": \"string\",\n  \"telephone\": \"string\",\n  \"street\": \"string\",\n  \"streetNo\": \"string\",\n  \"zipCode\": \"string\",\n  \"city\": \"string\",\n  \"country\": \"string\",\n  \"hasOnlineBanking\": true,\n  \"investing\": true,\n  \"naturalPerson\": true,\n  \"hasAnotherBank\": true,\n  \"saving\": true,\n  \"creditWorthy\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/customer?gender=Null&email=Null&academicTitle=Null&telephonetype=Null",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"customer"
+							],
+							"query": [
+								{
+									"key": "gender",
+									"value": "Null",
+									"description": "Value(Null, Male, Female, Others)"
+								},
+								{
+									"key": "email",
+									"value": "Null",
+									"description": "Value(Null, PrivateAdress, BusinessAdress)"
+								},
+								{
+									"key": "academicTitle",
+									"value": "Null",
+									"description": "Value(Null, NoTitle, Doctor, Professor, Professor_Doctor) "
+								},
+								{
+									"key": "telephonetype",
+									"value": "Null",
+									"description": "Value(Null, BusinessPhone, PrivatePhone, MobilePhone)"
+								}
+							]
+						},
+						"description": "Create a customer. Customer number (customerNo) will be generated automatically"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer - Archive",
+			"item": [
+				{
+					"name": "GET Customer in Archive",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/archive",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"archive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Customer in Archive by customerNo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/archive/{customerNo}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"archive",
+								"{customerNo}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Customer in Archive by word",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/archive/search/{word}?parameter=LastName",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"archive",
+								"search",
+								"{word}"
+							],
+							"query": [
+								{
+									"key": "parameter",
+									"value": "LastName",
+									"description": "Value(LastName, FirstName, IdCardNumber, City, Country)"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "GET Accounts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/account",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"account"
+							]
+						},
+						"description": "Display a list with all accounts"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Account by accountNo",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/account/{accountNo}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"account",
+								"{accountNo}"
+							]
+						},
+						"description": "Display an account by account number(accountNo)"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Accountbalance / transfer amount",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/account/{accountNo}/transfer/{destAccountNo}/{amount}/{purposeOfTransfer}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"account",
+								"{accountNo}",
+								"transfer",
+								"{destAccountNo}",
+								"{amount}",
+								"{purposeOfTransfer}"
+							]
+						},
+						"description": "Change balance of two accounts by transferring an amount from the first account by account number(accountNo) to the second account by account number(destAccountNo)"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Accountbalance by accountNo / Deposit amount",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/account/{accountNo}/deposit/{amount}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"account",
+								"{accountNo}",
+								"deposit",
+								"{amount}"
+							]
+						},
+						"description": "Deposit an amount into an account by account number (accountNo)"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Accountbalance by accountNo / Withdraw amount",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/account/{accountNo}/withdraw/{amount}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"account",
+								"{accountNo}",
+								"withdraw",
+								"{amount}"
+							]
+						},
+						"description": "Withdraw an amount from account by account number(accountNo)"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Account by accountNo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/account/{accountNo}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"account",
+								"{accountNo}"
+							]
+						},
+						"description": "Delete an account by account number(accountNo)"
+					},
+					"response": []
+				},
+				{
+					"name": "POST Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customerNo\": 123456789,\n    \"referenceAccount\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost/account?enumRequest=Girokonto",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"account"
+							],
+							"query": [
+								{
+									"key": "enumRequest",
+									"value": "Girokonto",
+									"description": "Value(Girokonto, Schülerkonto, Tagesgeldkonto)"
+								}
+							]
+						},
+						"description": "Create an account for customer with customer number(customerNo)\nAccount number(accountNo), Iban and start-date will be generated automatically. Balance starts with 0.0"
+					},
+					"response": []
+				},
+				{
+					"name": "GET Transactions by accountNo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/transaction/{accountNo}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"transaction",
+								"{accountNo}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Credit",
+			"item": [
+				{
+					"name": "GET Credits",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/credit",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"credit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Credit by creditNo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost/credit/{creditNo}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"credit",
+								"{creditNo}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Request Credit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost/credit/{accountNo}/{creditAmount}?enumRequest=SIX_MONTH",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"credit",
+								"{accountNo}",
+								"{creditAmount}"
+							],
+							"query": [
+								{
+									"key": "enumRequest",
+									"value": "SIX_MONTH",
+									"description": "Value(SIX_MONTH, TWELVE_MONTH, EIGHTEEN_MONTH, TWENTY_FOUR_MONTH, THIRTY_MONTH, THIRTY_SIX_MONTH)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Pay Credit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost/credit/{creditNo}",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"credit",
+								"{creditNo}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
